@@ -66,3 +66,99 @@ def build_nikhilam_steps(a: int, b: int, base: int = 100):
 },
 
     ]
+
+def build_nikhilam_animation_events(steps: list) -> list:
+    """
+    Convert Nikhilam teaching steps into animation steps.
+    """
+    animation_steps = []
+
+    base_step = steps[0]
+    a, b = base_step["numbers"]
+    base = base_step["base"]
+
+    deviations = steps[1]["deviations"]
+    deviation_a, deviation_b = deviations
+
+    for step in steps:
+        events = []
+
+        if step["type"] == "base":
+            events = [
+                {
+                    "action": "show_numbers",
+                    "number1": a,
+                    "number2": b,
+                },
+                {
+                    "action": "show_base",
+                    "value": base,
+                },
+            ]
+
+        elif step["type"] == "deviations":
+            events = [
+                {
+                    "action": "show_deviation",
+                    "number": a,
+                    "deviation": deviation_a,
+                    "position": 0,
+                },
+                {
+                    "action": "show_deviation",
+                    "number": b,
+                    "deviation": deviation_b,
+                    "position": 1,
+                },
+            ]
+
+        elif step["type"] == "cross_subtract":
+            events = [
+                {
+                    "action": "draw_cross_arrow",
+                    "from_number": a,
+                    "to_deviation": deviation_b,
+                },
+                {
+                    "action": "show_left_part",
+                    "value": step["left_part"],
+                },
+            ]
+
+        elif step["type"] == "multiply_deviations":
+            events = [
+                {
+                    "action": "highlight_deviations",
+                    "values": deviations,
+                },
+                {
+                    "action": "show_right_part",
+                    "value": step["right_part"],
+                    "formatted": step["formatted_right"],
+                },
+            ]
+
+        elif step["type"] == "combine":
+            events = [
+                {
+                    "action": "normalize_parts",
+                    "adjustment": step["adjustment"],
+                    "carry": step["carry"],
+                    "left_part": step["left_part"],
+                    "right_part": step["right_part"],
+                    "formatted_right": step["formatted_right"],
+                },
+                {
+                    "action": "reveal_result",
+                    "value": step["result"],
+                },
+            ]
+
+        animation_steps.append({
+            "step_id": step["id"],
+            "title": step["title"],
+            "type": step["type"],
+            "events": events,
+        })
+
+    return animation_steps
