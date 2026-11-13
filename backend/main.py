@@ -4,7 +4,7 @@ from fastapi import FastAPI
 app = FastAPI(
     title="VedicMath AI",
     description="Interactive Vedic Mathematics Learning API",
-    version="0.1.0"
+    version="0.2.0"
 )
 
 @app.get("/")

@@ -61,6 +61,10 @@ https://github.com/utkarsh0702/vedicpy
 VedicPy is distributed under the BSD 3-Clause License.
 The original license is preserved in backend/vendor/vedicpy/LICENSE.
 
+## Versions
+
+Release notes are in [CHANGELOG.md](CHANGELOG.md). The API version is 0.2.0.
+
 ## Project Status
 
 Backend development in progress.

@@ -4,7 +4,7 @@ def calculate_urdhva(a: int, b: int) -> dict:
     Calculate multiplication using the Urdhva Tiryagbhyam
     (Vertically and Crosswise) method.
 
-    Supports positive integers of equal digit length.
+    Supports positive integers with equal or different digit lengths.
     """
 
     if not isinstance(a, int) or not isinstance(b, int):
@@ -13,34 +13,31 @@ def calculate_urdhva(a: int, b: int) -> dict:
     if a <= 0 or b <= 0:
         raise ValueError("Both numbers must be positive.")
 
-    if len(str(a)) != len(str(b)):
-        raise ValueError("Both numbers must have equal digit lengths.")
-
     digits_a = [int(d) for d in str(a)[::-1]]
     digits_b = [int(d) for d in str(b)[::-1]]
 
-    n = len(digits_a)
+    len_a = len(digits_a)
+    len_b = len(digits_b)
+
     carry = 0
     result_digits = []
     columns = []
 
-    for column in range(2 * n - 1):
+    # Process multiplication columns from right to left.
+    for column in range(len_a + len_b - 1):
         products = []
 
-        for i in range(n):
+        for i in range(len_a):
             j = column - i
 
-         
-            if 0 <= j < n:
+            if 0 <= j < len_b:
                 products.append({
                     "digit_a": digits_a[i],
                     "digit_b": digits_b[j],
-                    "position_a": n - 1 - i,
-                    "position_b": n - 1 - j,
+                    "position_a": len_a - 1 - i,
+                    "position_b": len_b - 1 - j,
                     "product": digits_a[i] * digits_b[j]
                 })
-   
-
 
         subtotal = sum(p["product"] for p in products)
         total = subtotal + carry
@@ -61,9 +58,23 @@ def calculate_urdhva(a: int, b: int) -> dict:
         result_digits.append(digit)
         carry = next_carry
 
+    # Handle any remaining carry after the last column.
     while carry > 0:
-        result_digits.append(carry % 10)
+        digit = carry % 10
         carry //= 10
+
+        columns.append({
+            "column": len(columns) + 1,
+            "products": [],
+            "subtotal": 0,
+            "incoming_carry": digit,
+            "total": digit,
+            "write_digit": digit,
+            "outgoing_carry": carry,
+            "final_carry": True
+        })
+
+        result_digits.append(digit)
 
     result = int("".join(str(d) for d in result_digits[::-1]))
 
@@ -73,6 +84,7 @@ def calculate_urdhva(a: int, b: int) -> dict:
         "columns": columns,
         "result": result
     }
+
 
 def build_urdhva_steps(a: int, b: int, difficulty: str = "beginner") -> list:
     """
@@ -92,12 +104,14 @@ def build_urdhva_steps(a: int, b: int, difficulty: str = "beginner") -> list:
 
     required_digits = levels[difficulty]
 
-    if not (
-        10 ** (required_digits - 1) <= a < 10 ** required_digits
-        and 10 ** (required_digits - 1) <= b < 10 ** required_digits
-    ):
+    if a <= 0 or b <= 0:
+        raise ValueError("Both numbers must be positive.")
+
+    # Difficulty is determined by the longest number.
+    if max(len(str(a)), len(str(b))) != required_digits:
         raise ValueError(
-            f"{difficulty} requires two {required_digits}-digit numbers."
+            f"{difficulty} requires the longest number "
+            f"to have {required_digits} digits."
         )
 
     calculation = calculate_urdhva(a, b)
@@ -113,11 +127,19 @@ def build_urdhva_steps(a: int, b: int, difficulty: str = "beginner") -> list:
     ]
 
     for column in calculation["columns"]:
+
         animation_events = build_urdhva_animation_events(column)
-        steps.append({ 
+
+        is_final_carry = column.get("final_carry", False)
+
+        steps.append({
             "id": len(steps) + 1,
-            "type": "multiplication_column",
-            "title": f"Calculate column {column['column']}",
+            "type": "final_carry" if is_final_carry else "multiplication_column",
+            "title": (
+                "Write remaining carry"
+                if is_final_carry
+                else f"Calculate column {column['column']}"
+            ),
             "products": column["products"],
             "subtotal": column["subtotal"],
             "incoming_carry": column["incoming_carry"],
@@ -136,11 +158,23 @@ def build_urdhva_steps(a: int, b: int, difficulty: str = "beginner") -> list:
 
     return steps
 
+
 def build_urdhva_animation_events(column: dict) -> list:
     """
     Build ordered animation events for one multiplication column.
     """
+
     events = []
+
+    # Special handling for the final remaining carry.
+    if column.get("final_carry", False):
+        return [
+            {
+                "action": "write_final_carry",
+                "digit": column["write_digit"],
+                "column": column["column"],
+            }
+        ]
 
     for product in column["products"]:
         events.append({
