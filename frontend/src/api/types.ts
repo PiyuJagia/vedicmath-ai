@@ -206,13 +206,30 @@ export interface QuestionsResponse {
   questions: PracticeQuestion[]
 }
 
+/** The same shape for every Sutra and difficulty level. */
 export interface CheckResponse {
   sutra: string
   numbers: [number, number]
   difficulty: Difficulty
   question: string
   step_id: number
+  answer_type: 'integer' | 'digits'
+  submitted_answer: string
   status: 'correct' | 'incorrect' | 'invalid'
+  is_correct: boolean
+  /** Filled in only when the answer is incorrect. */
+  correct_answer: string | null
   mistake: 'sign' | 'missing_padding' | null
   message: string | null
+}
+
+export interface CheckAllResponse {
+  sutra: string
+  numbers: [number, number]
+  difficulty: Difficulty
+  total_questions: number
+  answered: number
+  correct: number
+  all_correct: boolean
+  results: CheckResponse[]
 }

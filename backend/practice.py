@@ -1,9 +1,10 @@
 """Practice questions and answer checking.
 
-Each question asks the learner for one value from a backend-calculated
-lesson. The expected value never leaves this module: the questions
-endpoint publishes only keys and answer formats, and the check endpoint
-returns whether an answer is correct plus a mistake category.
+Each question asks the learner for one value that the Sutra's engine
+calculates. The questions endpoint publishes only keys and answer formats.
+The check endpoint compares an answer with the engine's value and returns
+the same response shape for every Sutra and difficulty level; when the
+answer is incorrect, the response includes the correct answer.
 """
 
 from typing import Any, Dict, List, Optional
@@ -25,6 +26,21 @@ def _question(key: str, step_id: int, expected: Any, answer_type: str = INTEGER)
     if answer_type == DIGITS:
         question["digits"] = len(expected)
     return question
+
+
+def _step_ids(calculation: Dict[str, Any]) -> Dict[str, int]:
+    return {step["title"]: step["step"] for step in calculation["teaching_steps"]}
+
+
+def _event(calculation: Dict[str, Any], action: str) -> Dict[str, Any]:
+    for event in calculation["animation_steps"]:
+        if event["action"] == action:
+            return event
+    raise KeyError(f"The calculation has no '{action}' event.")
+
+
+def _needs_padding(text: str) -> bool:
+    return len(str(int(text))) < len(text)
 
 
 def nikhilam_questions(steps: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
@@ -76,13 +92,46 @@ def urdhva_questions(steps: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
 
 
 def ekadhikena_questions(calculation: Dict[str, Any]) -> List[Dict[str, Any]]:
-    steps = {step["title"]: step["step"] for step in calculation["teaching_steps"]}
+    steps = _step_ids(calculation)
     return [
         _question("next_number", steps["Add one to the preceding part"], calculation["next_number"]),
         _question("left_part", steps["Multiply the two numbers"], calculation["left_part"]),
         _question("right_part", steps["Append 25"], calculation["right_part"]),
         _question("result", steps["Final answer"], calculation["result"]),
     ]
+
+
+def yavadunam_questions(calculation: Dict[str, Any]) -> List[Dict[str, Any]]:
+    steps = _step_ids(calculation)
+    normalize = _event(calculation, "normalize_parts")
+    right_text = normalize["right_part"]
+
+    questions = [
+        _question("deviation", steps["Find the deviation"], _event(calculation, "show_deviation")["deviation"]),
+        _question("left_part", steps["Calculate the left part"], _event(calculation, "calculate_left")["value"]),
+        _question("right_part", steps["Square the deviation"], _event(calculation, "square_deviation")["value"]),
+    ]
+    if normalize["carry"] != 0:
+        questions.append(_question("adjusted_left_part", steps["Normalize the right part"], normalize["left_part"]))
+        questions.append(_question("adjusted_right_part", steps["Normalize the right part"], int(right_text)))
+    if _needs_padding(right_text):
+        questions.append(_question("padded_right_part", steps["Normalize the right part"], right_text, DIGITS))
+    questions.append(_question("result", steps["Combine the parts"], calculation["result"]))
+    return questions
+
+
+def ekanyunena_questions(calculation: Dict[str, Any]) -> List[Dict[str, Any]]:
+    steps = _step_ids(calculation)
+    right_text = _event(calculation, "format_right_part")["value"]
+
+    questions = [
+        _question("left_part", steps["Find one less than the number"], _event(calculation, "subtract_one")["value"]),
+        _question("right_part", steps["Find the complement"], _event(calculation, "calculate_complement")["value"]),
+    ]
+    if _needs_padding(right_text):
+        questions.append(_question("padded_right_part", steps["Format the right part"], right_text, DIGITS))
+    questions.append(_question("result", steps["Combine the parts"], calculation["result"]))
+    return questions
 
 
 def public_questions(questions: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
@@ -116,14 +165,35 @@ def _parse_integer(text: str) -> Optional[int]:
 
 
 def check_answer(question: Dict[str, Any], raw_answer: str) -> Dict[str, Any]:
-    """Compare a learner's answer with the expected value."""
+    """
+    Compare a learner's answer with the engine's value.
+
+    Every response has the same fields. `correct_answer` is filled in only
+    when the answer is incorrect; it stays empty for correct answers and
+    for input that is not a number at all.
+    """
+    expected = question["expected"]
     response = {
         "question": question["key"],
         "step_id": question["step_id"],
+        "answer_type": question["answer_type"],
+        "submitted_answer": raw_answer,
         "status": "incorrect",
+        "is_correct": False,
+        "correct_answer": None,
         "mistake": None,
         "message": None,
     }
+
+    def mark_correct():
+        response["status"] = "correct"
+        response["is_correct"] = True
+        return response
+
+    def mark_incorrect(mistake: Optional[str] = None):
+        response["correct_answer"] = str(expected)
+        response["mistake"] = mistake
+        return response
 
     text = _normalize(raw_answer)
 
@@ -132,13 +202,9 @@ def check_answer(question: Dict[str, Any], raw_answer: str) -> Dict[str, Any]:
             response["status"] = "invalid"
             response["message"] = f"Enter {question['digits']} digits, for example {'0' * (question['digits'] - 1)}1."
             return response
-
-        expected = question["expected"]
         if text == expected:
-            response["status"] = "correct"
-        elif int(text) == int(expected):
-            response["mistake"] = "missing_padding"
-        return response
+            return mark_correct()
+        return mark_incorrect("missing_padding" if int(text) == int(expected) else None)
 
     answer = _parse_integer(text)
     if answer is None:
@@ -146,9 +212,6 @@ def check_answer(question: Dict[str, Any], raw_answer: str) -> Dict[str, Any]:
         response["message"] = "Enter a whole number, such as 95 or -3."
         return response
 
-    expected = question["expected"]
     if answer == expected:
-        response["status"] = "correct"
-    elif expected != 0 and answer == -expected:
-        response["mistake"] = "sign"
-    return response
+        return mark_correct()
+    return mark_incorrect("sign" if expected != 0 and answer == -expected else None)

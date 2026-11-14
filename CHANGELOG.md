@@ -2,6 +2,14 @@
 
 Version notes for VedicMath AI. Older commits stay on `main`; each version below points at the history that introduced it.
 
+## Unreleased — One answer contract for all Sutras
+
+Answer checking now covers all five Sutras with a Python engine (Nikhilam, Urdhva, Ekadhikena, Yavadunam, Ekanyunena) at every difficulty level, with identical response fields everywhere.
+
+- `POST /sutras/{sutra}/check` returns `question`, `step_id`, `answer_type`, `submitted_answer`, `status` (`correct`, `incorrect` or `invalid`), `is_correct`, `correct_answer`, `mistake` and `message`, plus `sutra`, `numbers` and `difficulty`. `correct_answer` holds the right answer (as text) when the answer is incorrect, and is `null` when it is correct or when the input is not a number. `answer` may be sent as text or as a number.
+- New `POST /sutras/{sutra}/check-all` checks a whole answer sheet (`answers`: question key → answer) and returns `total_questions`, `answered`, `correct`, `all_correct` and one result per answer in the same shape as `/check`.
+- Yavadunam questions: `deviation`, `left_part`, `right_part`, `adjusted_left_part` and `adjusted_right_part` (only when a carry is needed), `padded_right_part` (only when zeros are added), `result`. Ekanyunena questions: `left_part`, `right_part`, `padded_right_part` (only when zeros are added), `result`.
+
 ## Unreleased — Practice answer checking
 
 Two new routes let Practice with Coach check answers in Python, one step at a time. Nikhilam, Urdhva and Ekadhikena are supported; other Sutras return 404.

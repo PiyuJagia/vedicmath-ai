@@ -73,7 +73,11 @@ describe('Practice with Coach screen', () => {
             difficulty: 'beginner',
             question: body.question,
             step_id: 2,
+            answer_type: 'integer',
+            submitted_answer: body.answer,
             status: correct ? 'correct' : 'incorrect',
+            is_correct: correct,
+            correct_answer: correct ? null : '2',
             mistake: sign ? 'sign' : null,
             message: null,
           })

@@ -1,6 +1,6 @@
 import type { Difficulty } from '../types/learning'
 import { parseLesson } from './parseLesson'
-import type { CheckResponse, Lesson, LessonSutraId, Problem, QuestionsResponse } from './types'
+import type { CheckAllResponse, CheckResponse, Lesson, LessonSutraId, Problem, QuestionsResponse } from './types'
 
 export const API_BASE = '/api'
 
@@ -86,4 +86,17 @@ export async function checkAnswer(
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ...problem, difficulty, question, answer }),
   })) as CheckResponse
+}
+
+export async function checkAllAnswers(
+  sutra: LessonSutraId,
+  problem: Problem,
+  difficulty: Difficulty,
+  answers: Record<string, string>,
+): Promise<CheckAllResponse> {
+  return (await request(`/sutras/${sutra}/check-all`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ...problem, difficulty, answers }),
+  })) as CheckAllResponse
 }

@@ -120,7 +120,7 @@ def test_missing_padding_is_flagged():
     assert body["mistake"] == "missing_padding"
 
 
-def test_wrong_answer_has_no_mistake_category():
+def test_wrong_answer_returns_the_correct_answer():
     body = check("nikhilam", "left_part", "96", **NIKHILAM_98_97)
     assert body == {
         "sutra": "nikhilam",
@@ -128,10 +128,31 @@ def test_wrong_answer_has_no_mistake_category():
         "difficulty": "beginner",
         "question": "left_part",
         "step_id": 3,
+        "answer_type": "integer",
+        "submitted_answer": "96",
         "status": "incorrect",
+        "is_correct": False,
+        "correct_answer": "95",
         "mistake": None,
         "message": None,
     }
+
+
+def test_correct_answer_is_not_repeated():
+    body = check("nikhilam", "left_part", "95", **NIKHILAM_98_97)
+    assert body["is_correct"] is True
+    assert body["correct_answer"] is None
+
+
+def test_invalid_input_does_not_reveal_the_answer():
+    body = check("nikhilam", "left_part", "ninety", **NIKHILAM_98_97)
+    assert body["status"] == "invalid"
+    assert body["correct_answer"] is None
+
+
+def test_numeric_answers_are_accepted():
+    response = client.post("/sutras/nikhilam/check", json={"question": "result", "answer": 9506, **NIKHILAM_98_97})
+    assert response.json()["is_correct"] is True
 
 
 def test_nikhilam_borrow_answers():
@@ -204,9 +225,8 @@ def test_out_of_range_numbers_use_lesson_validation():
     assert response.json()["detail"] == "beginner requires numbers between 90 and 109."
 
 
-@pytest.mark.parametrize("sutra", ["yavadunam", "unknown"])
-def test_unsupported_sutras(sutra):
-    assert client.get(f"/sutras/{sutra}/questions", params={"number": 97}).status_code == 404
+def test_unknown_sutra():
+    assert client.get("/sutras/unknown/questions", params={"number": 97}).status_code == 404
 
 
 def test_missing_operands():
