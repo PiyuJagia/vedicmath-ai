@@ -7,6 +7,7 @@ from pathlib import Path
 from google.adk.agents import Agent
 
 from .config import AGENT_NAME, GEMINI_MODEL
+from .tools import COACH_TOOLS
 
 _INSTRUCTIONS_PATH = Path(__file__).with_name("instructions.md")
 _INSTRUCTION = _INSTRUCTIONS_PATH.read_text(encoding="utf-8")
@@ -16,10 +17,11 @@ root_agent = Agent(
     model=GEMINI_MODEL,
     description=(
         "VedicMath AI conversational coach with Boy Coach, Rabbit, and "
-        "Hummingbird personas. Guides learning; calculation tools are not "
-        "connected yet."
+        "Hummingbird personas. Uses deterministic maths tools for calculations, "
+        "lessons, and practice checks."
     ),
     instruction=_INSTRUCTION,
+    tools=list(COACH_TOOLS),
     # Sub-agents can be attached here later without changing the ADK entry point.
     sub_agents=[],
 )

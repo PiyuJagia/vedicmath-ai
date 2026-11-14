@@ -54,10 +54,14 @@ vedic_math_coach/
 ```
 
 Personas: Boy Coach (tutor), Rabbit (visual hints), Hummingbird (encouragement).
-Only one speaks per reply. Calculation tools and animations are not connected yet.
+Only one speaks per reply.
+
+Maths tools (Tollgate 4B): `calculate_sutra`, `get_lesson`, `check_practice_answer`
+in `vedic_math_coach/tools/`. They wrap the existing Python engines; the LLM must
+not invent arithmetic or animation events.
 
 ```powershell
-python -m pytest backend/tests/test_vedic_math_coach.py -v
+python -m pytest backend/tests/test_vedic_math_coach.py backend/tests/test_coach_tools.py -v
 ```
 
 ## Running the ADK development UI
