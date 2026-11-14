@@ -85,25 +85,25 @@ export function NikhilamStage({ frame, numbers, reducedMotion, moveDuration }: P
       {scene.base !== 'hidden' && <BasePill x={G.base.x} y={G.base.y} value={numbers.base} active={scene.base === 'active'} />}
       {scene.numberLine && <NumberLine a={numbers.a} b={numbers.b} base={numbers.base} />}
 
-      <Tile x={G.a.x} y={G.a.y} label={numbers.a} state={scene.a} width={84} />
+      <Tile id="number_a" x={G.a.x} y={G.a.y} label={numbers.a} state={scene.a} width={84} />
       <Caption x={24} y={G.b.y}>
         <tspan fontSize={24}>×</tspan>
       </Caption>
-      <Tile x={G.b.x} y={G.b.y} label={numbers.b} state={scene.b} width={84} />
+      <Tile id="number_b" x={G.b.x} y={G.b.y} label={numbers.b} state={scene.b} width={84} />
 
-      {scene.devA !== 'hidden' && <Chip x={G.devA.x} y={G.devA.y} label={signed(numbers.devA)} state={scene.devA} />}
-      {scene.devB !== 'hidden' && <Chip x={G.devB.x} y={G.devB.y} label={signed(numbers.devB)} state={scene.devB} />}
+      {scene.devA !== 'hidden' && <Chip id="deviation_a" x={G.devA.x} y={G.devA.y} label={signed(numbers.devA)} state={scene.devA} />}
+      {scene.devB !== 'hidden' && <Chip id="deviation_b" x={G.devB.x} y={G.devB.y} label={signed(numbers.devB)} state={scene.devB} />}
 
       {scene.lines.map((line) => {
         if (line.id === 'cross-a') {
-          return <MathLine key={line.id} from={{ x: G.a.x + 44, y: G.a.y + 7 }} to={{ x: G.devB.x - 35, y: G.devB.y - 8 }} faded={line.faded} arrow />
+          return <MathLine id="cross-a" key={line.id} from={{ x: G.a.x + 44, y: G.a.y + 7 }} to={{ x: G.devB.x - 35, y: G.devB.y - 8 }} faded={line.faded} arrow />
         }
         if (line.id === 'cross-b') {
-          return <MathLine key={line.id} from={{ x: G.b.x + 44, y: G.b.y - 7 }} to={{ x: G.devA.x - 35, y: G.devA.y + 8 }} faded={line.faded} arrow />
+          return <MathLine id="cross-b" key={line.id} from={{ x: G.b.x + 44, y: G.b.y - 7 }} to={{ x: G.devA.x - 35, y: G.devA.y + 8 }} faded={line.faded} arrow />
         }
         return (
           <g key={line.id}>
-            <MathLine from={{ x: G.devA.x, y: G.devA.y + 20 }} to={{ x: G.devB.x, y: G.devB.y - 20 }} faded={line.faded} />
+            <MathLine id="multiply" from={{ x: G.devA.x, y: G.devA.y + 20 }} to={{ x: G.devB.x, y: G.devB.y - 20 }} faded={line.faded} />
             <Caption x={G.devA.x + 16} y={(G.devA.y + G.devB.y) / 2}>
               ×
             </Caption>
@@ -119,9 +119,9 @@ export function NikhilamStage({ frame, numbers, reducedMotion, moveDuration }: P
             left part
           </Caption>
           {scene.left.kind === 'empty' ? (
-            <Tile x={G.leftX} y={G.resultY} label="" state="empty" width={84} />
+            <Tile id="left_part" x={G.leftX} y={G.resultY} label="" state="empty" width={84} />
           ) : (
-            <Tile x={G.leftX} y={G.resultY} label={scene.left.value} state={scene.left.active ? 'active' : 'normal'} width={84} />
+            <Tile id="left_part" x={G.leftX} y={G.resultY} label={scene.left.value} state={scene.left.active ? 'active' : 'normal'} width={84} />
           )}
           <line x1={G.barX} y1={G.resultY - 22} x2={G.barX} y2={G.resultY + 22} className={styles.divider} />
         </g>
@@ -135,6 +135,7 @@ export function NikhilamStage({ frame, numbers, reducedMotion, moveDuration }: P
           {scene.right.cells.map((cell, index) => (
             <Tile
               key={index}
+              id={`right_cell_${index}`}
               x={G.rightX + index * G.cellGap}
               y={G.resultY}
               label={cell ?? ''}
@@ -149,11 +150,11 @@ export function NikhilamStage({ frame, numbers, reducedMotion, moveDuration }: P
           <Caption x={G.rightX + G.cellGap / 2} y={G.resultY - 33}>
             right part
           </Caption>
-          <Tile x={G.rightX + G.cellGap / 2} y={G.resultY} label={scene.right.value} state={scene.right.tone === 'warn' ? 'warn' : 'active'} width={74} />
+          <Tile id="right_part" x={G.rightX + G.cellGap / 2} y={G.resultY} label={scene.right.value} state={scene.right.tone === 'warn' ? 'warn' : 'active'} width={74} />
         </g>
       )}
 
-      {scene.token && <CarryToken x={G.barX} y={G.resultY} value={scene.token.value} />}
+      {scene.token && <CarryToken id="adjust" x={G.barX} y={G.resultY} value={scene.token.value} />}
       {scene.joined !== null && <JoinedAnswer x={G.barX} y={G.resultY} value={scene.joined} />}
 
       {scene.moves.map((move) => (

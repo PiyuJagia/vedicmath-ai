@@ -122,6 +122,30 @@ describe('Practice with Coach screen', () => {
     await screen.findByLabelText('Deviation of 97')
   })
 
+  it('a quick double press of Check sends one request and moves on by one question', async () => {
+    renderPractice()
+    const input = await screen.findByLabelText('Deviation of 98')
+    fireEvent.change(input, { target: { value: '2' } })
+    const check = screen.getByRole('button', { name: 'Check' })
+    fireEvent.click(check)
+    fireEvent.click(check)
+
+    await screen.findByLabelText('Deviation of 97')
+    await new Promise((resolve) => setTimeout(resolve, 50))
+    expect(checks).toHaveLength(1)
+    expect(screen.getByLabelText('Deviation of 97')).toBeTruthy()
+  })
+
+  it('pressing Enter twice quickly is also checked only once', async () => {
+    renderPractice()
+    const input = await screen.findByLabelText('Deviation of 98')
+    fireEvent.change(input, { target: { value: '7' } })
+    fireEvent.submit(input.closest('form')!)
+    fireEvent.submit(input.closest('form')!)
+    await screen.findByRole('button', { name: 'Ask the rabbit for a hint' })
+    expect(checks).toHaveLength(1)
+  })
+
   it('gives hints level by level from the Hint button', async () => {
     renderPractice()
     await screen.findByLabelText('Deviation of 98')

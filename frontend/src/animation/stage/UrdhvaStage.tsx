@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import type { UrdhvaAnchor, UrdhvaFrame } from '../types'
 import { workLineY, type Point } from './geometry'
 import { CarryToken, Caption, JoinedAnswer, MathLine, MovingValue, StageDefs, Tile, WorkPanel } from './primitives'
@@ -31,6 +32,22 @@ export function UrdhvaStage({ frame, reducedMotion, moveDuration }: Props) {
   const focus = scene.pairs.length > 0
   const longest = Math.max(scene.digitsA.length, scene.digitsB.length)
 
+  // On narrow screens a wide problem scrolls sideways; keep the column being worked on in view.
+  const scrollerRef = useRef<HTMLDivElement>(null)
+  const focusColumns = [...scene.activeColumns, ...scene.pairs.map((pair) => placeA(pair.positionA) + placeB(pair.positionB) + 1)]
+  const focusX =
+    scene.joined !== null
+      ? (xForColumn(1) + xForColumn(columns)) / 2
+      : focusColumns.length > 0
+        ? focusColumns.reduce((sum, column) => sum + xForColumn(column), 0) / focusColumns.length
+        : null
+  useEffect(() => {
+    const scroller = scrollerRef.current
+    if (!scroller || focusX === null || scroller.scrollWidth <= scroller.clientWidth) return
+    const left = (focusX * scroller.scrollWidth) / width - scroller.clientWidth / 2
+    scroller.scrollTo({ left, behavior: reducedMotion ? 'auto' : 'smooth' })
+  }, [focusX, width, reducedMotion])
+
   const place = (target: Exclude<UrdhvaAnchor, { kind: 'work' }>): Point =>
     target.kind === 'lane'
       ? { x: xForColumn(target.column) + 16, y: ROWS.lane }
@@ -51,12 +68,13 @@ export function UrdhvaStage({ frame, reducedMotion, moveDuration }: Props) {
   }
 
   return (
-    <div className={styles.scroller}>
+    <div className={styles.scroller} ref={scrollerRef}>
       <svg viewBox={`0 0 ${width} 300`} className={`${styles.stage} ${wide ? styles.wide : ''}`} role="img" aria-label={frame.state}>
         <StageDefs />
         {scene.digitsA.map((digit, index) => (
           <Tile
             key={`a-${index}`}
+            id={`a-${index}`}
             x={xForPlace(placeA(index))}
             y={ROWS.a}
             label={digit}
@@ -69,6 +87,7 @@ export function UrdhvaStage({ frame, reducedMotion, moveDuration }: Props) {
         {scene.digitsB.map((digit, index) => (
           <Tile
             key={`b-${index}`}
+            id={`b-${index}`}
             x={xForPlace(placeB(index))}
             y={ROWS.b}
             label={digit}
@@ -86,6 +105,7 @@ export function UrdhvaStage({ frame, reducedMotion, moveDuration }: Props) {
         {scene.pairs.map((pair) => (
           <MathLine
             key={`${frame.id}-${pair.positionA}-${pair.positionB}`}
+            id={`pair-${pair.positionA}-${pair.positionB}`}
             from={{ x: xForPlace(placeA(pair.positionA)), y: ROWS.a + 25 }}
             to={{ x: xForPlace(placeB(pair.positionB)), y: ROWS.b - 25 }}
           />
@@ -104,13 +124,13 @@ export function UrdhvaStage({ frame, reducedMotion, moveDuration }: Props) {
           return (
             <g key={column}>
               <circle cx={x} cy={ROWS.lane} r={15} className={styles.laneSlot} />
-              {scene.lane[column] !== undefined && <CarryToken x={x} y={ROWS.lane} value={scene.lane[column]} />}
-              {scene.laneGhost[column] !== undefined && <CarryToken x={x} y={ROWS.lane} value={scene.laneGhost[column]} ghost />}
+              {scene.lane[column] !== undefined && <CarryToken id={`lane-${column}`} x={x} y={ROWS.lane} value={scene.lane[column]} />}
+              {scene.laneGhost[column] !== undefined && <CarryToken id={`lane-${column}`} x={x} y={ROWS.lane} value={scene.laneGhost[column]} ghost />}
               {scene.joined === null &&
                 (scene.written[column] !== undefined ? (
-                  <Tile x={x} y={ROWS.answer} label={scene.written[column]} state={scene.activeColumns.includes(column) ? 'active' : 'normal'} width={44} height={44} size={24} />
+                  <Tile id={`answer-${column}`} x={x} y={ROWS.answer} label={scene.written[column]} state={scene.activeColumns.includes(column) ? 'active' : 'normal'} width={44} height={44} size={24} />
                 ) : (
-                  <Tile x={x} y={ROWS.answer} label="" state="empty" width={44} height={44} />
+                  <Tile id={`answer-${column}`} x={x} y={ROWS.answer} label="" state="empty" width={44} height={44} />
                 ))}
             </g>
           )

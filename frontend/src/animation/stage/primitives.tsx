@@ -7,6 +7,8 @@ import styles from './Stage.module.css'
 
 type TileVisual = 'normal' | 'active' | 'muted' | 'empty' | 'warn'
 
+// data-role, data-id and data-value describe what each element shows; automated tests read them.
+
 export function Tile({
   x,
   y,
@@ -15,10 +17,14 @@ export function Tile({
   width = 56,
   height = 46,
   size = 26,
-}: Point & { label: string | number; state?: TileVisual; width?: number; height?: number; size?: number }) {
+  id,
+}: Point & { label: string | number; state?: TileVisual; width?: number; height?: number; size?: number; id?: string }) {
   return (
     <motion.g
       className={styles.tile}
+      data-role="tile"
+      data-id={id}
+      data-value={state === 'empty' ? '' : String(label)}
       data-state={state}
       initial={false}
       animate={{ opacity: state === 'muted' ? 0.38 : 1 }}
@@ -34,10 +40,13 @@ export function Tile({
   )
 }
 
-export function Chip({ x, y, label, state }: Point & { label: string; state: 'empty' | 'normal' | 'active' | 'muted' }) {
+export function Chip({ x, y, label, state, id }: Point & { label: string; state: 'empty' | 'normal' | 'active' | 'muted'; id?: string }) {
   return (
     <motion.g
       className={styles.chip}
+      data-role="chip"
+      data-id={id}
+      data-value={state === 'empty' ? '' : label}
       data-state={state}
       initial={false}
       animate={{ opacity: state === 'muted' ? 0.38 : 1 }}
@@ -53,11 +62,11 @@ export function Chip({ x, y, label, state }: Point & { label: string; state: 'em
   )
 }
 
-export function CarryToken({ x, y, value, ghost = false }: Point & { value: number | string; ghost?: boolean }) {
+export function CarryToken({ x, y, value, ghost = false, id }: Point & { value: number | string; ghost?: boolean; id?: string }) {
   const label = String(value)
   const width = 30 + (label.length - 1) * 9
   return (
-    <g className={styles.carry} data-ghost={ghost}>
+    <g className={styles.carry} data-role="carry" data-id={id} data-value={label} data-ghost={ghost}>
       <rect x={x - width / 2} y={y - 15} width={width} height={30} rx={15} />
       <text x={x} y={y} fontSize={16} textAnchor="middle" dominantBaseline="central">
         {label}
@@ -76,7 +85,7 @@ export function Caption({ x, y, children, anchor = 'middle' }: Point & { childre
 
 export function BasePill({ x, y, value, active }: Point & { value: number; active: boolean }) {
   return (
-    <g className={styles.base} data-active={active}>
+    <g className={styles.base} data-role="base" data-value={value} data-active={active}>
       <rect x={x - 78} y={y - 17} width={156} height={34} rx={17} />
       <text x={x} y={y} fontSize={18} textAnchor="middle" dominantBaseline="central">
         Base = {value}
@@ -85,9 +94,12 @@ export function BasePill({ x, y, value, active }: Point & { value: number; activ
   )
 }
 
-export function MathLine({ from, to, faded = false, arrow = false }: { from: Point; to: Point; faded?: boolean; arrow?: boolean }) {
+export function MathLine({ from, to, faded = false, arrow = false, id }: { from: Point; to: Point; faded?: boolean; arrow?: boolean; id?: string }) {
   return (
     <motion.line
+      data-role="math-line"
+      data-id={id}
+      data-faded={faded}
       x1={from.x}
       y1={from.y}
       x2={to.x}
@@ -115,6 +127,8 @@ export function WorkPanel({ x, y, width, height, title, lines, gap = 28 }: Point
       {lines.map((line, index) => (
         <motion.text
           key={`${index}-${line.segments.map(segmentKey).join('|')}`}
+          data-role="work-line"
+          data-faded={line.faded ?? false}
           x={x + 14}
           y={workLineY(y, index, gap)}
           className={styles.workLine}
@@ -143,6 +157,8 @@ export function JoinedAnswer({ x, y, value }: Point & { value: number }) {
   return (
     <motion.g
       className={styles.joined}
+      data-role="answer"
+      data-value={label}
       initial={{ opacity: 0, scale: 0.85 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
@@ -181,7 +197,7 @@ export function MovingValue({
   const midX = (from.x + to.x) / 2
   const midY = Math.min(from.y, to.y) - arc
   return (
-    <g>
+    <g data-role="moving-value" data-value={label}>
       <path
         d={`M${from.x} ${from.y} Q ${midX} ${midY} ${to.x} ${to.y}`}
         className={styles.motionPath}

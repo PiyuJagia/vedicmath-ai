@@ -15,6 +15,9 @@ DIGITS = "digits"
 
 MINUS_SIGNS = ("\u2212", "\u2013", "\u2014")
 
+# Far longer than any answer in the app; also keeps int() within Python's digit limit.
+MAX_ANSWER_LENGTH = 40
+
 
 def _question(key: str, step_id: int, expected: Any, answer_type: str = INTEGER) -> Dict[str, Any]:
     question = {
@@ -157,9 +160,14 @@ def _normalize(raw: str) -> str:
     return text
 
 
+def _is_number_text(text: str) -> bool:
+    # isdecimal accepts only true decimal digits (including other scripts), never "²".
+    return 0 < len(text) <= MAX_ANSWER_LENGTH and text.isdecimal()
+
+
 def _parse_integer(text: str) -> Optional[int]:
     body = text[1:] if text.startswith("-") else text
-    if not body.isdigit():
+    if not _is_number_text(body):
         return None
     return int(text)
 
@@ -198,7 +206,7 @@ def check_answer(question: Dict[str, Any], raw_answer: str) -> Dict[str, Any]:
     text = _normalize(raw_answer)
 
     if question["answer_type"] == DIGITS:
-        if not text.isdigit():
+        if not _is_number_text(text):
             response["status"] = "invalid"
             response["message"] = f"Enter {question['digits']} digits, for example {'0' * (question['digits'] - 1)}1."
             return response
