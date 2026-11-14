@@ -45,6 +45,37 @@ python -m uvicorn backend.main:app --reload
 
 http://127.0.0.1:8000/docs
 
+### 7. Start the frontend (in a second terminal)
+
+cd frontend
+
+npm install
+
+npm run dev
+
+Open http://localhost:5173. The frontend reaches the backend through `/api`, so keep the backend running on port 8000.
+
+### Tests
+
+python -m pytest backend/tests
+
+cd frontend; npm test
+
+### Reviewing the app
+
+- In Settings, choose **Admin: unlock everything** to open locked Sutras, or **Start fresh progress** to replace the sample learner.
+- Let's Learn More accepts `?example=2&moment=7` to jump to a specific animation frame.
+- Progress, settings and the profile are saved only in your browser for development; the coach is a scripted demo, not live AI.
+
+## Deploying (Render)
+
+The app runs as two Render services that both deploy from `main`:
+
+- **Backend** – the web service `vedicmath-ai` (https://vedicmath-ai.onrender.com), configured in the Render Dashboard. Build: `pip install -r backend/requirements.txt`. Start: `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`. Python 3.12.10 comes from `.python-version`. Its `ALLOWED_ORIGINS` environment variable lists the frontend URL so browsers may call the API (CORS).
+- **Frontend** – the static site `vedicmath-ai-web`, defined in `render.yaml`. It builds `frontend/` with `VITE_API_BASE` set to the backend URL and rewrites every page path to `index.html`.
+
+To preview a production-style build on one local server: build the frontend (`cd frontend; npm run build`), then `python -m uvicorn backend.server:site --port 8000` and open http://localhost:8000 (the API is under `/api`).
+
 ## Example API Request
 
 GET /multiply/nikhilam?a=98&b=97&difficulty=beginner

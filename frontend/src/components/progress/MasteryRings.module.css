@@ -1,0 +1,77 @@
+.rings {
+  position: relative;
+  flex: none;
+}
+
+.rings svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ring {
+  fill: none;
+  stroke-width: 5;
+}
+
+/* A level that is not yet passed is a thin dashed ring, so the state never relies on colour alone. */
+.ring[data-passed='false'] {
+  stroke: var(--color-mastery-empty);
+  stroke-width: 2.5;
+  stroke-dasharray: 3 4;
+}
+
+.ring[data-passed='true'][data-level='beginner'] {
+  stroke: var(--color-mastery-beginner);
+}
+
+.ring[data-passed='true'][data-level='intermediate'] {
+  stroke: var(--color-mastery-intermediate);
+}
+
+.ring[data-passed='true'][data-level='advanced'] {
+  stroke: var(--color-mastery-advanced);
+}
+
+.center {
+  position: absolute;
+  inset: 26%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-xs);
+  color: var(--color-ink);
+}
+
+.legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.swatch[data-level='beginner'] {
+  background: var(--color-mastery-beginner);
+}
+
+.swatch[data-level='intermediate'] {
+  background: var(--color-mastery-intermediate);
+}
+
+.swatch[data-level='advanced'] {
+  background: var(--color-mastery-advanced);
+}

@@ -1,0 +1,28 @@
+.landscape {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  height: min(30vh, 260px);
+  pointer-events: none;
+}
+
+.landscape svg {
+  width: 100%;
+  height: 100%;
+}
+
+.far {
+  fill: #ece8fb;
+}
+
+.mid {
+  fill: #e4eef9;
+  opacity: 0.85;
+}
+
+.near {
+  fill: #e5f2ee;
+  opacity: 0.8;
+}

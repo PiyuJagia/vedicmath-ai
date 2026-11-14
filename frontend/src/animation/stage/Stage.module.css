@@ -1,0 +1,232 @@
+.stage {
+  display: block;
+  width: 100%;
+  height: auto;
+  font-family: var(--font-numerals);
+}
+
+.scroller {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+}
+
+.wide {
+  min-width: 620px;
+}
+
+.number {
+  fill: var(--color-navy);
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.tile rect {
+  fill: var(--color-surface);
+  stroke: var(--color-border);
+  stroke-width: 1.5;
+  transition: fill var(--duration-base), stroke var(--duration-base);
+}
+
+.tile[data-state='active'] rect {
+  fill: var(--color-teal-50);
+  stroke: var(--color-teal);
+  stroke-width: 2.5;
+}
+
+.tile[data-state='empty'] rect {
+  fill: #fbfbff;
+  stroke: var(--color-locked);
+  stroke-dasharray: 4 4;
+}
+
+.tile[data-state='warn'] rect {
+  fill: var(--color-amber-50);
+  stroke: var(--color-amber);
+  stroke-width: 2.5;
+}
+
+.chip rect {
+  fill: var(--color-lavender-100);
+  stroke: var(--color-lavender-300);
+  stroke-width: 1.5;
+  transition: stroke var(--duration-base);
+}
+
+.chip[data-state='active'] rect {
+  stroke: var(--color-purple);
+  stroke-width: 2.5;
+}
+
+.chip[data-state='empty'] rect {
+  fill: none;
+  stroke: var(--color-locked);
+  stroke-dasharray: 4 4;
+}
+
+.chipText {
+  fill: var(--color-purple);
+  font-weight: 650;
+}
+
+.carry rect {
+  fill: var(--color-amber-50);
+  stroke: var(--color-amber);
+  stroke-width: 2;
+}
+
+.carry text {
+  fill: #7a5200;
+  font-weight: 700;
+}
+
+.carry[data-ghost='true'] {
+  opacity: 0.5;
+}
+
+.carry[data-ghost='true'] rect {
+  fill: none;
+  stroke-dasharray: 4 4;
+}
+
+.caption {
+  fill: var(--color-muted);
+  font-family: var(--font-body);
+  font-size: 11.5px;
+}
+
+.base rect {
+  fill: var(--color-surface);
+  stroke: var(--color-teal);
+  stroke-width: 1.5;
+}
+
+.base[data-active='true'] rect {
+  fill: var(--color-teal-50);
+  stroke-width: 2.5;
+}
+
+.base text {
+  fill: var(--color-navy);
+  font-weight: 650;
+}
+
+.mathLine {
+  stroke: var(--color-teal);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.work rect {
+  fill: var(--color-blue-50);
+}
+
+.workTitle {
+  fill: #5f7d99;
+  font-family: var(--font-body);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+}
+
+.workLine {
+  fill: var(--color-navy);
+  font-size: 17px;
+  font-weight: 600;
+  white-space: pre;
+}
+
+.toned {
+  font-weight: 800;
+}
+
+.toned[data-tone='write'] {
+  fill: var(--color-teal-strong);
+}
+
+.toned[data-tone='carry'] {
+  fill: var(--color-amber);
+}
+
+.toned[data-tone='dev'] {
+  fill: var(--color-purple);
+}
+
+.toned[data-tone='strong'] {
+  fill: var(--color-navy);
+}
+
+.toned[data-tone='ghost'] {
+  fill: var(--color-locked);
+}
+
+.joined rect {
+  fill: var(--color-teal-50);
+  stroke: var(--color-teal);
+  stroke-width: 2.5;
+}
+
+.motionPath {
+  fill: none;
+  stroke: var(--color-purple);
+  stroke-width: 2;
+  stroke-dasharray: 5 5;
+  opacity: 0.55;
+}
+
+.mover rect {
+  fill: var(--color-surface);
+  stroke: var(--color-purple);
+  stroke-width: 2;
+}
+
+.mover[data-tone='carry'] rect {
+  fill: var(--color-amber-50);
+  stroke: var(--color-amber);
+}
+
+.mover text {
+  fill: var(--color-navy);
+  font-weight: 700;
+}
+
+.laneSlot {
+  fill: none;
+  stroke: var(--color-border);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 4;
+}
+
+.rule {
+  stroke: var(--color-navy);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.lineTrack {
+  stroke: var(--color-border);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.dotNumber {
+  fill: var(--color-purple);
+}
+
+.dotBase {
+  fill: var(--color-teal);
+}
+
+.divider {
+  stroke: var(--color-locked);
+  stroke-width: 2;
+}
+
+.plusOne rect {
+  fill: var(--color-lavender-100);
+  stroke: var(--color-lavender-300);
+  stroke-width: 1.5;
+}
+
+.plusOne text {
+  fill: var(--color-purple);
+  font-weight: 700;
+}

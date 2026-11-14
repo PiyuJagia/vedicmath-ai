@@ -3,9 +3,12 @@
 Compatible with Python 3.9+.
 """
 
-from typing import Optional
+import os
+from typing import Dict, Optional, Union
 
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 from backend.vendor.vedicpy.multiply import multiply_base_near_powerof10
 from backend.nikhilam import (
@@ -16,12 +19,39 @@ from backend.urdhva import calculate_urdhva, build_urdhva_steps
 from backend.ekadhikena import calculate_ekadhikena
 from backend.yavadunam import calculate_yavadunam
 from backend.ekanyunena import calculate_ekanyunena
+from backend.practice import (
+    check_answer,
+    ekadhikena_questions,
+    ekanyunena_questions,
+    find_question,
+    nikhilam_questions,
+    public_questions,
+    urdhva_questions,
+    yavadunam_questions,
+)
 
 
 app = FastAPI(
     title="VedicMath AI",
     description="Interactive Vedic Mathematics Learning API",
     version="0.4.0",
+)
+
+# Browser origins allowed to call the API, comma-separated.
+# On Render, set ALLOWED_ORIGINS to the frontend static site's URL.
+ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in os.environ.get(
+        "ALLOWED_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173"
+    ).split(",")
+    if origin.strip()
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ALLOWED_ORIGINS,
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type"],
 )
 
 
@@ -416,5 +446,146 @@ def get_sutra_lesson(
         "teaching_steps": steps,
         "animation_steps": animation_steps,
         "result": result,
+    }
+
+
+# ---------- Practice: questions and answer checking ----------
+# Every Sutra and difficulty level returns the same response shapes.
+
+PRACTICE_SUTRAS = ("nikhilam", "urdhva", "ekadhikena", "yavadunam", "ekanyunena")
+
+
+def get_practice_questions(
+    sutra_name: str,
+    a: Optional[int],
+    b: Optional[int],
+    number: Optional[int],
+    difficulty: str,
+):
+    sutra_name = sutra_name.lower().strip()
+
+    if sutra_name not in PRACTICE_SUTRAS:
+        raise HTTPException(
+            status_code=404,
+            detail="Practice checking is not available for this sutra yet.",
+        )
+
+    if sutra_name in ("ekadhikena", "yavadunam", "ekanyunena"):
+        if number is None:
+            raise HTTPException(status_code=400, detail="Provide the number parameter.")
+        if sutra_name == "ekadhikena":
+            calculation = get_ekadhikena_calculation(number, difficulty)
+            return sutra_name, [number, number], calculation["difficulty"], ekadhikena_questions(calculation)
+        if sutra_name == "yavadunam":
+            calculation = get_yavadunam_calculation(number, difficulty)
+            return sutra_name, [number, number], calculation["difficulty"], yavadunam_questions(calculation)
+        calculation = get_ekanyunena_calculation(number, difficulty)
+        numbers = [calculation["number1"], calculation["number2"]]
+        return sutra_name, numbers, calculation["difficulty"], ekanyunena_questions(calculation)
+
+    if a is None or b is None:
+        raise HTTPException(status_code=400, detail="Provide both a and b for this sutra.")
+
+    if sutra_name == "nikhilam":
+        difficulty, base = get_nikhilam_settings(a, b, difficulty)
+        questions = nikhilam_questions(build_nikhilam_steps(a, b, base))
+    else:
+        difficulty, steps, _ = get_urdhva_calculation(a, b, difficulty)
+        questions = urdhva_questions(steps)
+
+    return sutra_name, [a, b], difficulty, questions
+
+
+@app.get("/sutras/{sutra_name}/questions")
+def get_sutra_questions(
+    sutra_name: str,
+    a: Optional[int] = None,
+    b: Optional[int] = None,
+    difficulty: str = "beginner",
+    number: Optional[int] = None,
+):
+    sutra_name, numbers, difficulty, questions = get_practice_questions(
+        sutra_name, a, b, number, difficulty
+    )
+    return {
+        "sutra": sutra_name,
+        "numbers": numbers,
+        "difficulty": difficulty,
+        "questions": public_questions(questions),
+    }
+
+
+class AnswerCheck(BaseModel):
+    question: str
+    # Typed answers arrive as text; selected answers may arrive as numbers.
+    answer: Union[str, int]
+    difficulty: str = "beginner"
+    a: Optional[int] = None
+    b: Optional[int] = None
+    number: Optional[int] = None
+
+
+class AnswerSheet(BaseModel):
+    answers: Dict[str, Union[str, int]]
+    difficulty: str = "beginner"
+    a: Optional[int] = None
+    b: Optional[int] = None
+    number: Optional[int] = None
+
+
+def find_or_reject(questions, key: str):
+    question = find_question(questions, key)
+    if question is None:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unknown question '{key}' for this problem.",
+        )
+    return question
+
+
+@app.post("/sutras/{sutra_name}/check")
+def check_sutra_answer(sutra_name: str, body: AnswerCheck):
+    sutra_name, numbers, difficulty, questions = get_practice_questions(
+        sutra_name, body.a, body.b, body.number, body.difficulty
+    )
+    question = find_or_reject(questions, body.question)
+
+    return {
+        "sutra": sutra_name,
+        "numbers": numbers,
+        "difficulty": difficulty,
+        **check_answer(question, str(body.answer)),
+    }
+
+
+@app.post("/sutras/{sutra_name}/check-all")
+def check_sutra_answers(sutra_name: str, body: AnswerSheet):
+    sutra_name, numbers, difficulty, questions = get_practice_questions(
+        sutra_name, body.a, body.b, body.number, body.difficulty
+    )
+    for key in body.answers:
+        find_or_reject(questions, key)
+
+    # Results follow the teaching order; unanswered questions are skipped.
+    results = [
+        {
+            "sutra": sutra_name,
+            "numbers": numbers,
+            "difficulty": difficulty,
+            **check_answer(question, str(body.answers[question["key"]])),
+        }
+        for question in questions
+        if question["key"] in body.answers
+    ]
+
+    return {
+        "sutra": sutra_name,
+        "numbers": numbers,
+        "difficulty": difficulty,
+        "total_questions": len(questions),
+        "answered": len(results),
+        "correct": sum(1 for result in results if result["is_correct"]),
+        "all_correct": len(results) == len(questions) and all(result["is_correct"] for result in results),
+        "results": results,
     }
 
