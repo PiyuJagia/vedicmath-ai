@@ -1,27 +1,28 @@
+"""Nikhilam multiplication teaching steps and frontend animation data."""
 
-def build_nikhilam_steps(a: int, b: int, base: int = 100):
+from typing import Any, Dict, List
+
+
+def build_nikhilam_steps(a: int, b: int, base: int = 100) -> list:
+    """Build five teaching steps, including explicit carry/borrow metadata."""
     if base not in (100, 1000, 10000):
         raise ValueError("Base must be 100, 1000, or 10000.")
+    if isinstance(a, bool) or isinstance(b, bool) or not isinstance(a, int) or not isinstance(b, int):
+        raise ValueError("Both numbers must be integers.")
 
     digits = len(str(base)) - 1
-
     deviation_a = a - base
     deviation_b = b - base
-
     left = a + deviation_b
     right = deviation_a * deviation_b
 
-
-    # Normalize the two parts using carrying or borrowing.
+    # Python divmod normalizes even negative values into [0, base).
     carry, normalized_right = divmod(right, base)
     normalized_left = left + carry
-
-    adjustment = (
-        "borrow" if carry < 0
-        else "carry" if carry > 0
-        else "none"
-    )
-
+    adjustment = "borrow" if carry < 0 else "carry" if carry > 0 else "none"
+    result = normalized_left * base + normalized_right
+    if result != a * b:
+        raise ArithmeticError("Nikhilam calculation verification failed.")
 
     return [
         {
@@ -50,109 +51,104 @@ def build_nikhilam_steps(a: int, b: int, base: int = 100):
             "right_part": right,
             "formatted_right": f"{right:0{digits}d}",
         },
-        
-{
-    "id": 5,
-    "type": "combine",
-    "title": "Combine the parts",
-    "original_left": left,
-    "original_right": right,
-    "adjustment": adjustment,
-    "carry": carry,
-    "left_part": normalized_left,
-    "right_part": normalized_right,
-    "formatted_right": f"{normalized_right:0{digits}d}",
-    "result": normalized_left * base + normalized_right,
-},
-
+        {
+            "id": 5,
+            "type": "combine",
+            "title": "Combine the parts",
+            "original_left": left,
+            "original_right": right,
+            "adjustment": adjustment,
+            "carry": carry,
+            "borrow_units": -carry if carry < 0 else 0,
+            "borrow_value": -carry * base if carry < 0 else 0,
+            "carry_units": carry if carry > 0 else 0,
+            "carry_value": carry * base if carry > 0 else 0,
+            "base": base,
+            "left_part": normalized_left,
+            "right_part": normalized_right,
+            "adjusted_left": normalized_left,
+            "adjusted_right": normalized_right,
+            "formatted_right": f"{normalized_right:0{digits}d}",
+            "result": result,
+        },
     ]
 
-def build_nikhilam_animation_events(steps: list) -> list:
-    """
-    Convert Nikhilam teaching steps into animation steps.
-    """
-    animation_steps = []
 
+def build_nikhilam_animation_events(steps: list) -> list:
+    """Convert Nikhilam teaching steps to frontend-ready animation events."""
     base_step = steps[0]
     a, b = base_step["numbers"]
     base = base_step["base"]
-
-    deviations = steps[1]["deviations"]
-    deviation_a, deviation_b = deviations
+    deviation_a, deviation_b = steps[1]["deviations"]
+    deviations = [deviation_a, deviation_b]
+    animation_steps = []
 
     for step in steps:
         events = []
-
         if step["type"] == "base":
             events = [
-                {
-                    "action": "show_numbers",
-                    "number1": a,
-                    "number2": b,
-                },
-                {
-                    "action": "show_base",
-                    "value": base,
-                },
+                {"action": "show_numbers", "number1": a, "number2": b},
+                {"action": "show_base", "value": base},
             ]
-
         elif step["type"] == "deviations":
             events = [
-                {
-                    "action": "show_deviation",
-                    "number": a,
-                    "deviation": deviation_a,
-                    "position": 0,
-                },
-                {
-                    "action": "show_deviation",
-                    "number": b,
-                    "deviation": deviation_b,
-                    "position": 1,
-                },
+                {"action": "show_deviation", "number": a, "deviation": deviation_a, "position": 0},
+                {"action": "show_deviation", "number": b, "deviation": deviation_b, "position": 1},
             ]
-
         elif step["type"] == "cross_subtract":
             events = [
-                {
-                    "action": "draw_cross_arrow",
-                    "from_number": a,
-                    "to_deviation": deviation_b,
-                },
-                {
-                    "action": "show_left_part",
-                    "value": step["left_part"],
-                },
+                {"action": "draw_cross_arrow", "from_number": a, "to_deviation": deviation_b},
+                {"action": "show_left_part", "value": step["left_part"]},
             ]
-
         elif step["type"] == "multiply_deviations":
             events = [
-                {
-                    "action": "highlight_deviations",
-                    "values": deviations,
-                },
-                {
-                    "action": "show_right_part",
-                    "value": step["right_part"],
-                    "formatted": step["formatted_right"],
-                },
+                {"action": "highlight_deviations", "values": deviations},
+                {"action": "show_right_part", "value": step["right_part"], "formatted": step["formatted_right"]},
             ]
-
         elif step["type"] == "combine":
             events = [
+                {
+                    "action": "show_unadjusted_parts",
+                    "original_left": step["original_left"],
+                    "original_right": step["original_right"],
+                    "base": base,
+                },
+            ]
+            if step["adjustment"] == "borrow":
+                events.append({
+                    "action": "borrow_from_left",
+                    "borrow_units": step["borrow_units"],
+                    "borrow_value": step["borrow_value"],
+                    "original_left": step["original_left"],
+                    "original_right": step["original_right"],
+                    "adjusted_left": step["adjusted_left"],
+                    "adjusted_right": step["adjusted_right"],
+                    "base": base,
+                })
+            elif step["adjustment"] == "carry":
+                events.append({
+                    "action": "carry_to_left",
+                    "carry_units": step["carry_units"],
+                    "carry_value": step["carry_value"],
+                    "original_left": step["original_left"],
+                    "original_right": step["original_right"],
+                    "adjusted_left": step["adjusted_left"],
+                    "adjusted_right": step["adjusted_right"],
+                    "base": base,
+                })
+            events.extend([
                 {
                     "action": "normalize_parts",
                     "adjustment": step["adjustment"],
                     "carry": step["carry"],
+                    "borrow_units": step["borrow_units"],
+                    "borrow_value": step["borrow_value"],
                     "left_part": step["left_part"],
                     "right_part": step["right_part"],
                     "formatted_right": step["formatted_right"],
                 },
-                {
-                    "action": "reveal_result",
-                    "value": step["result"],
-                },
-            ]
+                {"action": "reveal_result", "value": step["result"]},
+            ])
 
         animation_steps.append({
             "step_id": step["id"],
