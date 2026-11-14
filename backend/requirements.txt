@@ -1,0 +1,4 @@
+# Production dependencies for the FastAPI backend (used by Render).
+# Development and test tools stay in the root requirements.txt.
+fastapi==0.162.4
+uvicorn[standard]==0.54.0
