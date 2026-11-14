@@ -1,0 +1,101 @@
+/*
+ * VedicMath AI design tokens.
+ * Colours were sampled from design-references/approved-vedicmath-ui.png.
+ * Components use these variables instead of raw values.
+ */
+
+:root {
+  /* Text */
+  --color-navy: #1e2350;
+  --color-ink: #2c3058;
+  --color-muted: #646a8c;
+  --color-on-primary: #ffffff;
+
+  /* Surfaces */
+  --color-page: #fbfaff;
+  --color-surface: #ffffff;
+  --color-lavender-50: #f7f5fe;
+  --color-lavender-100: #f0ecfc;
+  --color-lavender-200: #e4ddf9;
+  --color-lavender-300: #cfc4f2;
+  --color-blue-50: #eef5fc;
+  --color-border: #e6e3f3;
+
+  /* Accents */
+  --color-purple: #573b9c;
+  --color-purple-hover: #48307f;
+  --color-lavender: #8e7fd6;
+  --color-teal: #2f9f9a;
+  --color-teal-strong: #1f7f7b;
+  --color-teal-50: #e3f4f2;
+  --color-gold: #d9952a;
+  --color-gold-50: #fdf3df;
+  --color-amber: #b97a06;
+  --color-amber-50: #fdf0d0;
+
+  /* Locked and inactive */
+  --color-locked: #8a8ca3;
+  --color-locked-50: #eeeef4;
+
+  /* Mastery levels (always paired with a text label) */
+  --color-mastery-beginner: var(--color-teal);
+  --color-mastery-intermediate: var(--color-lavender);
+  --color-mastery-advanced: var(--color-purple);
+  --color-mastery-empty: #dcdbe8;
+
+  /* Typography */
+  --font-heading: 'Lora Variable', Georgia, 'Times New Roman', serif;
+  --font-body: 'Nunito Sans Variable', 'Segoe UI', system-ui, sans-serif;
+  --font-numerals: 'Nunito Sans Variable', 'Segoe UI', system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-md: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: clamp(1.625rem, 1.2rem + 1.6vw, 2.25rem);
+  --text-3xl: clamp(2rem, 1.3rem + 2.8vw, 3.25rem);
+  --text-display: clamp(2.375rem, 1.4rem + 4vw, 4.25rem);
+
+  --leading-tight: 1.15;
+  --leading-body: 1.55;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  /* Shape and depth */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 1px 2px rgba(40, 35, 90, 0.04), 0 8px 24px rgba(40, 35, 90, 0.06);
+  --shadow-raised: 0 2px 4px rgba(40, 35, 90, 0.06), 0 12px 32px rgba(40, 35, 90, 0.1);
+
+  --focus-ring: 0 0 0 3px var(--color-surface), 0 0 0 6px var(--color-teal);
+
+  /* Layout */
+  --content-max: 1240px;
+  --nav-height: 72px;
+  --tab-bar-height: 68px;
+  --tap-target: 44px;
+
+  /* Motion */
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+  }
+}

@@ -1,0 +1,230 @@
+.page {
+  display: grid;
+  gap: var(--space-7);
+}
+
+.intro {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: start;
+}
+
+.lede {
+  max-width: 640px;
+  color: var(--color-muted);
+}
+
+.section {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.swatches li {
+  display: grid;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+}
+
+.swatch {
+  height: 56px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.swatchName {
+  font-weight: 650;
+  color: var(--color-navy);
+}
+
+.swatches code {
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+}
+
+.typeCard {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.display {
+  font-family: var(--font-heading);
+  font-size: var(--text-display);
+  line-height: var(--leading-tight);
+  color: var(--color-navy);
+}
+
+.numeralsSample {
+  font-size: var(--text-2xl);
+  font-weight: 650;
+  color: var(--color-navy);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.stack {
+  display: grid;
+  gap: var(--space-4);
+  justify-items: start;
+}
+
+.caption {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+
+.progressGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: var(--space-5);
+}
+
+.journey {
+  display: grid;
+  align-content: start;
+  gap: var(--space-4);
+}
+
+.journeyRow {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr 1.4fr;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.stat {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-1);
+  padding: 0 var(--space-3);
+  border-left: 1px solid var(--color-border);
+  text-align: center;
+}
+
+.statValue {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--color-navy);
+}
+
+.statLabel {
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+}
+
+.nextUp {
+  display: grid;
+  gap: var(--space-1);
+  text-align: center;
+}
+
+.nextName {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--color-navy);
+}
+
+.ringsRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-5);
+  margin: var(--space-4) 0;
+}
+
+.ringsRow figure {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-5);
+}
+
+.sectionCard {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  text-align: center;
+}
+
+.cardNumber {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-5);
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  color: var(--color-navy);
+}
+
+.gold {
+  color: var(--color-gold);
+}
+
+.teal {
+  color: var(--color-teal);
+}
+
+.purple {
+  color: var(--color-purple);
+}
+
+.locked {
+  color: var(--color-locked);
+}
+
+@media (max-width: 1000px) {
+  .progressGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .journeyRow {
+    grid-template-columns: auto 1fr 1fr;
+  }
+
+  .nextUp {
+    grid-column: 1 / -1;
+  }
+
+  .cardGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .journeyRow {
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+  }
+
+  .journeyRow > :first-child {
+    grid-column: 1 / -1;
+  }
+
+  .stat:first-of-type {
+    border-left: 0;
+  }
+}
