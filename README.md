@@ -64,10 +64,10 @@ cd frontend; npm test
 ### Google ADK (local agent development)
 
 The backend depends on [Google ADK](https://adk.dev/) (`google-adk` in
-`backend/requirements.txt`) so we can later add a tool-invoking educational
-coach. Agents themselves are not implemented yet; see
+`backend/requirements.txt`). The first agent is `vedic_math_coach` (Boy Coach,
+Rabbit, Hummingbird personas). Calculation tools are not wired yet. See
 [`backend/agents/README.md`](backend/agents/README.md) for install checks and
-how to run `adk web` once an agent exists.
+`adk web backend/agents --port 8080`.
 
 Copy [`.env.example`](.env.example) to `.env` for local LLM credentials. Do not
 commit `.env`.

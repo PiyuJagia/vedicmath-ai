@@ -1,10 +1,8 @@
 # Google ADK agents
 
-This folder is reserved for [Google Agent Development Kit](https://adk.dev/)
-agents that will call our existing Python Sutra engines as tools.
-
-No conversational agent is implemented yet. The package is here so Phase 2 can
-add agents without rearranging the backend.
+This folder holds [Google Agent Development Kit](https://adk.dev/) agents.
+The first agent is `vedic_math_coach`. Mathematical engines will be attached as
+tools in a later tollgate; they are not connected yet.
 
 ## Prerequisites
 
@@ -41,27 +39,38 @@ python -m pytest backend/tests/test_gemini_connectivity.py -v
 The live test sends `Hello, can you hear me?` through ADK's Gemini wrapper
 using model `gemini-3.8-flash`. It never prints the API key.
 
-## Running the ADK development UI (after an agent exists)
+## Coach Agent (`vedic_math_coach`)
+
+Package layout:
+
+```text
+vedic_math_coach/
+  agent.py           # root_agent entry for ADK
+  instructions.md    # persona + guardrail prompt
+  personas.py
+  session.py         # InMemorySessionService + chat helper
+  config.py
+  __init__.py
+```
+
+Personas: Boy Coach (tutor), Rabbit (visual hints), Hummingbird (encouragement).
+Only one speaks per reply. Calculation tools and animations are not connected yet.
+
+```powershell
+python -m pytest backend/tests/test_vedic_math_coach.py -v
+```
+
+## Running the ADK development UI
 
 ADK's web UI is for **local development only**, not production.
 
-1. Create an agent subfolder under this package, for example
-   `backend/agents/coach_agent/`, with `__init__.py` and `agent.py` that
-   define `root_agent` (Phase 2).
-2. Start the development UI against this folder (from the repo root):
-
 ```powershell
+.\.venv\Scripts\Activate.ps1
+# ensure .env exists at the repo root
 adk web backend\agents --port 8080
 ```
 
-Or from inside `backend\agents`:
-
-```powershell
-cd backend\agents
-adk web . --port 8080
-```
-
-3. Open http://127.0.0.1:8080, pick the agent in the UI, and chat.
+Open http://127.0.0.1:8080 and select **vedic_math_coach**.
 
 Use a port other than `8000` so it does not collide with the FastAPI app
 (`uvicorn backend.main:app --reload`). ADK Web is unauthenticated and for
@@ -70,7 +79,7 @@ trusted local networks only.
 CLI alternative:
 
 ```powershell
-adk run backend\agents\coach_agent
+adk run backend\agents\vedic_math_coach
 ```
 
 ## Notes
