@@ -67,6 +67,12 @@ cd frontend; npm test
 - Let's Learn More accepts `?example=2&moment=7` to jump to a specific animation frame.
 - Progress, settings and the profile are saved only in your browser for development; the coach is a scripted demo, not live AI.
 
+## Deploying (Render)
+
+The app deploys as one Render web service from `render.yaml`. The `Dockerfile` builds the frontend and runs `backend/server.py`, which serves the website at `/` and the API at `/api` (API docs at `/api/docs`).
+
+To run the production setup locally: build the frontend (`cd frontend; npm run build`), then `python -m uvicorn backend.server:site --port 8000` and open http://localhost:8000.
+
 ## Example API Request
 
 GET /multiply/nikhilam?a=98&b=97&difficulty=beginner

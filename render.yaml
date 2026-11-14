@@ -1,0 +1,10 @@
+# Render Blueprint: one web service that serves the website and the maths API.
+services:
+  - type: web
+    name: vedicmath-ai
+    runtime: docker
+    plan: free
+    branch: feature/full-app
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/
+    autoDeploy: true
