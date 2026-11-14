@@ -2,6 +2,14 @@
 
 Version notes for VedicMath AI. Older commits stay on `main`; each version below points at the history that introduced it.
 
+## Unreleased — Practice answer checking
+
+Two new routes let Practice with Coach check answers in Python, one step at a time. Nikhilam, Urdhva and Ekadhikena are supported; other Sutras return 404.
+
+- `GET /sutras/{sutra}/questions` lists the questions for a problem in teaching order: a `key`, the `step_id` it belongs to, and the `answer_type` (`integer`, or `digits` with a digit count for padded values such as `06`). Expected answers are never included.
+- `POST /sutras/{sutra}/check` takes `question`, `answer` (text), `difficulty`, and either `a` and `b` or `number`. It returns `status` (`correct`, `incorrect` or `invalid`), a `mistake` category where one applies (`sign` for a flipped sign, `missing_padding` for `6` instead of `06`), and a `message` for invalid input. It does not return the expected answer.
+- Inputs use the same validation and error messages as the lesson endpoint.
+
 ## Unreleased — Nikhilam uses base − number
 
 Nikhilam deviations are now `base - number`, so numbers below the base have positive deviations (98 at base 100 is +2). Results, supported ranges, and the borrow/carry normalization are unchanged; all 1,200 supported pairs give the same answers.

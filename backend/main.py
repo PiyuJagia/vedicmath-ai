@@ -6,6 +6,7 @@ Compatible with Python 3.9+.
 from typing import Optional
 
 from fastapi import FastAPI, HTTPException, Query
+from pydantic import BaseModel
 
 from backend.vendor.vedicpy.multiply import multiply_base_near_powerof10
 from backend.nikhilam import (
@@ -16,6 +17,14 @@ from backend.urdhva import calculate_urdhva, build_urdhva_steps
 from backend.ekadhikena import calculate_ekadhikena
 from backend.yavadunam import calculate_yavadunam
 from backend.ekanyunena import calculate_ekanyunena
+from backend.practice import (
+    check_answer,
+    ekadhikena_questions,
+    find_question,
+    nikhilam_questions,
+    public_questions,
+    urdhva_questions,
+)
 
 
 app = FastAPI(
@@ -370,4 +379,92 @@ def get_sutra_lesson(
         "teaching_steps": steps,
         "animation_steps": animation_steps,
         "result": result,
+    }
+
+
+# ---------- Practice: questions and answer checking ----------
+
+PRACTICE_SUTRAS = ("nikhilam", "urdhva", "ekadhikena")
+
+
+def get_practice_questions(
+    sutra_name: str,
+    a: Optional[int],
+    b: Optional[int],
+    number: Optional[int],
+    difficulty: str,
+):
+    sutra_name = sutra_name.lower().strip()
+
+    if sutra_name not in PRACTICE_SUTRAS:
+        raise HTTPException(
+            status_code=404,
+            detail="Practice checking is not available for this sutra yet.",
+        )
+
+    if sutra_name == "ekadhikena":
+        if number is None:
+            raise HTTPException(status_code=400, detail="Provide the number parameter.")
+        calculation = get_ekadhikena_calculation(number, difficulty)
+        return sutra_name, [number, number], calculation["difficulty"], ekadhikena_questions(calculation)
+
+    if a is None or b is None:
+        raise HTTPException(status_code=400, detail="Provide both a and b for this sutra.")
+
+    if sutra_name == "nikhilam":
+        difficulty, base = get_nikhilam_settings(a, b, difficulty)
+        questions = nikhilam_questions(build_nikhilam_steps(a, b, base))
+    else:
+        difficulty, steps, _ = get_urdhva_calculation(a, b, difficulty)
+        questions = urdhva_questions(steps)
+
+    return sutra_name, [a, b], difficulty, questions
+
+
+@app.get("/sutras/{sutra_name}/questions")
+def get_sutra_questions(
+    sutra_name: str,
+    a: Optional[int] = None,
+    b: Optional[int] = None,
+    difficulty: str = "beginner",
+    number: Optional[int] = None,
+):
+    sutra_name, numbers, difficulty, questions = get_practice_questions(
+        sutra_name, a, b, number, difficulty
+    )
+    return {
+        "sutra": sutra_name,
+        "numbers": numbers,
+        "difficulty": difficulty,
+        "questions": public_questions(questions),
+    }
+
+
+class AnswerCheck(BaseModel):
+    question: str
+    answer: str
+    difficulty: str = "beginner"
+    a: Optional[int] = None
+    b: Optional[int] = None
+    number: Optional[int] = None
+
+
+@app.post("/sutras/{sutra_name}/check")
+def check_sutra_answer(sutra_name: str, body: AnswerCheck):
+    sutra_name, numbers, difficulty, questions = get_practice_questions(
+        sutra_name, body.a, body.b, body.number, body.difficulty
+    )
+
+    question = find_question(questions, body.question)
+    if question is None:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unknown question '{body.question}' for this problem.",
+        )
+
+    return {
+        "sutra": sutra_name,
+        "numbers": numbers,
+        "difficulty": difficulty,
+        **check_answer(question, body.answer),
     }
