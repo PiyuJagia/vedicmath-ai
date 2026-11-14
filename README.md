@@ -45,6 +45,28 @@ python -m uvicorn backend.main:app --reload
 
 http://127.0.0.1:8000/docs
 
+### 7. Start the frontend (in a second terminal)
+
+cd frontend
+
+npm install
+
+npm run dev
+
+Open http://localhost:5173. The frontend reaches the backend through `/api`, so keep the backend running on port 8000.
+
+### Tests
+
+python -m pytest backend/tests
+
+cd frontend; npm test
+
+### Reviewing the app
+
+- In Settings, choose **Admin: unlock everything** to open locked Sutras, or **Start fresh progress** to replace the sample learner.
+- Let's Learn More accepts `?example=2&moment=7` to jump to a specific animation frame.
+- Progress, settings and the profile are saved only in your browser for development; the coach is a scripted demo, not live AI.
+
 ## Example API Request
 
 GET /multiply/nikhilam?a=98&b=97&difficulty=beginner

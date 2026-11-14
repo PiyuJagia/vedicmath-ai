@@ -1,14 +1,36 @@
 import { render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { NAV_ITEMS, isNavItemActive } from '../components/layout/navigation'
+import { SAMPLE_PROGRESS } from '../services/progressModel'
+import { QUESTIONS, RAW } from '../test/fixtures'
 import { AppRoutes } from './AppRoutes'
+import { Providers } from './Providers'
+
+beforeEach(() => {
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async (input: string) => {
+      const url = String(input)
+      const json = (body: unknown) => new Response(JSON.stringify(body), { status: 200, headers: { 'Content-Type': 'application/json' } })
+      if (url.includes('/nikhilam/lesson')) return json(RAW['nikhilam-98x97'])
+      if (url.includes('/nikhilam/questions')) return json(QUESTIONS['nikhilam-98x97'])
+      return new Response('{}', { status: 404 })
+    }),
+  )
+})
+
+afterEach(() => {
+  vi.unstubAllGlobals()
+})
 
 function renderAt(path: string) {
   return render(
-    <MemoryRouter initialEntries={[path]}>
-      <AppRoutes />
-    </MemoryRouter>,
+    <Providers settings={{ reduceMotion: 'on' }} progress={SAMPLE_PROGRESS}>
+      <MemoryRouter initialEntries={[path]}>
+        <AppRoutes />
+      </MemoryRouter>
+    </Providers>,
   )
 }
 
@@ -21,22 +43,30 @@ describe('routes', () => {
   it.each([
     ['/', 'Discover the Magic of Vedic Math!'],
     ['/explore', 'Your Journey Through 16 Sutras'],
-    ['/sutras/nikhilam', 'Sutra: nikhilam'],
+    ['/sutras/nikhilam', 'Nikhilam'],
     ['/sutras/nikhilam/theory', 'Theory'],
     ['/sutras/nikhilam/learn', "Let's Learn More"],
     ['/sutras/nikhilam/practice', 'Practice with Coach'],
+    ['/sutras/ekadhikena/theory', 'Ekadhikena Purvena is locked'],
+    ['/sutras/paravartya', 'Paravartya Yojayet'],
     ['/play', 'Play to Win'],
     ['/progress', 'My Progress'],
     ['/settings', 'Settings'],
     ['/design-system', 'Design system'],
-    ['/onboarding', "Let's set up your profile"],
+    ['/onboarding', 'Welcome to VedicMath AI'],
     ['/no-such-page', 'Page not found'],
-  ])('%s shows "%s"', (path, heading) => {
+  ])('%s shows "%s"', async (path, heading) => {
     renderAt(path)
-    expect(screen.getByRole('heading', { level: 1, name: heading })).toBeTruthy()
+    expect(await screen.findByRole('heading', { level: 1, name: heading })).toBeTruthy()
   })
 
-  it('shows the sample learner in the top bar', () => {
+  it('loads the Theory example from the backend', async () => {
+    renderAt('/sutras/nikhilam/theory')
+    expect(await screen.findByRole('heading', { name: 'Example: 98 × 97' })).toBeTruthy()
+    expect(await screen.findByRole('img', { name: /Tile A holds 98/ })).toBeTruthy()
+  })
+
+  it('shows the learner in the top bar', () => {
     renderAt('/')
     expect(screen.getByRole('link', { name: /Arjun/ }).getAttribute('title')).toBe('Sample profile for development')
   })
@@ -76,6 +106,6 @@ describe('navigation', () => {
     renderAt('/sutras/nikhilam/practice')
     const breadcrumb = screen.getByRole('navigation', { name: 'Breadcrumb' })
     expect(within(breadcrumb).getByText('Practice with Coach').getAttribute('aria-current')).toBe('page')
-    expect(within(breadcrumb).getByRole('link', { name: 'nikhilam' }).getAttribute('href')).toBe('/sutras/nikhilam')
+    expect(within(breadcrumb).getByRole('link', { name: 'Nikhilam' }).getAttribute('href')).toBe('/sutras/nikhilam?level=beginner')
   })
 })

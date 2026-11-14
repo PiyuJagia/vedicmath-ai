@@ -15,6 +15,7 @@ export interface LearnerProfile {
   id: string
   displayName: string
   avatarInitial: string
+  avatarColour?: string
   /** True for fictional development profiles; never real learner data. */
   isSample: boolean
 }

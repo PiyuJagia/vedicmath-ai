@@ -95,6 +95,29 @@ svg {
   font-variant-numeric: tabular-nums lining-nums;
 }
 
+/* Settings: larger text scales every rem-based size. */
+html[data-large-text='true'] {
+  font-size: 112.5%;
+}
+
+/* Settings: higher contrast darkens secondary text and borders. */
+html[data-high-contrast='true'] {
+  --color-ink: #1e2350;
+  --color-muted: #3d4266;
+  --color-border: #b9b6d3;
+  --color-locked: #5c5e75;
+  --color-lavender-300: #8e7fd6;
+}
+
+/* Settings: reduced motion chosen in the app, not only by the device. */
+html[data-reduce-motion='true'] *,
+html[data-reduce-motion='true'] *::before,
+html[data-reduce-motion='true'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

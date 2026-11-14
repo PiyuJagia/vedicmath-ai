@@ -1,19 +1,17 @@
 import { Route, Routes } from 'react-router'
 import { AppShell, MinimalShell } from '../components/layout/AppShell'
 import { DesignSystemPage } from '../pages/DesignSystemPage'
-import {
-  ExplorePage,
-  HomePage,
-  LearnMorePage,
-  NotFoundPage,
-  OnboardingPage,
-  PlayPage,
-  PracticePage,
-  ProgressPage,
-  SettingsPage,
-  SutraOverviewPage,
-  TheoryPage,
-} from '../pages/placeholders'
+import { ExplorePage } from '../pages/ExplorePage'
+import { HomePage } from '../pages/HomePage'
+import { LearnMorePage } from '../pages/lesson/LearnMorePage'
+import { SutraOverviewPage } from '../pages/lesson/SutraOverviewPage'
+import { TheoryPage } from '../pages/lesson/TheoryPage'
+import { OnboardingPage } from '../pages/OnboardingPage'
+import { NotFoundPage } from '../pages/placeholders'
+import { PlayPage } from '../pages/PlayPage'
+import { PracticePage } from '../pages/practice/PracticePage'
+import { ProgressPage } from '../pages/ProgressPage'
+import { SettingsPage } from '../pages/SettingsPage'
 
 export function AppRoutes() {
   return (

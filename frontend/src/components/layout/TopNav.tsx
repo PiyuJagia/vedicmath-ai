@@ -47,7 +47,7 @@ export function TopNav({ profile }: TopNavProps) {
           className={styles.profile}
           title={profile.isSample ? 'Sample profile for development' : undefined}
         >
-          <span className={styles.avatar} aria-hidden="true">
+          <span className={styles.avatar} style={profile.avatarColour ? { background: profile.avatarColour } : undefined} aria-hidden="true">
             {profile.avatarInitial}
           </span>
           <span className={styles.name}>{profile.displayName}</span>
