@@ -29,6 +29,18 @@ python -c "import google.adk; print(google.adk.__version__)"
 adk --help
 ```
 
+## Tollgate 2 — Gemini connectivity
+
+With a repository-root `.env` containing `GOOGLE_API_KEY` and
+`GOOGLE_GENAI_USE_VERTEXAI=false`:
+
+```powershell
+python -m pytest backend/tests/test_gemini_connectivity.py -v
+```
+
+The live test sends `Hello, can you hear me?` through ADK's Gemini wrapper
+using model `gemini-3.8-flash`. It never prints the API key.
+
 ## Running the ADK development UI (after an agent exists)
 
 ADK's web UI is for **local development only**, not production.
