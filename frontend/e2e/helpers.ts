@@ -32,7 +32,12 @@ export function watchProblems(page: Page) {
     if (message.type() === 'error') problems.push(`console: ${message.text()}`)
   })
   page.on('pageerror', (error) => problems.push(`page error: ${error.message}`))
-  page.on('requestfailed', (request) => problems.push(`request failed: ${request.method()} ${request.url()} (${request.failure()?.errorText})`))
+  page.on('requestfailed', (request) => {
+    const reason = request.failure()?.errorText ?? ''
+    // The browser cancels downloads still in flight when the page navigates; CORS and network errors are ERR_FAILED and others.
+    if (reason === 'net::ERR_ABORTED') return
+    problems.push(`request failed: ${request.method()} ${request.url()} (${reason})`)
+  })
   page.on('request', (request) => {
     if (['fetch', 'xhr'].includes(request.resourceType()) && request.url().includes('/sutras/')) apiRequests.push(request)
   })
