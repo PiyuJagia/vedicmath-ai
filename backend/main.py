@@ -180,14 +180,28 @@ def animate_nikhilam(a: int, b: int, difficulty: str = "beginner"):
     result = steps[-1]["result"]
     if result != a * b:
         raise HTTPException(status_code=500, detail="Calculation verification failed.")
+    
     return {
+        "schema_version": "1.0",
         "sutra": "Nikhilam Navatashcaramam Dashatah",
         "numbers": [a, b],
         "difficulty": difficulty,
         "base": base,
+        "operands": {
+            "number1": {
+                "value": a,
+                "role": "multiplicand"
+            },
+            "number2": {
+                "value": b,
+                "role": "multiplier"
+            },
+            "operation": "multiply"
+        },
         "animation_steps": animation_steps,
         "result": result,
     }
+
 
 
 # ---------- Urdhva Tiryagbhyam ----------
@@ -231,16 +245,28 @@ def ekadhikena_multiply(number: int, difficulty: str = "beginner"):
     }
 
 
+
 @app.get("/animate/ekadhikena")
-def animate_ekadhikena(number: int, difficulty: str = "beginner"):
+def animate_ekadhikena(
+    number: int,
+    difficulty: str = "beginner",
+):
     calculation = get_ekadhikena_calculation(number, difficulty)
+
     return {
+        "schema_version": calculation.get("schema_version", "1.0"),
         "sutra": calculation["method"],
         "number": number,
+        "numbers": [number, number],
         "difficulty": calculation["difficulty"],
+        "operands": calculation.get("operands", {
+            "number": number,
+            "operation": "square"
+        }),
         "animation_steps": calculation["animation_steps"],
         "result": calculation["result"],
     }
+
 
 
 # ---------- Yavadunam ----------
@@ -362,14 +388,21 @@ def get_sutra_lesson(
             calculation = get_ekanyunena_calculation(number, difficulty)
             numbers = [calculation["number1"], calculation["number2"]]
 
+        
         return {
+            "schema_version": calculation.get("schema_version", "1.0"),
             "sutra": calculation["method"],
-            "numbers": numbers,
+            "numbers": [number, number],
             "difficulty": calculation["difficulty"],
+            "operands": calculation.get("operands", {
+                "number": number,
+                "operation": "square"
+            }),
             "teaching_steps": calculation["teaching_steps"],
             "animation_steps": calculation["animation_steps"],
             "result": calculation["result"],
         }
+
 
     if sutra_name not in ("nikhilam", "urdhva"):
         raise HTTPException(status_code=404, detail="Sutra not found.")
@@ -393,10 +426,23 @@ def get_sutra_lesson(
     if result != a * b:
         raise HTTPException(status_code=500, detail="Calculation verification failed.")
 
+    
     return {
+        "schema_version": "1.0",
         "sutra": sutra_name,
         "numbers": [a, b],
         "difficulty": difficulty,
+        "operands": {
+            "number1": {
+                "value": a,
+                "role": "multiplicand"
+            },
+            "number2": {
+                "value": b,
+                "role": "multiplier"
+            },
+            "operation": "multiply"
+        },
         "teaching_steps": steps,
         "animation_steps": animation_steps,
         "result": result,
@@ -542,3 +588,4 @@ def check_sutra_answers(sutra_name: str, body: AnswerSheet):
         "all_correct": len(results) == len(questions) and all(result["is_correct"] for result in results),
         "results": results,
     }
+

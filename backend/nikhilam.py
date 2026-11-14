@@ -1,69 +1,50 @@
 """Nikhilam Navatashcaramam Dashatah: multiplying numbers near a base.
-
 Deviations follow the base - number convention:
-
     deviation = base - number
     left part = a - deviation_b   (equal to b - deviation_a)
     right part = deviation_a * deviation_b
-
 A number below the base has a positive deviation; a number above the
 base has a negative one.
-
 Animation events name each value by its role on the stage
 (``number_a``, ``deviation_b``, ``left_part``, ...) instead of by its
 numeric value, so equal operands such as 98 x 98 stay unambiguous.
 """
-
 from typing import Any, Dict, List
-
-
 SUPPORTED_BASES = (100, 1000, 10000)
-
 DEVIATION_CONVENTION = "base - number"
-
-
 def build_nikhilam_steps(a: int, b: int, base: int = 100) -> List[Dict[str, Any]]:
     """
     Build structured teaching steps for Nikhilam.
-
     Steps: base, deviations, cross_subtract, multiply_deviations,
     an optional adjust step (only when a borrow or carry is needed),
     and combine. The combine step is always last and holds the result.
     """
     if base not in SUPPORTED_BASES:
         raise ValueError("Base must be 100, 1000, or 10000.")
-
+    if isinstance(a, bool) or isinstance(b, bool) or not isinstance(a, int) or not isinstance(b, int):
+        raise ValueError("Both numbers must be integers.")
     right_digits = len(str(base)) - 1
-
     deviation_a = base - a
     deviation_b = base - b
-
     left_from_a = a - deviation_b
     left_from_b = b - deviation_a
-
     if left_from_a != left_from_b:
         raise ArithmeticError("Nikhilam cross-subtractions disagree.")
-
     left = left_from_a
     right = deviation_a * deviation_b
-
-    # Normalize the two parts using carrying or borrowing.
+# Normalize the two parts using carrying or borrowing.
     carry, normalized_right = divmod(right, base)
     normalized_left = left + carry
-
     adjustment = (
         "borrow" if carry < 0
         else "carry" if carry > 0
         else "none"
     )
-
     formatted_right = f"{normalized_right:0{right_digits}d}"
     padding_zeros = len(formatted_right) - len(str(normalized_right))
     result = normalized_left * base + normalized_right
-
     if result != a * b:
         raise ArithmeticError("Nikhilam calculation verification failed.")
-
     steps = [
         {
             "type": "base",
@@ -120,11 +101,10 @@ def build_nikhilam_steps(a: int, b: int, base: int = 100) -> List[Dict[str, Any]
             "title": "Multiply deviations",
             "deviations": [deviation_a, deviation_b],
             "right_part": right,
-            # Kept for older consumers; padding is now taught in the combine step.
+# Kept for older consumers; padding is now taught in the combine step.
             "formatted_right": f"{right:0{right_digits}d}",
         },
     ]
-
     if adjustment != "none":
         amount = abs(carry)
         steps.append({
@@ -143,13 +123,23 @@ def build_nikhilam_steps(a: int, b: int, base: int = 100) -> List[Dict[str, Any]
             "right_before": right,
             "right_after": normalized_right,
             "right_change": normalized_right - right,
+            "borrow_units": -carry if carry < 0 else 0,
+            "borrow_value": -carry * base if carry < 0 else 0,
+            "carry_units": carry if carry > 0 else 0,
+            "carry_value": carry * base if carry > 0 else 0,
         })
-
     steps.append({
         "type": "combine",
         "title": "Combine the parts",
         "original_left": left,
         "original_right": right,
+        "base": base,
+        "borrow_units": -carry if carry < 0 else 0,
+        "borrow_value": -carry * base if carry < 0 else 0,
+        "carry_units": carry if carry > 0 else 0,
+        "carry_value": carry * base if carry > 0 else 0,
+        "adjusted_left": normalized_left,
+        "adjusted_right": normalized_right,
         "adjustment": adjustment,
         "carry": carry,
         "left_part": normalized_left,
@@ -159,24 +149,18 @@ def build_nikhilam_steps(a: int, b: int, base: int = 100) -> List[Dict[str, Any]
         "formatted_right": formatted_right,
         "result": result,
     })
-
     return [
         {"id": step_id, **step}
         for step_id, step in enumerate(steps, start=1)
     ]
-
-
 def build_nikhilam_animation_events(steps: list) -> list:
     """
     Convert Nikhilam teaching steps into animation steps.
-
     Every value comes from the teaching steps; nothing is recalculated here.
     """
     animation_steps = []
-
     for step in steps:
         events = []
-
         if step["type"] == "base":
             a, b = step["numbers"]
             events = [
@@ -201,7 +185,6 @@ def build_nikhilam_animation_events(steps: list) -> list:
                     "operands": ["number_a", "number_b"],
                 },
             ]
-
         elif step["type"] == "deviations":
             events = [
                 {
@@ -215,7 +198,6 @@ def build_nikhilam_animation_events(steps: list) -> list:
                 }
                 for calculation in step["calculations"]
             ]
-
         elif step["type"] == "cross_subtract":
             events = [
                 {
@@ -234,7 +216,6 @@ def build_nikhilam_animation_events(steps: list) -> list:
                 "value": step["left_part"],
                 "sources": ["number_a", "number_b"],
             })
-
         elif step["type"] == "multiply_deviations":
             events = [
                 {
@@ -249,25 +230,27 @@ def build_nikhilam_animation_events(steps: list) -> list:
                     "value": step["right_part"],
                 },
             ]
-
         elif step["type"] == "adjust":
             borrowing = step["adjustment"] == "borrow"
-            events = [
-                {
-                    "action": "adjust_parts",
-                    "adjustment": step["adjustment"],
-                    "source": "left_part" if borrowing else "right_part",
-                    "destination": "right_part" if borrowing else "left_part",
-                    "amount": step["amount"],
-                    "base": step["base"],
-                    "left_before": step["left_before"],
-                    "left_after": step["left_after"],
-                    "right_before": step["right_before"],
-                    "right_after": step["right_after"],
-                    "right_change": step["right_change"],
-                },
-            ]
-
+            # Keep the frontend-supported action and enrich it with
+            # borrowing/carrying metadata rather than adding unknown actions.
+            events = [{
+                "action": "adjust_parts",
+                "adjustment": step["adjustment"],
+                "source": "left_part" if borrowing else "right_part",
+                "destination": "right_part" if borrowing else "left_part",
+                "amount": step["amount"],
+                "base": step["base"],
+                "left_before": step["left_before"],
+                "left_after": step["left_after"],
+                "right_before": step["right_before"],
+                "right_after": step["right_after"],
+                "right_change": step["right_change"],
+                "borrow_units": step["borrow_units"],
+                "borrow_value": step["borrow_value"],
+                "carry_units": step["carry_units"],
+                "carry_value": step["carry_value"],
+            }]
         elif step["type"] == "combine":
             if step["padding_zeros"] > 0:
                 events.append({
@@ -288,12 +271,10 @@ def build_nikhilam_animation_events(steps: list) -> list:
                 "target": "result",
                 "value": step["result"],
             })
-
         animation_steps.append({
             "step_id": step["id"],
             "title": step["title"],
             "type": step["type"],
             "events": events,
         })
-
     return animation_steps
