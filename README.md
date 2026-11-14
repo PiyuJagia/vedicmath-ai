@@ -61,6 +61,17 @@ python -m pytest backend/tests
 
 cd frontend; npm test
 
+### Google ADK (local agent development)
+
+The backend depends on [Google ADK](https://adk.dev/) (`google-adk` in
+`backend/requirements.txt`) so we can later add a tool-invoking educational
+coach. Agents themselves are not implemented yet; see
+[`backend/agents/README.md`](backend/agents/README.md) for install checks and
+how to run `adk web` once an agent exists.
+
+Copy [`.env.example`](.env.example) to `.env` for local LLM credentials. Do not
+commit `.env`.
+
 ### Reviewing the app
 
 - In Settings, choose **Admin: unlock everything** to open locked Sutras, or **Start fresh progress** to replace the sample learner.

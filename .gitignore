@@ -223,4 +223,5 @@ __pycache__/
 .venv/
 .env
 .env.*
+!.env.example
 external/
