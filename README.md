@@ -69,9 +69,12 @@ cd frontend; npm test
 
 ## Deploying (Render)
 
-The app deploys as one Render web service from `render.yaml`. The `Dockerfile` builds the frontend and runs `backend/server.py`, which serves the website at `/` and the API at `/api` (API docs at `/api/docs`).
+The app runs as two Render services that both deploy from `main`:
 
-To run the production setup locally: build the frontend (`cd frontend; npm run build`), then `python -m uvicorn backend.server:site --port 8000` and open http://localhost:8000.
+- **Backend** – the web service `vedicmath-ai` (https://vedicmath-ai.onrender.com), configured in the Render Dashboard. Build: `pip install -r backend/requirements.txt`. Start: `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`. Python 3.12.10 comes from `.python-version`. Its `ALLOWED_ORIGINS` environment variable lists the frontend URL so browsers may call the API (CORS).
+- **Frontend** – the static site `vedicmath-ai-web`, defined in `render.yaml`. It builds `frontend/` with `VITE_API_BASE` set to the backend URL and rewrites every page path to `index.html`.
+
+To preview a production-style build on one local server: build the frontend (`cd frontend; npm run build`), then `python -m uvicorn backend.server:site --port 8000` and open http://localhost:8000 (the API is under `/api`).
 
 ## Example API Request
 

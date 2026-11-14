@@ -2,7 +2,11 @@ import type { Difficulty } from '../types/learning'
 import { parseLesson } from './parseLesson'
 import type { CheckAllResponse, CheckResponse, Lesson, LessonSutraId, Problem, QuestionsResponse } from './types'
 
-export const API_BASE = '/api'
+/**
+ * Where the FastAPI backend lives. Production builds set VITE_API_BASE to the
+ * backend's URL; local development uses the Vite proxy at /api.
+ */
+export const API_BASE = (import.meta.env.VITE_API_BASE || '/api').replace(/\/+$/, '')
 
 /** A request the backend refused, or could not be reached. The message is safe to show learners. */
 export class ApiError extends Error {

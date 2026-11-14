@@ -3,9 +3,11 @@
 Compatible with Python 3.9+.
 """
 
+import os
 from typing import Dict, Optional, Union
 
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from backend.vendor.vedicpy.multiply import multiply_base_near_powerof10
@@ -33,6 +35,23 @@ app = FastAPI(
     title="VedicMath AI",
     description="Interactive Vedic Mathematics Learning API",
     version="0.4.0",
+)
+
+# Browser origins allowed to call the API, comma-separated.
+# On Render, set ALLOWED_ORIGINS to the frontend static site's URL.
+ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in os.environ.get(
+        "ALLOWED_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173"
+    ).split(",")
+    if origin.strip()
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ALLOWED_ORIGINS,
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type"],
 )
 
 

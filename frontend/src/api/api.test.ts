@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { RAW, lessonFixture, type FixtureName } from '../test/fixtures'
-import { describeError } from './client'
+import { API_BASE, checkAnswer, describeError, fetchLesson } from './client'
 import { ContractError, parseLesson } from './parseLesson'
 
 describe('parseLesson', () => {
@@ -38,6 +38,40 @@ describe('parseLesson', () => {
   it('rejects a response without a result', () => {
     const body = { ...structuredClone(RAW['urdhva-23x14']), result: 'lots' }
     expect(() => parseLesson('urdhva', body)).toThrow(ContractError)
+  })
+})
+
+describe('API client', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
+  function stubFetch(body: unknown) {
+    const fetchMock = vi.fn<(input: string, init?: RequestInit) => Promise<Response>>(
+      async () => new Response(JSON.stringify(body), { status: 200 }),
+    )
+    vi.stubGlobal('fetch', fetchMock)
+    return fetchMock
+  }
+
+  it('uses the dev proxy when no backend URL is configured', () => {
+    expect(API_BASE).toBe('/api')
+  })
+
+  it('requests lessons with the backend parameter names', async () => {
+    const fetchMock = stubFetch(RAW['nikhilam-98x97'])
+    const lesson = await fetchLesson('nikhilam', { a: 98, b: 97 }, 'beginner')
+    expect(fetchMock.mock.calls[0][0]).toBe('/api/sutras/nikhilam/lesson?difficulty=beginner&a=98&b=97')
+    expect(lesson.data.result).toBe(9506)
+  })
+
+  it('sends answers as JSON to the check endpoint', async () => {
+    const fetchMock = stubFetch({ status: 'correct', is_correct: true, correct_answer: null })
+    await checkAnswer('ekadhikena', { number: 35 }, 'beginner', 'result', '1225')
+    const [url, init] = fetchMock.mock.calls[0]
+    expect(url).toBe('/api/sutras/ekadhikena/check')
+    expect(init?.method).toBe('POST')
+    expect(JSON.parse(String(init?.body))).toEqual({ number: 35, difficulty: 'beginner', question: 'result', answer: '1225' })
   })
 })
 
