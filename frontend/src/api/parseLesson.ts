@@ -1,6 +1,7 @@
 import type {
   AnimationEvent,
   EkadhikenaLesson,
+  GroupedAnimationStep,
   Lesson,
   LessonSutraId,
   NikhilamLesson,
@@ -43,9 +44,12 @@ export const KNOWN_ACTIONS: Record<LessonSutraId, ReadonlySet<string>> = {
   ]),
   ekadhikena: new Set([
     'show_number',
+    'show_instruction',
     'highlight_last_digit',
+    'split_number',
     'show_next_number',
     'multiply_previous',
+    'calculate_25',
     'append_25',
     'reveal_result',
   ]),
@@ -53,6 +57,7 @@ export const KNOWN_ACTIONS: Record<LessonSutraId, ReadonlySet<string>> = {
 
 const NIKHILAM_STEP_TYPES = new Set(['base', 'deviations', 'cross_subtract', 'multiply_deviations', 'adjust', 'combine'])
 const URDHVA_STEP_TYPES = new Set(['introduction', 'multiplication_column', 'final_carry', 'combine'])
+const EKADHIKENA_STEP_TYPES = new Set(['introduction', 'split_number', 'add_one', 'multiply_previous', 'append_25', 'combine'])
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -87,7 +92,7 @@ function checkEnvelope(body: Record<string, unknown>) {
   if (numbers.length !== 2) throw new ContractError('numbers must hold two values.')
 }
 
-function checkGroupedSteps(sutra: 'nikhilam' | 'urdhva', body: Record<string, unknown>, stepTypes: Set<string>) {
+function checkGroupedSteps(sutra: LessonSutraId, body: Record<string, unknown>, stepTypes: Set<string>) {
   const teaching = requireArray(body.teaching_steps, 'teaching_steps')
   for (const step of teaching) {
     if (!isRecord(step) || typeof step.type !== 'string' || !stepTypes.has(step.type)) {
@@ -105,6 +110,11 @@ function checkGroupedSteps(sutra: 'nikhilam' | 'urdhva', body: Record<string, un
   for (const step of animation) {
     checkActions(sutra, requireArray((step as Record<string, unknown>).events, `${sutra} step events`))
   }
+}
+
+/** All events of a grouped lesson, in step order. */
+export function lessonEvents(steps: GroupedAnimationStep[]): AnimationEvent[] {
+  return steps.flatMap((step) => step.events)
 }
 
 export function parseLesson(sutra: LessonSutraId, body: unknown): Lesson {
@@ -125,8 +135,7 @@ export function parseLesson(sutra: LessonSutraId, body: unknown): Lesson {
     return { kind: 'urdhva', data: body as unknown as UrdhvaLesson }
   }
 
-  const events = requireArray(body.animation_steps, 'animation_steps') as AnimationEvent[]
-  checkActions('ekadhikena', events)
+  checkGroupedSteps('ekadhikena', body, EKADHIKENA_STEP_TYPES)
   for (const step of requireArray(body.teaching_steps, 'teaching_steps')) {
     if (!isRecord(step) || typeof step.title !== 'string' || typeof step.explanation !== 'string') {
       throw new ContractError('An Ekadhikena teaching step is missing its title or explanation.')

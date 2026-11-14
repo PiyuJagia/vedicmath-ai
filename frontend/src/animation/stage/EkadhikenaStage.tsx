@@ -38,7 +38,7 @@ export function EkadhikenaStage({ frame, previousValue, lastDigit, nextValue, re
       <StageDefs />
       {!scene.split ? (
         <g>
-          <Tile x={G.number.x} y={G.number.y} label={scene.number} width={84} />
+          <Tile id="input_number" x={G.number.x} y={G.number.y} label={scene.number} width={84} />
           <Caption x={G.number.x + 54} y={G.number.y - 18}>
             <tspan fontSize={17} fill="var(--color-navy)">
               2
@@ -53,14 +53,14 @@ export function EkadhikenaStage({ frame, previousValue, lastDigit, nextValue, re
           <Caption x={G.last.x - 20} y={G.last.y - 36} anchor="start">
             last digit
           </Caption>
-          <Tile x={G.previous.x} y={G.previous.y} label={previousValue} state={scene.previous} width={Math.max(56, String(previousValue).length * 18 + 20)} />
-          <Tile x={G.last.x} y={G.last.y} label={lastDigit} state={scene.lastDigit} />
+          <Tile id="previous_part" x={G.previous.x} y={G.previous.y} label={previousValue} state={scene.previous} width={Math.max(56, String(previousValue).length * 18 + 20)} />
+          <Tile id="last_digit" x={G.last.x} y={G.last.y} label={lastDigit} state={scene.lastDigit} />
         </g>
       )}
 
       {scene.next !== 'hidden' && (
         <g>
-          <Tile x={G.next.x} y={G.next.y} label={nextValue} state={scene.next} width={Math.max(56, String(nextValue).length * 18 + 20)} />
+          <Tile id="next_number" x={G.next.x} y={G.next.y} label={nextValue} state={scene.next} width={Math.max(56, String(nextValue).length * 18 + 20)} />
           <Caption x={G.next.x + 48} y={G.next.y} anchor="start">
             one more
           </Caption>
@@ -93,18 +93,18 @@ export function EkadhikenaStage({ frame, previousValue, lastDigit, nextValue, re
             left part
           </Caption>
           {scene.left.kind === 'empty' ? (
-            <Tile x={G.leftX} y={G.resultY} label="" state="empty" width={84} />
+            <Tile id="left_part" x={G.leftX} y={G.resultY} label="" state="empty" width={84} />
           ) : (
-            <Tile x={G.leftX} y={G.resultY} label={scene.left.value} state={scene.left.active ? 'active' : 'normal'} width={84} />
+            <Tile id="left_part" x={G.leftX} y={G.resultY} label={scene.left.value} state={scene.left.active ? 'active' : 'normal'} width={84} />
           )}
           <line x1={G.barX} y1={G.resultY - 22} x2={G.barX} y2={G.resultY + 22} className={styles.divider} />
           <Caption x={G.rightX} y={G.resultY - 33}>
             right part
           </Caption>
           {scene.right.kind === 'value' ? (
-            <Tile x={G.rightX} y={G.resultY} label={scene.right.value} state={scene.right.active ? 'active' : 'normal'} width={74} />
+            <Tile id="right_part" x={G.rightX} y={G.resultY} label={scene.right.value} state={scene.right.active ? 'active' : 'normal'} width={74} />
           ) : (
-            <Tile x={G.rightX} y={G.resultY} label="" state="empty" width={74} />
+            <Tile id="right_part" x={G.rightX} y={G.resultY} label="" state="empty" width={74} />
           )}
         </g>
       )}

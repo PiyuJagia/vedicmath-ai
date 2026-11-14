@@ -47,7 +47,7 @@ describe('routes', () => {
     ['/sutras/nikhilam/theory', 'Theory'],
     ['/sutras/nikhilam/learn', "Let's Learn More"],
     ['/sutras/nikhilam/practice', 'Practice with Coach'],
-    ['/sutras/ekadhikena/theory', 'Ekadhikena Purvena is locked'],
+    ['/sutras/ekadhikena/theory', 'Theory'],
     ['/sutras/paravartya', 'Paravartya Yojayet'],
     ['/play', 'Play to Win'],
     ['/progress', 'My Progress'],

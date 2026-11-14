@@ -15,6 +15,7 @@ import type {
   UrdhvaColumnStep,
   UrdhvaLesson,
 } from '../api/types'
+import { lessonEvents } from '../api/parseLesson'
 import { fmt, paren } from '../animation/format'
 
 export interface QuestionText {
@@ -163,7 +164,7 @@ function urdhva(lesson: UrdhvaLesson, key: string): QuestionText {
 }
 
 function ekadhikena(lesson: EkadhikenaLesson, key: string): QuestionText {
-  const get = (action: string) => lesson.animation_steps.find((e) => e.action === action)
+  const get = (action: string) => lessonEvents(lesson.animation_steps).find((e) => e.action === action)
   const number = Number(get('show_number')?.number)
   const previous = Number(get('highlight_last_digit')?.previous)
   const next = Number(get('show_next_number')?.next_number)

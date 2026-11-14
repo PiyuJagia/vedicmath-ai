@@ -57,12 +57,15 @@ export function passedAll(mastery: LevelMastery): boolean {
   return DIFFICULTIES.every((level) => mastery[level])
 }
 
+/** For now every Sutra with lessons is open to everyone. Set to false to bring back the unlock journey. */
+export const ALL_LESSONS_OPEN = true
+
 /**
  * A Sutra unlocks when at least one level of the Sutra before it has been passed.
  * The first Sutra is always unlocked. Admins bypass progression locks.
  */
-export function isUnlocked(sutras: SutraInfo[], index: number, state: ProgressState, isAdmin: boolean): boolean {
-  if (isAdmin || index === 0) return true
+export function isUnlocked(sutras: SutraInfo[], index: number, state: ProgressState, isAdmin: boolean, allOpen = ALL_LESSONS_OPEN): boolean {
+  if (allOpen || isAdmin || index === 0) return true
   return passedAny(masteryOf(state, sutras[index - 1].id))
 }
 

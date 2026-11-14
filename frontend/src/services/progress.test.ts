@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { SUTRAS } from '../content/sutras'
-import { EMPTY_PROGRESS, currentSutraIndex, isGameUnlocked, isUnlocked, sutraStatus, type ProgressState } from './progressModel'
+import { ALL_LESSONS_OPEN, EMPTY_PROGRESS, currentSutraIndex, isGameUnlocked, isUnlocked, sutraStatus, type ProgressState } from './progressModel'
 
 const withMastery = (mastery: ProgressState['mastery']): ProgressState => ({ ...EMPTY_PROGRESS, mastery })
 const index = (id: string) => SUTRAS.findIndex((sutra) => sutra.id === id)
@@ -13,21 +13,34 @@ describe('journey order', () => {
 })
 
 describe('unlocking', () => {
+  it('for now every Sutra with lessons is open to a new learner', () => {
+    expect(ALL_LESSONS_OPEN).toBe(true)
+    for (const id of ['nikhilam', 'urdhva', 'ekadhikena']) {
+      expect(sutraStatus(SUTRAS, index(id), EMPTY_PROGRESS, false)).toBe('available')
+    }
+    expect(sutraStatus(SUTRAS, index('yavadunam'), EMPTY_PROGRESS, false)).toBe('coming_soon')
+  })
+
+  // The journey rules below apply again once ALL_LESSONS_OPEN is switched off.
   it('only the first Sutra is open at the start', () => {
-    expect(isUnlocked(SUTRAS, 0, EMPTY_PROGRESS, false)).toBe(true)
-    expect(isUnlocked(SUTRAS, index('urdhva'), EMPTY_PROGRESS, false)).toBe(false)
+    expect(isUnlocked(SUTRAS, 0, EMPTY_PROGRESS, false, false)).toBe(true)
+    expect(isUnlocked(SUTRAS, index('urdhva'), EMPTY_PROGRESS, false, false)).toBe(false)
   })
 
   it('passing one level of the previous Sutra unlocks the next', () => {
     const state = withMastery({ nikhilam: { beginner: false, intermediate: true, advanced: false } })
-    expect(isUnlocked(SUTRAS, index('urdhva'), state, false)).toBe(true)
-    expect(isUnlocked(SUTRAS, index('ekadhikena'), state, false)).toBe(false)
+    expect(isUnlocked(SUTRAS, index('urdhva'), state, false, false)).toBe(true)
+    expect(isUnlocked(SUTRAS, index('ekadhikena'), state, false, false)).toBe(false)
   })
 
   it('viewing lessons is not the same as passing', () => {
     const viewedOnly: ProgressState = { ...EMPTY_PROGRESS, explored: ['nikhilam'], history: [{ sutraId: 'nikhilam', difficulty: 'beginner', section: 'theory', at: '' }] }
     expect(sutraStatus(SUTRAS, 0, viewedOnly, false)).toBe('available')
-    expect(isUnlocked(SUTRAS, index('urdhva'), viewedOnly, false)).toBe(false)
+    expect(isUnlocked(SUTRAS, index('urdhva'), viewedOnly, false, false)).toBe(false)
+  })
+
+  it('admins bypass the journey even when it is switched on', () => {
+    expect(isUnlocked(SUTRAS, index('ekadhikena'), EMPTY_PROGRESS, true, false)).toBe(true)
   })
 
   it('reports in progress and mastered states', () => {

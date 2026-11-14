@@ -1,5 +1,5 @@
 import type { AnimationEvent, EkadhikenaLesson } from '../../api/types'
-import { ContractError } from '../../api/parseLesson'
+import { ContractError, lessonEvents } from '../../api/parseLesson'
 import { ekadhikenaText } from '../../content/narration'
 import type { EkadhikenaFrame, EkadhikenaScene, Narration, Segment, Timeline, Tone } from '../types'
 
@@ -12,7 +12,7 @@ function numberField(event: AnimationEvent, field: string): number {
 }
 
 export function buildEkadhikenaTimeline(lesson: EkadhikenaLesson): Extract<Timeline, { kind: 'ekadhikena' }> {
-  const events = new Map(lesson.animation_steps.map((event) => [event.action, event]))
+  const events = new Map(lessonEvents(lesson.animation_steps).map((event) => [event.action, event]))
   const event = (action: string) => {
     const found = events.get(action)
     if (!found) throw new ContractError(`The Ekadhikena lesson has no "${action}" event.`)

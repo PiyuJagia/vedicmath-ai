@@ -381,22 +381,24 @@ def get_sutra_lesson(
         if sutra_name == "ekadhikena":
             calculation = get_ekadhikena_calculation(number, difficulty)
             numbers = [number, number]
+            operation = "square"
         elif sutra_name == "yavadunam":
             calculation = get_yavadunam_calculation(number, difficulty)
             numbers = [number, number]
+            operation = "square"
         else:
             calculation = get_ekanyunena_calculation(number, difficulty)
             numbers = [calculation["number1"], calculation["number2"]]
+            operation = "multiply"
 
-        
         return {
             "schema_version": calculation.get("schema_version", "1.0"),
             "sutra": calculation["method"],
-            "numbers": [number, number],
+            "numbers": numbers,
             "difficulty": calculation["difficulty"],
             "operands": calculation.get("operands", {
                 "number": number,
-                "operation": "square"
+                "operation": operation,
             }),
             "teaching_steps": calculation["teaching_steps"],
             "animation_steps": calculation["animation_steps"],

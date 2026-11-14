@@ -69,7 +69,7 @@ test('Nikhilam beginner practice: feedback, hints, retries and passing', async (
 
   await startFresh(page)
   await page.goto('/explore')
-  await expect(page.getByRole('button', { name: /Urdhva Tiryagbhyam/ })).toBeVisible()
+  await expect(page.getByRole('img', { name: /Nikhilam mastery: Beginner not yet passed/ }).first()).toBeVisible()
 
   await page.goto('/sutras/nikhilam/practice?level=beginner')
   await waitForStage(page)
@@ -101,11 +101,11 @@ test('Nikhilam beginner practice: feedback, hints, retries and passing', async (
   expect(checks.filter((check) => check.result.is_correct === true)).toHaveLength(answers.length)
   await expectFinalAnswer(page, String(98 * 93))
 
-  // Passing beginner earns beginner only, unlocks Urdhva and the beginner games.
+  // Passing beginner earns beginner only and unlocks the beginner games.
   await page.goto('/explore')
   await expect(page.getByRole('img', { name: 'Nikhilam mastery: Beginner passed, Intermediate not yet passed, Advanced not yet passed' }).first()).toBeVisible()
   await expect(page.getByRole('link', { name: /Urdhva Tiryagbhyam/ })).toBeVisible()
-  await expect(page.getByRole('button', { name: /Ekadhikena Purvena/ })).toBeVisible()
+  await expect(page.getByRole('link', { name: /Ekadhikena Purvena/ })).toBeVisible()
 
   await page.goto('/play')
   await expect(page.getByText('Unlocked').first()).toBeVisible()

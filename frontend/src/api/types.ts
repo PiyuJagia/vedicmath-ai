@@ -171,7 +171,9 @@ export interface UrdhvaLesson {
 // ---------- Ekadhikena Purvena ----------
 
 export interface EkadhikenaTeachingStep {
+  id: number
   step: number
+  type: string
   title: string
   explanation: string
 }
@@ -181,7 +183,7 @@ export interface EkadhikenaLesson {
   numbers: [number, number]
   difficulty: Difficulty
   teaching_steps: EkadhikenaTeachingStep[]
-  animation_steps: AnimationEvent[]
+  animation_steps: GroupedAnimationStep[]
   result: number
 }
 

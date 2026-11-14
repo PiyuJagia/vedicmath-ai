@@ -31,9 +31,11 @@ test('Sutra Explorer shows 16 Sutras with unlock states', async ({ page }) => {
   await page.goto('/explore')
   const nodes = page.locator('ol li')
   await expect(nodes).toHaveCount(16)
-  await expect(page.getByRole('link', { name: /Nikhilam/ })).toBeVisible()
-  // With no passed levels only the first Sutra opens.
-  await expect(page.getByRole('button', { name: /Urdhva Tiryagbhyam.*Locked/ })).toBeVisible()
+  // For now every Sutra with lessons is open, even with nothing passed yet.
+  for (const name of [/Nikhilam/, /Urdhva Tiryagbhyam/, /Ekadhikena Purvena/]) {
+    await expect(page.getByRole('link', { name })).toBeVisible()
+  }
+  await expect(page.getByRole('button', { name: /Locked/ })).toHaveCount(0)
   await expect(page.getByRole('button', { name: /Paravartya Yojayet.*Coming Soon/ })).toBeVisible()
   await page.screenshot({ path: 'e2e/screenshots/explore.png', fullPage: true })
 })
@@ -53,15 +55,17 @@ test('direct links and difficulty selection', async ({ page }) => {
   await expect(page.getByRole('radio', { name: 'Intermediate' }).first()).not.toBeChecked()
 
   await page.goto('/sutras/urdhva/theory?level=beginner')
-  await expect(page.getByRole('heading', { name: 'Urdhva Tiryagbhyam is locked' })).toBeVisible()
+  await waitForStage(page)
+  await expect(page.getByRole('heading', { name: 'Example: 23 × 14' })).toBeVisible()
   await page.goto('/sutras/ekadhikena/theory')
-  await expect(page.getByRole('heading', { name: 'Ekadhikena Purvena is locked' })).toBeVisible()
+  await waitForStage(page)
+  await expect(page.getByRole('heading', { level: 1, name: 'Theory' })).toBeVisible()
   await page.goto('/sutras/paravartya')
   await expect(page.getByText(/lessons are coming soon/)).toBeVisible()
 })
 
-test('admin can open Ekadhikena and its animation completes', async ({ page }) => {
-  await startFresh(page, { admin: true })
+test('a new learner can open Ekadhikena and its animation completes', async ({ page }) => {
+  await startFresh(page)
   await page.goto('/sutras/ekadhikena/learn?level=beginner')
   await waitForStage(page)
   await page.getByRole('button', { name: 'Next', exact: true }).click()

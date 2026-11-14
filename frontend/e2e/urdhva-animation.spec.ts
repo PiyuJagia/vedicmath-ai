@@ -14,8 +14,7 @@ function expectLineJoins(shown: Shown, lineId: string, fromTile: string, toTile:
 test('Theory 23 × 14: vertical, crosswise and final stages', async ({ page }) => {
   const watch = watchProblems(page)
   await wakeBackend(page)
-  // Urdhva is locked until Nikhilam beginner is passed; admin opens it directly.
-  await startFresh(page, { admin: true })
+  await startFresh(page)
   await page.goto('/sutras/urdhva/theory?level=beginner')
   await waitForStage(page)
   await expect(page.getByRole('heading', { name: 'Example: 23 × 14' })).toBeVisible()
@@ -90,7 +89,7 @@ test('Theory 23 × 14: vertical, crosswise and final stages', async ({ page }) =
 
 test('Larger Urdhva problems keep digits aligned: 87 × 877 and 1234 × 5678', async ({ page }) => {
   await wakeBackend(page)
-  await startFresh(page, { admin: true })
+  await startFresh(page)
   for (const [path, a, b] of [
     ['/sutras/urdhva/learn?level=intermediate&example=2', 87, 877],
     ['/sutras/urdhva/learn?level=advanced&example=1', 1234, 5678],

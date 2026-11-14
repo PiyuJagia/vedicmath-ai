@@ -30,9 +30,15 @@ describe('parseLesson', () => {
   })
 
   it('rejects an Ekadhikena event it does not know', () => {
-    const body = structuredClone(RAW['ekadhikena-35']) as unknown as { animation_steps: { action: string }[] }
-    body.animation_steps.push({ action: 'square_root' })
+    const body = structuredClone(RAW['ekadhikena-35']) as unknown as { animation_steps: { events: { action: string }[] }[] }
+    body.animation_steps[3].events.push({ action: 'square_root' })
     expect(() => parseLesson('ekadhikena', body)).toThrow(/square_root/)
+  })
+
+  it('rejects the older flat Ekadhikena event list', () => {
+    const body = structuredClone(RAW['ekadhikena-35']) as unknown as { animation_steps: unknown[] }
+    body.animation_steps = body.animation_steps.flatMap((step) => (step as { events: unknown[] }).events)
+    expect(() => parseLesson('ekadhikena', body)).toThrow(ContractError)
   })
 
   it('rejects a response without a result', () => {

@@ -17,7 +17,7 @@ const PAGES = [
 for (const [name, path] of PAGES) {
   test(`mobile ${name}: no sideways page scroll and the tab bar is reachable`, async ({ page }) => {
     const watch = watchProblems(page)
-    await startFresh(page, { admin: path.includes('/urdhva/') })
+    await startFresh(page)
     await page.goto(path)
     if (path.includes('/sutras/')) await waitForStage(page)
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
@@ -34,7 +34,7 @@ for (const [name, path] of PAGES) {
 }
 
 test('mobile Urdhva 1234 × 5678: the column being worked on stays in view', async ({ page }) => {
-  await startFresh(page, { admin: true })
+  await startFresh(page)
   await page.goto('/sutras/urdhva/learn?level=advanced&example=1')
   await waitForStage(page)
   const { total } = await moment(page)
