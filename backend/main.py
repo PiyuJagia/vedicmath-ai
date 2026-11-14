@@ -391,15 +391,23 @@ def get_sutra_lesson(
             numbers = [calculation["number1"], calculation["number2"]]
             operation = "multiply"
 
+        operands = calculation.get("operands", {
+            "number": number,
+            "operation": operation,
+        })
+        if sutra_name == "ekanyunena":
+            operands = {
+                "number1": {"value": numbers[0], "role": "multiplicand"},
+                "number2": {"value": numbers[1], "role": "multiplier"},
+                "operation": "multiply",
+            }
+
         return {
             "schema_version": calculation.get("schema_version", "1.0"),
             "sutra": calculation["method"],
             "numbers": numbers,
             "difficulty": calculation["difficulty"],
-            "operands": calculation.get("operands", {
-                "number": number,
-                "operation": operation,
-            }),
+            "operands": operands,
             "teaching_steps": calculation["teaching_steps"],
             "animation_steps": calculation["animation_steps"],
             "result": calculation["result"],
