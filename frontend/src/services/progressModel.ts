@@ -11,9 +11,70 @@ export interface HistoryEntry {
   at: string
 }
 
+/** One finished Practice with Coach problem, as the learner first solved it. */
+export interface PracticeRecord {
+  /** Problem key, e.g. "98x93" or "35". */
+  problem: string
+  /** Wrong answers checked by the backend while solving it. */
+  wrong: number
+  /** Hints opened while solving it (each level counts). */
+  hints: number
+  /** ISO date and time. */
+  at: string
+}
+
+/**
+ * What it takes to pass a level in Practice with Coach. A problem is "on your
+ * own" when its first completion used no hints and at most one wrong answer.
+ * Only the first completion of each problem counts, so redoing a problem after
+ * seeing its answer does not add evidence.
+ */
+export const PASS_RULE = { problems: 3, onYourOwn: 2, maxWrongOnYourOwn: 1 } as const
+
+export function solvedOnYourOwn(record: PracticeRecord): boolean {
+  return record.hints === 0 && record.wrong <= PASS_RULE.maxWrongOnYourOwn
+}
+
+export interface LevelEvidence {
+  problems: number
+  onYourOwn: number
+  passed: boolean
+}
+
+export function levelEvidence(records: PracticeRecord[]): LevelEvidence {
+  const problems = records.length
+  const onYourOwn = records.filter(solvedOnYourOwn).length
+  return { problems, onYourOwn, passed: problems >= PASS_RULE.problems && onYourOwn >= PASS_RULE.onYourOwn }
+}
+
+export function practiceKey(sutraId: string, difficulty: Difficulty): string {
+  return `${sutraId}:${difficulty}`
+}
+
+export function practiceOf(state: ProgressState, sutraId: string, difficulty: Difficulty): PracticeRecord[] {
+  return state.practice?.[practiceKey(sutraId, difficulty)] ?? []
+}
+
+/** Adds a finished problem (first completion only) and passes the level once the evidence meets PASS_RULE. */
+export function withPracticeRecord(state: ProgressState, sutraId: string, difficulty: Difficulty, record: PracticeRecord): ProgressState {
+  const key = practiceKey(sutraId, difficulty)
+  const records = practiceOf(state, sutraId, difficulty)
+  if (records.some((existing) => existing.problem === record.problem)) return state
+  const next = [...records, record]
+  const passed = levelEvidence(next).passed
+  const mastery = masteryOf(state, sutraId)
+  return {
+    ...state,
+    practice: { ...state.practice, [key]: next },
+    mastery: passed && !mastery[difficulty] ? { ...state.mastery, [sutraId]: { ...mastery, [difficulty]: true } } : state.mastery,
+  }
+}
+
 export interface ProgressState {
   /** Levels the learner has passed through Practice with Coach. */
   mastery: Record<string, LevelMastery>
+  /** Finished practice problems per Sutra and level ("nikhilam:beginner"), the evidence behind mastery. */
+  practice: Record<string, PracticeRecord[]>
   explored: string[]
   history: HistoryEntry[]
   streakDays: number
@@ -25,6 +86,7 @@ export const NO_MASTERY: LevelMastery = { beginner: false, intermediate: false, 
 
 export const EMPTY_PROGRESS: ProgressState = {
   mastery: {},
+  practice: {},
   explored: [],
   history: [],
   streakDays: 0,
@@ -33,6 +95,7 @@ export const EMPTY_PROGRESS: ProgressState = {
 
 export const SAMPLE_PROGRESS: ProgressState = {
   mastery: { nikhilam: { beginner: true, intermediate: false, advanced: false } },
+  practice: {},
   explored: ['nikhilam', 'urdhva'],
   history: [
     { sutraId: 'nikhilam', difficulty: 'beginner', section: 'practice', at: '2026-11-13T17:20:00' },

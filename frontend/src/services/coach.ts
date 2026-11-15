@@ -27,8 +27,12 @@ export interface CoachRequest {
   questionText?: QuestionText
   check?: CheckResponse
   answer?: string
+  /** feedback: attempts on this question. complete: wrong answers on the whole problem. */
   attempts?: number
+  /** hint: the level shown. complete: hints opened on the whole problem. */
   hintLevel?: number
+  /** complete: how many steps the problem had. */
+  steps?: number
   learnerName?: string
 }
 
@@ -82,11 +86,17 @@ export const demoCoach: CoachService = {
         return reply(request.questionText?.prompt ?? 'What do you think comes next?', 'listening')
       case 'hint':
         return reply('Here is a hint. Take your time.', 'encouraging')
-      case 'complete':
-        return reply(
-          `You solved ${request.problemLabel ?? 'the whole problem'} one step at a time. Wonderful work!`,
-          'celebrating',
-        )
+      case 'complete': {
+        // Praise only what actually happened on this problem.
+        const label = request.problemLabel ?? 'the whole problem'
+        const wrong = request.attempts ?? 0
+        const hints = request.hintLevel ?? 0
+        const steps = request.steps ? `all ${request.steps} steps of ${label}` : label
+        const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`
+        if (hints === 0 && wrong === 0) return reply(`You solved ${steps} without a hint or a wrong answer.`, 'celebrating')
+        if (hints === 0) return reply(`You solved ${steps} without a hint, and fixed ${plural(wrong, 'wrong answer')} on the way.`, 'celebrating')
+        return reply(`You finished ${label} with ${plural(hints, 'hint')}. Next time, try one with fewer hints.`, 'encouraging')
+      }
       case 'feedback': {
         if (!request.check || !request.question) return reply('Let me check that.', 'thinking')
         const text = feedbackText(

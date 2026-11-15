@@ -171,3 +171,64 @@ describe('Practice with Coach screen', () => {
     await waitFor(() => expect(screen.getByText('Hint 1 of 3')).toBeTruthy())
   })
 })
+
+describe('finishing a problem', () => {
+  const answers: Record<string, string> = { deviation_a: '2', deviation_b: '3', left_part: '95', right_part: '6', padded_right_part: '06', result: '9506' }
+
+  beforeEach(() => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (input: string, init?: RequestInit) => {
+        const url = String(input)
+        const json = (body: unknown) => new Response(JSON.stringify(body), { status: 200, headers: { 'Content-Type': 'application/json' } })
+        if (url.includes('/sutras/nikhilam/lesson')) return json(RAW['nikhilam-98x97'])
+        if (url.includes('/sutras/nikhilam/questions')) return json(QUESTIONS['nikhilam-98x97'])
+        if (url.includes('/sutras/nikhilam/check')) {
+          const body = JSON.parse(String(init?.body)) as { question: string; answer: string }
+          const correct = answers[body.question] === body.answer
+          return json({
+            sutra: 'nikhilam', numbers: [98, 97], difficulty: 'beginner', question: body.question, step_id: 2,
+            answer_type: 'integer', submitted_answer: body.answer, status: correct ? 'correct' : 'incorrect',
+            is_correct: correct, correct_answer: correct ? null : answers[body.question], mistake: null, message: null,
+          })
+        }
+        return new Response('{}', { status: 404 })
+      }),
+    )
+  })
+
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
+  it('one problem with wrong answers and hints does not pass the level', async () => {
+    render(
+      <Providers settings={{ reduceMotion: 'on' }} progress={EMPTY_PROGRESS}>
+        <MemoryRouter initialEntries={['/sutras/nikhilam/practice?level=beginner']}>
+          <Routes>
+            <Route path="/sutras/:sutraId/practice" element={<PracticePage />} />
+          </Routes>
+        </MemoryRouter>
+      </Providers>,
+    )
+    await screen.findByLabelText('Deviation of 98')
+    const keys = QUESTIONS['nikhilam-98x97'].questions.map((question) => question.key)
+    for (const [i, key] of keys.entries()) {
+      const box = await waitFor(() => document.getElementById('practice-answer') as HTMLInputElement)
+      if (i === 0) {
+        fireEvent.click(screen.getByRole('button', { name: 'Hint' }))
+        for (let wrong = 0; wrong < 3; wrong++) {
+          fireEvent.change(box, { target: { value: '7' } })
+          fireEvent.click(screen.getByRole('button', { name: 'Check' }))
+          await waitFor(() => expect(screen.getByRole('button', { name: 'Check' })).toHaveProperty('disabled', false))
+        }
+      }
+      fireEvent.change(box, { target: { value: answers[key] } })
+      fireEvent.click(screen.getByRole('button', { name: 'Check' }))
+      if (i < keys.length - 1) await waitFor(() => expect(box.value).toBe(''))
+    }
+    await screen.findByText(/Problem solved!/)
+    expect(screen.queryByText(/Level passed/)).toBeNull()
+    await screen.findByText(/1 of 3 problems, 0 of 2 on your own/)
+  })
+})
