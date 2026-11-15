@@ -1,5 +1,7 @@
 # Hackathon submission readiness — VedicMath AI (live Rishi)
 
+> **Superseded status (2026-11-15 18:55 UTC):** PR #5 and PR #4 are merged and deployed; chat returns 503 until Render keys are set; evals still 0/10, 0/50, 0/30. See `reports/Handoff-Pending-Tasks.md` for current state and next steps.
+
 **Date:** 2026-11-15 · **Branch:** `claude/project-thread-njghjl` · **PR:** https://github.com/PiyuJagia/vedicmath-ai/pull/5 (draft, not merged)
 
 Verdict: **not yet submission-ready.** The code is fixed and tested, but production still serves the old scripted coach, and no live evaluation has run yet. Every remaining step is listed in section F with its owner.
