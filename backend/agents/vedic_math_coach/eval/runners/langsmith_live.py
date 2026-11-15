@@ -628,13 +628,21 @@ def run_human(_: argparse.Namespace) -> int:
     api = _client()
     ls = _ls()
     cases = json.loads((DATASETS / "human_review_30.json").read_text(encoding="utf-8"))["cases"]
+    # The original human-review case file omits most lesson context fields.
+    # Recover the authored teaching context rather than inventing it.
+    teaching_cases = json.loads((EVAL_DIR / "teaching_quality_cases.json").read_text(encoding="utf-8"))
+    source_by_id = {case["id"]: case for case in teaching_cases}
     ds = _ensure_dataset(
         ls,
         HUMAN_DATASET,
         "30 Rishi responses for genuine human review.",
         [
             {
-                "inputs": {"case_id": c["case_id"], "prompt": c["learner_prompt"], "context": c.get("context") or {}},
+                "inputs": {
+                    "case_id": c["case_id"],
+                    "prompt": c["learner_prompt"],
+                    "context": source_by_id.get(c.get("source_case_id"), {}).get("context") or {},
+                },
                 "outputs": {"expected_behavior": c["expected_behavior"], "rubric": HUMAN_RUBRIC},
                 "metadata": {"source_case_id": c.get("source_case_id")},
             }
@@ -644,9 +652,14 @@ def run_human(_: argparse.Namespace) -> int:
 
     def target(inputs: dict[str, Any]) -> dict[str, Any]:
         raw = inputs.get("context") or {}
-        ctx = {"screen": "learn", "sutra_id": raw.get("sutra"), "difficulty": raw.get("difficulty")}
-        if raw.get("persona"):
-            ctx["preferred_persona"] = raw["persona"]
+        ctx = {
+            "screen": raw.get("screen", "learn"),
+            "sutra_id": raw.get("sutra_id") or raw.get("sutra"),
+            "difficulty": raw.get("difficulty"),
+        }
+        for key in ("problem_label", "preferred_persona", "event", "hint_level", "check_status", "learner_answer", "progress_note"):
+            if raw.get(key) is not None:
+                ctx[key] = raw[key]
         return ask_rishi(api, [inputs["prompt"]], ctx)
 
     results = evaluate(
