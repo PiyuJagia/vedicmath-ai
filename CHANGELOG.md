@@ -2,6 +2,14 @@
 
 Version notes for VedicMath AI. Older commits stay on `main`; each version below points at the history that introduced it.
 
+## Unreleased — Number Rocket game
+
+A new game under Play to Win, for Nikhilam and Ekadhikena at Beginner. It opens once Nikhilam Beginner is passed (Ekadhikena launches also need its Theory or lessons opened). The game never fills the Beginner, Intermediate or Advanced rings; those still come only from Practice with Coach.
+
+- Backend: `GET /game/rocket/rungs`, `GET /game/rocket/mission`, `GET /game/rocket/launch` and `POST /game/rocket/check`. Missions are six launches built from a seed across rungs inside Beginner. Every stage is checked in Python, hints never contain the answer, and the expected answer is never returned.
+- Frontend (`/play/rocket`): pick the right engine, fire each stage, then a take-off that zooms out to the mission star map. Rabbit hops in to offer hints and parks bottom-right with idle moves (3D when the device supports WebGL, the flat picture otherwise). The coach visits after every two wins with a templated message and can replay a launch in the Practice with Coach player.
+- Game progress is kept in the browser (`vedicmath-ai:rocket`).
+
 ## Unreleased — One answer contract for all Sutras
 
 Answer checking now covers all five Sutras with a Python engine (Nikhilam, Urdhva, Ekadhikena, Yavadunam, Ekanyunena) at every difficulty level, with identical response fields everywhere.
