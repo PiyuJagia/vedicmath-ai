@@ -110,7 +110,8 @@ Note: local port 8000 had a stale process serving API `0.4.0` without coach rout
 ## 8. Git
 
 - Branch: `feature/live-rishi-coach` (includes merge of `origin/main` Number Rocket)
-- Commits for this delivery: see git log after commit
+- Commit: `ad8a4c8` — Wire live Rishi across the learner journey via shared LiveCoach and `/coach/chat`
+- Not pushed / not merged to `main` / not deployed to Render in this pass
 
 ## 9. Render deployment
 
