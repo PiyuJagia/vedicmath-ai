@@ -43,3 +43,7 @@ Rishi is now drawn from behind in his cream outfit, lavender diagonal sash and w
 ## Larger destination and readable stepping stones
 
 Wonder Island is now larger from the outset and includes a castle with flags, a rainbow, waterfall, palms, glowing beach, treasure chest, and sparkles. Upcoming platforms are enlarged separately from Rishi's current platform, with wider spacing on desktop and responsive spacing on mobile. Answer numbers use larger bold type. After every correct landing, the next question and three new options appear with a reveal transition and explicit companion feedback. The final landing opens the celebration rather than creating another question.
+
+## Wider island and longer ocean gaps
+
+The island is approximately twice as wide in the opening composition, with its vertical proportions adjusted to keep the question and distant beach separate from the landing choices. Rows of stepping stones are now 14 world units apart instead of 7. Upcoming platforms are enlarged again to compensate for the additional distance, with larger answer type and wider desktop lane spacing. Jump paths, camera tracking, answer hit areas, and review states use the same new spacing.
