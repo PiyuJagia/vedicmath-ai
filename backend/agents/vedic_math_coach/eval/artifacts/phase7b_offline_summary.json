@@ -1,0 +1,66 @@
+{
+  "mode": "offline",
+  "total": 27,
+  "passed": 27,
+  "failed": 0,
+  "pass_rate": 1.0,
+  "by_category": {
+    "conceptual": {
+      "n": 2,
+      "passed": 2,
+      "pass_rate": 1.0,
+      "failures": []
+    },
+    "adversarial": {
+      "n": 9,
+      "passed": 9,
+      "pass_rate": 1.0,
+      "failures": []
+    },
+    "safety": {
+      "n": 1,
+      "passed": 1,
+      "pass_rate": 1.0,
+      "failures": []
+    },
+    "hint_leakage": {
+      "n": 11,
+      "passed": 11,
+      "pass_rate": 1.0,
+      "failures": []
+    },
+    "persona": {
+      "n": 2,
+      "passed": 2,
+      "pass_rate": 1.0,
+      "failures": []
+    },
+    "guidance": {
+      "n": 2,
+      "passed": 2,
+      "pass_rate": 1.0,
+      "failures": []
+    }
+  },
+  "evaluator_sensitivity_known_bad": 1.0,
+  "evaluator_acceptance_known_good": 1.0,
+  "aggregates": {
+    "mathematical_grounding": 1.0,
+    "intermediate_step_accuracy": 1.0,
+    "conceptual_understanding": 1.0,
+    "persona_appropriateness": 1.0,
+    "unsupported_abstention": 1.0,
+    "hint_quality": 1.0,
+    "next_step_guidance": 1.0,
+    "age_appropriateness": 1.0,
+    "misconception_diagnosis": 1.0,
+    "context_relevance": 1.0
+  },
+  "aggregates_note": "aggregates computed on label=good fixtures only",
+  "failures": [],
+  "pass_threshold_rubric": 3,
+  "live_llm_judge": "optional_not_run_offline",
+  "eval_latency_seconds": 0.018,
+  "cost_usd": null,
+  "cost_note": "offline deterministic \u2014 no LLM spend"
+}

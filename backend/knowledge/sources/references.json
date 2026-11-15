@@ -1,0 +1,92 @@
+{
+  "content_version": "7C.1",
+  "documents": [
+    {
+      "document_id": "vedamu_methods",
+      "title": "Vedic Mathematics - Methods",
+      "url": "https://www.vedamu.org/veda/1795%24vedic_mathematics_methods.pdf",
+      "accessed": "2026-11-15",
+      "pages": 160,
+      "copyright_note": "Research reference only; do not redistribute wholesale.",
+      "key_pdf_indexes": {
+        "ekadhikena": [
+          8,
+          10,
+          16
+        ],
+        "nikhilam": [
+          19,
+          21,
+          24,
+          26,
+          30
+        ],
+        "urdhva": [
+          32,
+          39,
+          41,
+          42
+        ],
+        "ekanyunena": [
+          70,
+          72,
+          75,
+          76
+        ],
+        "yavadunam": [
+          87,
+          90,
+          91,
+          93
+        ]
+      }
+    },
+    {
+      "document_id": "scert_fundamentals_2014",
+      "title": "Fundamentals & Applications of Vedic Mathematics",
+      "publisher": "SCERT New Delhi",
+      "year": 2014,
+      "url": "https://navavani.org.in/wp/wp-content/uploads/2017/07/FUNDAMENTALANDVEDICMATHEMATICS.pdf",
+      "accessed": "2026-11-15",
+      "pages": 65,
+      "copyright_note": "Research reference only; do not redistribute wholesale.",
+      "key_pdf_indexes": {
+        "contents": [
+          5
+        ],
+        "sixteen_sutras_list": [
+          8,
+          9
+        ],
+        "special_multiplication_base": [
+          32,
+          33,
+          34,
+          35
+        ],
+        "vertical_crosswise": [
+          32,
+          33,
+          49,
+          50
+        ],
+        "squaring_near_base": [
+          53,
+          54,
+          55
+        ],
+        "all_from_9": [
+          18,
+          19,
+          20
+        ]
+      },
+      "caveat": "Preface asserts Vedic/Atharvaveda origin; historians dispute that claim. Use arithmetic techniques; do not teach disputed history as fact."
+    }
+  ],
+  "app_conventions": {
+    "nikhilam_deviation": "base - number",
+    "yavadunam_deviation": "number - base",
+    "note": "Do not conflate Nikhilam and Yavadunam deviation sign conventions."
+  }
+}

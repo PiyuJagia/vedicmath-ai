@@ -1,0 +1,141 @@
+.page {
+  display: grid;
+  gap: var(--space-5);
+  max-width: 1100px;
+}
+
+.header {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.lede {
+  color: var(--color-muted);
+  max-width: 62ch;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.messageRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.meta {
+  display: grid;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+
+.meta code {
+  color: var(--color-navy);
+  word-break: break-all;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.stageCard {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.stageHeading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  font-weight: 600;
+}
+
+.notice {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-radius: var(--radius-md, 12px);
+  background: var(--color-blue-50);
+  color: var(--color-navy);
+}
+
+.notice strong {
+  font-size: var(--text-md);
+}
+
+.error {
+  color: var(--color-locked);
+}
+
+.gated {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 560px;
+}
+
+.chatCard {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.transcript {
+  display: grid;
+  gap: var(--space-3);
+  max-height: 360px;
+  overflow: auto;
+  padding: var(--space-2);
+}
+
+.learnerBubble,
+.coachBubble {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border-radius: 12px;
+  max-width: 85%;
+}
+
+.learnerBubble {
+  justify-self: end;
+  background: var(--color-lavender-100);
+  color: var(--color-navy);
+}
+
+.coachBubble {
+  justify-self: start;
+  background: var(--color-teal-50);
+  color: var(--color-ink);
+}
+
+.speakerLabel {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  text-transform: capitalize;
+}
+
+.composer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.composer input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid color-mix(in srgb, var(--color-navy) 18%, transparent);
+  border-radius: 10px;
+  font: inherit;
+  color: var(--color-ink);
+  background: #fff;
+}

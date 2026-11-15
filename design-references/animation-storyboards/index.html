@@ -1,0 +1,1133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VedicMath AI: animation storyboards (Gate 2)</title>
+  <style>
+    :root {
+      --navy: #1f2547;
+      --muted: #5f6682;
+      --teal: #2a9d8f;
+      --teal-bg: #e4f4f1;
+      --purple: #5b3fa8;
+      --lavender: #eeeaff;
+      --amber: #b97a06;
+      --amber-bg: #fdf0d0;
+      --blue-bg: #eaf3fb;
+      --border: #e3e2f0;
+      --page: #f8f8fd;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--navy);
+      font-family: "Segoe UI", system-ui, sans-serif;
+      line-height: 1.5;
+    }
+
+    h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; font-weight: 500; margin: 0; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 24px;
+    }
+
+    header h1 { font-size: 21px; }
+
+    nav { display: flex; flex-wrap: wrap; gap: 6px; margin-left: auto; }
+
+    nav a {
+      padding: 5px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--navy);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    nav a:hover { background: var(--lavender); }
+
+    a:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+
+    main { max-width: 1500px; margin: 0 auto; padding: 24px; }
+
+    section { margin-bottom: 44px; }
+
+    section > h2 { font-size: 26px; margin-bottom: 4px; }
+
+    .lede { margin: 0 0 16px; color: var(--muted); max-width: 900px; }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 20px;
+    }
+
+    .card h3 { font-size: 18px; margin-bottom: 8px; }
+    .card p { margin: 0 0 8px; max-width: 900px; }
+    .card p:last-child { margin-bottom: 0; }
+
+    .legend { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px 24px; margin-top: 12px; }
+    .legend div { display: flex; align-items: center; gap: 12px; font-size: 14px; }
+    .legend svg { flex: none; }
+
+    .frames { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 20px; }
+
+    .frame {
+      margin: 0;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .frame-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    .frame-head .code {
+      background: var(--purple);
+      color: #fff;
+      font-weight: 600;
+      border-radius: 999px;
+      padding: 1px 10px;
+    }
+
+    .frame svg.stage { display: block; width: 100%; height: auto; background: #fff; }
+
+    .frame dl { margin: 0; padding: 4px 14px 12px; border-top: 1px solid var(--border); }
+    .frame dl > div { display: grid; grid-template-columns: 112px 1fr; gap: 10px; padding: 7px 0; border-bottom: 1px dashed var(--border); font-size: 14px; }
+    .frame dl > div:last-child { border-bottom: 0; }
+    .frame dt { font-weight: 600; font-size: 12px; align-self: start; }
+    .frame dt span { display: inline-block; border-radius: 6px; padding: 2px 8px; }
+    .frame dd { margin: 0; }
+
+    .row-state dt span { background: var(--teal-bg); color: #17695f; }
+    .row-motion dt span { background: var(--lavender); color: var(--purple); }
+    .row-coach dt span { background: var(--blue-bg); color: #2c5d86; }
+    .row-data dt span { background: #f0f0f5; color: var(--muted); }
+    .row-data dd { font-family: Consolas, ui-monospace, monospace; font-size: 12.5px; color: var(--muted); }
+    .row-gap dt span { background: var(--amber-bg); color: #7a5200; }
+    .row-gap dd { color: #7a5200; }
+
+    .num { font-family: "Segoe UI", system-ui, sans-serif; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+    table { border-collapse: collapse; width: 100%; max-width: 1000px; font-size: 15px; }
+    th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { font-weight: 600; background: var(--lavender); }
+
+    .note { margin: 14px 0 0; color: var(--muted); font-size: 14px; max-width: 900px; }
+
+    #app-error {
+      display: none;
+      margin: 0 0 24px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: #fdecec;
+      border: 1px solid #e3a3a3;
+      color: #8a1f1f;
+    }
+
+    code { font-family: Consolas, ui-monospace, monospace; font-size: 0.92em; }
+  </style>
+</head>
+<body>
+  <!-- Arrowheads shared by every stage drawing on the page. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <marker id="arrow-teal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" fill="#2a9d8f"/>
+      </marker>
+      <marker id="arrow-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" fill="#5b3fa8"/>
+      </marker>
+    </defs>
+  </svg>
+
+  <header>
+    <h1>Animation storyboards (Gate 2)</h1>
+    <nav aria-label="Storyboards">
+      <a href="#how-to-read">How to read</a>
+      <a href="#nikhilam">Nikhilam</a>
+      <a href="#nikhilam-borrow">Nikhilam borrow</a>
+      <a href="#urdhva">Urdhva</a>
+      <a href="#ekadhikena">Ekadhikena</a>
+      <a href="#backend">Backend additions</a>
+    </nav>
+  </header>
+
+  <main>
+    <div id="app-error" role="alert"></div>
+
+    <section id="how-to-read">
+      <div class="card">
+        <h3>How to read these storyboards</h3>
+        <p>Each frame is one moment of the animation. Under every frame, <strong>Maths state</strong> says what is mathematically true on screen, and <strong>Motion</strong> says how the picture gets there. Motion is a transition only; it never adds or changes a value.</p>
+        <p id="provenance"></p>
+        <div class="legend">
+          <div>
+            <svg width="70" height="34" viewBox="0 0 70 34"><rect x="6" y="3" width="58" height="28" rx="8" fill="#e4f4f1" stroke="#2a9d8f" stroke-width="2.5"/><text x="35" y="17" class="num" font-size="16" fill="#1f2547" text-anchor="middle" dominant-baseline="central">98</text></svg>
+            <span>Teal tile: the value in use during this beat</span>
+          </div>
+          <div>
+            <svg width="70" height="34" viewBox="0 0 70 34"><line x1="8" y1="26" x2="60" y2="8" stroke="#2a9d8f" stroke-width="3" stroke-linecap="round" marker-end="url(#arrow-teal)"/></svg>
+            <span>Solid teal line: a real calculation between two values</span>
+          </div>
+          <div>
+            <svg width="70" height="34" viewBox="0 0 70 34"><path d="M8 26 Q 30 2 60 10" fill="none" stroke="#5b3fa8" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#arrow-purple)"/></svg>
+            <span>Dashed purple arrow: a value travelling to its next place (motion only)</span>
+          </div>
+          <div>
+            <svg width="70" height="34" viewBox="0 0 70 34"><rect x="12" y="4" width="46" height="26" rx="13" fill="#eeeaff" stroke="#b9aef0" stroke-width="1.5"/><text x="35" y="17" class="num" font-size="15" fill="#5b3fa8" text-anchor="middle" dominant-baseline="central">+2</text></svg>
+            <span>Lavender chip: a deviation, base &#8722; number</span>
+          </div>
+          <div>
+            <svg width="70" height="34" viewBox="0 0 70 34"><circle cx="35" cy="17" r="13" fill="#fdf0d0" stroke="#b97a06" stroke-width="2"/><text x="35" y="17" class="num" font-size="15" fill="#7a5200" text-anchor="middle" dominant-baseline="central">1</text></svg>
+            <span>Amber token: a carry or borrow, always visible while it waits</span>
+          </div>
+          <div>
+            <svg width="70" height="34" viewBox="0 0 70 34"><rect x="12" y="4" width="46" height="26" rx="8" fill="none" stroke="#9aa0b5" stroke-width="1.5" stroke-dasharray="4 4"/></svg>
+            <span>Dashed outline: an empty slot, or where a moving value came from</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="nikhilam">
+      <h2>Nikhilam</h2>
+      <p class="lede" id="lede-nikhilam"></p>
+      <div class="frames" id="frames-nikhilam"></div>
+    </section>
+
+    <section id="nikhilam-borrow">
+      <h2>Nikhilam: borrow adjustment</h2>
+      <p class="lede" id="lede-nikhilam-borrow"></p>
+      <div class="frames" id="frames-nikhilam-borrow"></div>
+      <p class="note">A carry is the mirror image: the amber token travels from the right part to the left part instead. Steps 1 to 4 are drawn exactly as in the storyboard above.</p>
+    </section>
+
+    <section id="urdhva">
+      <h2>Urdhva Tiryagbhyam</h2>
+      <p class="lede" id="lede-urdhva"></p>
+      <div class="frames" id="frames-urdhva"></div>
+      <p class="note">The frames for each column are produced by the same three beats: multiply, add the waiting carry, then split and write. Longer numbers add more columns and more lines per column; a carry larger than 9 is the same amber token showing a two-digit value.</p>
+    </section>
+
+    <section id="ekadhikena">
+      <h2>Ekadhikena Purvena</h2>
+      <p class="lede" id="lede-ekadhikena"></p>
+      <div class="frames" id="frames-ekadhikena"></div>
+    </section>
+
+    <section id="backend">
+      <h2>Backend additions these storyboards point to</h2>
+      <p class="lede">Frames marked "Needs backend addition" show something the current API does not state outright. Everything else can be built from today's responses.</p>
+      <div class="card">
+        <table>
+          <thead>
+            <tr><th>Frame</th><th>What is missing today</th><th>Smallest addition</th></tr>
+          </thead>
+          <tbody id="gap-rows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="lesson-data.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      // ---------------------------------------------------------------
+      // Storyboard renderer.
+      // Every number drawn below is read from window.LESSON_DATA, which is
+      // the unmodified output of the Python backend. Nothing here works
+      // out an answer; it only places and formats values it was given.
+      // ---------------------------------------------------------------
+
+      var C = {
+        navy: '#1f2547', grey: '#9aa0b5', line: '#d9d8e8',
+        teal: '#2a9d8f', tealBg: '#e4f4f1',
+        purple: '#5b3fa8', lav: '#eeeaff', lavLine: '#b9aef0',
+        amber: '#b97a06', amberInk: '#7a5200', amberBg: '#fdf0d0',
+        blueBg: '#eaf3fb'
+      };
+
+      // Colours for highlighted pieces of text in the working area.
+      var INK = { write: C.teal, carry: C.amber, dev: C.purple, strong: C.navy, ghost: C.grey };
+
+      function esc(value) {
+        return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+      }
+
+      // Show a proper minus sign instead of a hyphen.
+      function fmt(n) { return String(n).replace('-', '\u2212'); }
+
+      // Deviations are shown with their sign, for example +3 or −2.
+      function signed(n) { return n > 0 ? '+' + n : fmt(n); }
+
+      function hi(text, colour) { return { t: fmt(text), c: colour }; }
+
+      // ---------- SVG building blocks ----------
+
+      var TILE_STYLES = {
+        normal: { fill: '#ffffff', stroke: C.line, width: 1.5, ink: C.navy, dash: '', opacity: 1 },
+        active: { fill: C.tealBg, stroke: C.teal, width: 2.5, ink: C.navy, dash: '', opacity: 1 },
+        muted: { fill: '#ffffff', stroke: C.line, width: 1.5, ink: C.navy, dash: '', opacity: 0.35 },
+        empty: { fill: '#fbfbff', stroke: C.grey, width: 1.5, ink: C.navy, dash: '4 4', opacity: 1 },
+        warn: { fill: C.amberBg, stroke: C.amber, width: 2.5, ink: C.navy, dash: '', opacity: 1 }
+      };
+
+      function tile(cx, cy, label, state, w, h, size) {
+        var s = TILE_STYLES[state || 'normal'];
+        w = w || 56; h = h || 46; size = size || 26;
+        var out = '<g opacity="' + s.opacity + '"><rect x="' + (cx - w / 2) + '" y="' + (cy - h / 2) + '" width="' + w + '" height="' + h +
+          '" rx="10" fill="' + s.fill + '" stroke="' + s.stroke + '" stroke-width="' + s.width + '"' +
+          (s.dash ? ' stroke-dasharray="' + s.dash + '"' : '') + '/>';
+        if (state !== 'empty' && label !== '') {
+          out += '<text x="' + cx + '" y="' + cy + '" class="num" font-size="' + size + '" fill="' + s.ink +
+            '" text-anchor="middle" dominant-baseline="central">' + esc(fmt(label)) + '</text>';
+        }
+        return out + '</g>';
+      }
+
+      function chip(cx, cy, label, state) {
+        var w = 64, h = 36;
+        if (state === 'empty') {
+          return '<rect x="' + (cx - w / 2) + '" y="' + (cy - h / 2) + '" width="' + w + '" height="' + h +
+            '" rx="18" fill="none" stroke="' + C.grey + '" stroke-width="1.5" stroke-dasharray="4 4"/>';
+        }
+        var active = state === 'active';
+        return '<g opacity="' + (state === 'muted' ? 0.35 : 1) + '"><rect x="' + (cx - w / 2) + '" y="' + (cy - h / 2) + '" width="' + w + '" height="' + h +
+          '" rx="18" fill="' + C.lav + '" stroke="' + (active ? C.purple : C.lavLine) + '" stroke-width="' + (active ? 2.5 : 1.5) + '"/>' +
+          '<text x="' + cx + '" y="' + cy + '" class="num" font-size="20" fill="' + C.purple +
+          '" text-anchor="middle" dominant-baseline="central">' + esc(label) + '</text></g>';
+      }
+
+      function carryToken(cx, cy, value, ghost) {
+        var label = String(value);
+        var w = 30 + (label.length - 1) * 9;
+        return '<g opacity="' + (ghost ? 0.55 : 1) + '"><rect x="' + (cx - w / 2) + '" y="' + (cy - 15) + '" width="' + w + '" height="30" rx="15" fill="' +
+          (ghost ? 'none' : C.amberBg) + '" stroke="' + C.amber + '" stroke-width="2"' + (ghost ? ' stroke-dasharray="4 4"' : '') + '/>' +
+          '<text x="' + cx + '" y="' + cy + '" class="num" font-size="16" fill="' + C.amberInk +
+          '" text-anchor="middle" dominant-baseline="central">' + esc(label) + '</text></g>';
+      }
+
+      function basePill(cx, cy, label, state) {
+        var active = state === 'active';
+        return '<rect x="' + (cx - 78) + '" y="' + (cy - 17) + '" width="156" height="34" rx="17" fill="' + (active ? C.tealBg : '#ffffff') +
+          '" stroke="' + C.teal + '" stroke-width="' + (active ? 2.5 : 1.5) + '"/>' +
+          '<text x="' + cx + '" y="' + cy + '" class="num" font-size="18" fill="' + C.navy +
+          '" text-anchor="middle" dominant-baseline="central">' + esc(label) + '</text>';
+      }
+
+      // A calculation link between two values.
+      function mathLine(x1, y1, x2, y2, options) {
+        options = options || {};
+        return '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + C.teal +
+          '" stroke-width="3" stroke-linecap="round"' +
+          (options.faded ? ' opacity="0.25"' : '') +
+          (options.proposed ? ' stroke-dasharray="1 7"' : '') +
+          (options.arrow ? ' marker-end="url(#arrow-teal)"' : '') + '/>';
+      }
+
+      // A value travelling across the stage. "bend" curves the path.
+      function motionArrow(x1, y1, x2, y2, bend) {
+        var mx = (x1 + x2) / 2 - (y2 - y1) * (bend || 0);
+        var my = (y1 + y2) / 2 + (x2 - x1) * (bend || 0);
+        return '<path d="M' + x1 + ' ' + y1 + ' Q ' + mx + ' ' + my + ' ' + x2 + ' ' + y2 + '" fill="none" stroke="' + C.purple +
+          '" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#arrow-purple)"/>';
+      }
+
+      function txt(x, y, value, options) {
+        options = options || {};
+        return '<text x="' + x + '" y="' + y + '" font-size="' + (options.size || 12) + '" fill="' + (options.fill || C.grey) +
+          '" text-anchor="' + (options.anchor || 'middle') + '" dominant-baseline="central"' +
+          (options.num ? ' class="num"' : ' font-family="Segoe UI, system-ui, sans-serif"') + '>' + esc(value) + '</text>';
+      }
+
+      // One line of working, with some pieces coloured.
+      function richLine(x, y, line, size) {
+        var segments = Array.isArray(line) ? line : line.segs;
+        var opacity = Array.isArray(line) ? 1 : line.opacity;
+        var spans = segments.map(function (seg) {
+          if (typeof seg === 'string') { return '<tspan>' + esc(seg) + '</tspan>'; }
+          return '<tspan fill="' + INK[seg.c] + '" font-weight="700">' + esc(seg.t) + '</tspan>';
+        }).join('');
+        return '<text x="' + x + '" y="' + y + '" class="num" font-size="' + size + '" fill="' + C.navy +
+          '" opacity="' + opacity + '" style="white-space:pre">' + spans + '</text>';
+      }
+
+      function workPanel(box, title, lines, gap) {
+        gap = gap || 28;
+        var out = '<rect x="' + box.x + '" y="' + box.y + '" width="' + box.w + '" height="' + box.h + '" rx="12" fill="' + C.blueBg + '"/>' +
+          txt(box.x + 14, box.y + 18, title.toUpperCase(), { size: 10.5, anchor: 'start', fill: '#5f7d99' });
+        lines.forEach(function (line, i) {
+          out += richLine(box.x + 14, workLineY(box, i, gap), line, 17);
+        });
+        return out;
+      }
+
+      function workLineY(box, index, gap) { return box.y + 50 + index * (gap || 28); }
+
+      function joinedAnswer(cx, cy, value) {
+        var label = String(value);
+        var w = 44 + label.length * 21;
+        return '<rect x="' + (cx - w / 2) + '" y="' + (cy - 25) + '" width="' + w + '" height="50" rx="12" fill="' + C.tealBg +
+          '" stroke="' + C.teal + '" stroke-width="2.5"/>' +
+          '<text x="' + cx + '" y="' + cy + '" class="num" font-size="32" fill="' + C.navy +
+          '" text-anchor="middle" dominant-baseline="central">' + esc(label) + '</text>';
+      }
+
+      // ---------- Frame card ----------
+
+      function frameHTML(frame) {
+        var rows = [
+          ['state', 'Maths state', frame.state],
+          ['motion', 'Motion', frame.motion],
+          ['coach', frame.coachLabel || 'Explanation (draft wording)', frame.coach],
+          ['data', 'Backend data', frame.data],
+          ['gap', 'Needs backend addition', frame.gap]
+        ].filter(function (row) { return row[2]; }).map(function (row) {
+          return '<div class="row-' + row[0] + '"><dt><span>' + esc(row[1]) + '</span></dt><dd>' + esc(row[2]) + '</dd></div>';
+        }).join('');
+        return '<figure class="frame"><figcaption class="frame-head"><span class="code">' + esc(frame.code) +
+          '</span><span>' + esc(frame.step) + '</span></figcaption>' +
+          '<svg class="stage" viewBox="0 0 480 300" role="img" aria-label="' + esc(frame.code + ': ' + frame.state) + '">' + frame.svg + '</svg>' +
+          '<dl>' + rows + '</dl></figure>';
+      }
+
+      // ===============================================================
+      // NIKHILAM
+      // ===============================================================
+
+      // Logical grid for the Nikhilam stage (units of the 480 x 300 viewBox).
+      var NK = {
+        base: { x: 140, y: 26 },
+        lineY: 60,
+        a: { x: 86, y: 118 },
+        b: { x: 86, y: 180 },
+        timesX: 24,
+        devA: { x: 200, y: 118 },
+        devB: { x: 200, y: 180 },
+        work: { x: 262, y: 92, w: 206, h: 118 },
+        resY: 258,
+        resLX: 96,
+        barX: 152,
+        resR0: 190,
+        cellGap: 38
+      };
+
+      // Reads the Nikhilam contract (deviation = base − number). Values are
+      // looked up by operand role, never by matching numbers.
+      function nikhilamValues(lesson) {
+        var byType = {};
+        lesson.teaching_steps.forEach(function (step) { byType[step.type] = step; });
+        function byOperand(list, role) { return list.filter(function (item) { return item.operand === role; })[0]; }
+        var calc = byType.deviations.calculations;
+        var cross = byType.cross_subtract.cross_calculations;
+        return {
+          a: byType.base.numbers[0],
+          b: byType.base.numbers[1],
+          base: byType.base.base,
+          rightDigits: byType.base.right_digits,
+          convention: byType.deviations.convention,
+          devA: byOperand(calc, 'number_a').deviation,
+          devB: byOperand(calc, 'number_b').deviation,
+          crossA: byOperand(cross, 'number_a'),
+          crossB: byOperand(cross, 'number_b'),
+          left: byType.cross_subtract.left_part,
+          right: byType.multiply_deviations.right_part,
+          adjust: byType.adjust,
+          combine: byType.combine,
+          result: lesson.result,
+          stepCount: lesson.teaching_steps.length,
+          label: function (type) {
+            return 'Step ' + byType[type].id + ' of ' + lesson.teaching_steps.length + ' \u00b7 ' + byType[type].title;
+          }
+        };
+      }
+
+      // Negative values are wrapped in brackets when they are subtracted or multiplied.
+      function paren(n) { return n < 0 ? '(' + fmt(n) + ')' : String(n); }
+
+      // Draft coach wording; the sign of the backend deviation picks the phrasing.
+      function distanceQuestion(number, deviation, base) {
+        return deviation < 0
+          ? 'How far is ' + number + ' above ' + base + '? Numbers above the base get a negative deviation.'
+          : 'How far is ' + number + ' below ' + base + '?';
+      }
+
+      // Marks the two numbers and the base on a short number line.
+      // The scaling only decides where to draw each dot.
+      function numberLine(v) {
+        var x0 = 30, x1 = 250, y = NK.lineY;
+        var low = Math.min(v.a, v.b, v.base) - 1;
+        var high = Math.max(v.a, v.b, v.base) + 1;
+        function xFor(n) { return x0 + ((n - low) / (high - low)) * (x1 - x0); }
+        var out = '<line x1="' + x0 + '" y1="' + y + '" x2="' + x1 + '" y2="' + y + '" stroke="' + C.line + '" stroke-width="2" stroke-linecap="round"/>';
+        [[v.a, false], [v.b, false], [v.base, true]].forEach(function (point) {
+          var x = xFor(point[0]);
+          out += '<circle cx="' + x + '" cy="' + y + '" r="' + (point[1] ? 6 : 4.5) + '" fill="' + (point[1] ? C.teal : C.purple) + '"/>' +
+            txt(x, y + 17, point[0], { size: 12.5, num: true, fill: point[1] ? C.teal : C.navy });
+        });
+        return out;
+      }
+
+      function rightCells(cells, states) {
+        return cells.map(function (cell, i) {
+          return tile(NK.resR0 + i * NK.cellGap, NK.resY, cell, states[i], 36, 46, 26);
+        }).join('');
+      }
+
+      function nikhilamStage(v, o) {
+        var out = '';
+        if (o.base) { out += basePill(NK.base.x, NK.base.y, 'Base = ' + v.base, o.base); }
+        if (o.numberLine) { out += numberLine(v); }
+        out += tile(NK.a.x, NK.a.y, v.a, o.a || 'normal', 84, 46);
+        out += txt(NK.timesX, NK.b.y, '\u00d7', { size: 24 });
+        out += tile(NK.b.x, NK.b.y, v.b, o.b || 'normal', 84, 46);
+        if (o.devA) { out += chip(NK.devA.x, NK.devA.y, signed(v.devA), o.devA); }
+        if (o.devB) { out += chip(NK.devB.x, NK.devB.y, signed(v.devB), o.devB); }
+        if (o.work) { out += workPanel(NK.work, 'Working', o.work); }
+        if (o.resL) {
+          out += txt(NK.resLX, NK.resY - 33, 'left part');
+          out += o.resL === 'empty' ? tile(NK.resLX, NK.resY, '', 'empty', 84, 46) : tile(NK.resLX, NK.resY, o.resL.value, o.resL.state, 84, 46);
+          out += '<line x1="' + NK.barX + '" y1="' + (NK.resY - 22) + '" x2="' + NK.barX + '" y2="' + (NK.resY + 22) + '" stroke="' + C.grey + '" stroke-width="2"/>';
+        }
+        if (o.resR) {
+          var count = o.resR.wide ? 2 : o.resR.cells.length;
+          out += txt(NK.resR0 + (count - 1) * NK.cellGap / 2, NK.resY - 33, 'right part');
+          out += o.resR.wide
+            ? tile(NK.resR0 + NK.cellGap / 2, NK.resY, o.resR.wide, o.resR.state, 74, 46)
+            : rightCells(o.resR.cells, o.resR.states);
+        }
+        if (o.joined) { out += joinedAnswer(NK.barX, NK.resY, o.joined); }
+        return out + (o.extra || '');
+      }
+
+      function nikhilamFrames(lesson) {
+        var v = nikhilamValues(lesson);
+        var a = v.a, b = v.b, base = v.base;
+        var sA = signed(v.devA), sB = signed(v.devB);
+        var W = NK.work;
+        var line0 = workLineY(W, 0) - 6;
+        var k = v.combine;
+        var padCount = k.padding_zeros;
+        var cellsAfter = k.formatted_right.split('');
+        var cellsBefore = cellsAfter.map(function (digit, i) { return i < padCount ? '' : digit; });
+        var statesBefore = cellsAfter.map(function (digit, i) { return i < padCount ? 'empty' : 'active'; });
+        var statesAfter = cellsAfter.map(function (digit, i) { return i < padCount ? 'active' : 'normal'; });
+        var emptyCells = cellsAfter.map(function () { return ''; });
+        var emptyStates = cellsAfter.map(function () { return 'empty'; });
+        var activeStates = cellsAfter.map(function () { return 'active'; });
+        var lastCellX = NK.resR0 + (cellsAfter.length - 1) * NK.cellGap;
+
+        var diagonalAB = [NK.a.x + 44, NK.a.y + 7, NK.devB.x - 35, NK.devB.y - 8];
+        var diagonalBA = [NK.b.x + 44, NK.b.y - 7, NK.devA.x - 35, NK.devA.y + 8];
+
+        var crossTextA = v.crossA.number + ' \u2212 ' + paren(v.crossA.deviation) + ' = ';
+        var crossTextB = v.crossB.number + ' \u2212 ' + paren(v.crossB.deviation) + ' = ';
+        var productText = paren(v.devA) + ' \u00d7 ' + paren(v.devB) + ' = ';
+
+        return [
+          {
+            step: v.label('base'),
+            svg: nikhilamStage(v, {}),
+            state: 'The problem ' + a + ' \u00d7 ' + b + ' is on the stage. Tile A holds ' + a + ' and tile B holds ' + b + '.',
+            motion: 'Both number tiles fade in.',
+            coach: 'Let\u2019s multiply ' + a + ' by ' + b + '.',
+            data: 'show_numbers: operands (number_a, number_b)'
+          },
+          {
+            step: v.label('base'),
+            svg: nikhilamStage(v, { base: 'active', numberLine: true }),
+            state: 'Base ' + base + ' sits above the numbers. The number line marks ' + a + ', ' + b + ' and the base ' + base + '.',
+            motion: 'The base marker drops in and pulses once. The number line draws from left to right.',
+            coach: 'We choose ' + base + ' because both numbers are close to ' + base + '.',
+            data: 'show_base: value, right_digits; compare_with_base: operands'
+          },
+          {
+            step: v.label('deviations'),
+            svg: nikhilamStage(v, { base: 'active', a: 'active', b: 'muted', devA: 'empty', devB: 'empty', work: [[base + ' \u2212 ' + a + ' = ', hi(sA, 'dev')]] }),
+            state: 'Base \u2212 A: ' + base + ' \u2212 ' + a + ' = ' + sA + '.',
+            motion: 'The base highlights, then ' + a + ', then the subtraction writes itself in the working area.',
+            coach: distanceQuestion(a, v.devA, base),
+            data: 'calculate_deviation (operand number_a): convention "' + v.convention + '", base, number, deviation'
+          },
+          {
+            step: v.label('deviations'),
+            svg: nikhilamStage(v, {
+              base: 'normal', a: 'active', b: 'muted', devA: 'active', devB: 'empty',
+              work: [[base + ' \u2212 ' + a + ' = ', hi(sA, 'ghost')]],
+              extra: motionArrow(W.x + 2, line0, NK.devA.x + 36, NK.devA.y, -0.25)
+            }),
+            state: sA + ' is stored in deviation tile A, beside ' + a + '.',
+            motion: sA + ' lifts out of the equation and travels to the tile beside ' + a + '.',
+            data: 'calculate_deviation (operand number_a): target deviation_a'
+          },
+          {
+            step: v.label('deviations'),
+            svg: nikhilamStage(v, {
+              base: 'active', a: 'muted', b: 'active', devA: 'normal', devB: 'active',
+              work: [[base + ' \u2212 ' + b + ' = ', hi(sB, 'ghost')]],
+              extra: motionArrow(W.x + 2, line0, NK.devB.x + 36, NK.devB.y, 0.25)
+            }),
+            state: 'Base \u2212 B: ' + base + ' \u2212 ' + b + ' = ' + sB + ', stored in deviation tile B.',
+            motion: 'The same beats repeat for ' + b + ': highlight, subtract, move.',
+            coach: 'And ' + distanceQuestion(b, v.devB, base).charAt(0).toLowerCase() + distanceQuestion(b, v.devB, base).slice(1),
+            data: 'calculate_deviation (operand number_b): target deviation_b'
+          },
+          {
+            step: v.label('cross_subtract'),
+            svg: nikhilamStage(v, {
+              base: 'normal', a: 'active', b: 'muted', devA: 'muted', devB: 'active', resL: 'empty', resR: { cells: emptyCells, states: emptyStates },
+              work: [[crossTextA, hi(v.crossA.value, 'write')]],
+              extra: mathLine(diagonalAB[0], diagonalAB[1], diagonalAB[2], diagonalAB[3], { arrow: true })
+            }),
+            state: 'A \u2212 deviation B: the diagonal links ' + a + ' with the other number\u2019s deviation. ' + crossTextA + v.crossA.value + '.',
+            motion: 'A diagonal arrow draws from tile A (' + a + ') to deviation tile B (' + sB + '). The subtraction appears.',
+            coach: 'Take the other number\u2019s deviation away from ' + a + '.',
+            data: 'cross_subtract (operand number_a, deviation_operand deviation_b): number, deviation, value'
+          },
+          {
+            step: v.label('cross_subtract'),
+            svg: nikhilamStage(v, {
+              base: 'normal', a: 'muted', b: 'active', devA: 'active', devB: 'muted', resL: 'empty', resR: { cells: emptyCells, states: emptyStates },
+              work: [{ segs: [crossTextA + v.crossA.value], opacity: 0.4 }, [crossTextB, hi(v.crossB.value, 'write')]],
+              extra: mathLine(diagonalAB[0], diagonalAB[1], diagonalAB[2], diagonalAB[3], { faded: true }) +
+                mathLine(diagonalBA[0], diagonalBA[1], diagonalBA[2], diagonalBA[3], { arrow: true })
+            }),
+            state: 'B \u2212 deviation A, the other diagonal: ' + crossTextB + v.crossB.value + '.',
+            motion: 'The first arrow fades. The second diagonal draws from tile B (' + b + ') to deviation tile A (' + sA + ').',
+            coach: 'Now try the other diagonal.',
+            data: 'cross_subtract (operand number_b, deviation_operand deviation_a): number, deviation, value'
+          },
+          {
+            step: v.label('cross_subtract'),
+            svg: nikhilamStage(v, {
+              base: 'normal', devA: 'normal', devB: 'normal', resL: { value: v.left, state: 'active' }, resR: { cells: emptyCells, states: emptyStates },
+              work: [[crossTextA, hi(v.crossA.value, 'write')], [crossTextB, hi(v.crossB.value, 'write')]],
+              extra: motionArrow(W.x + 2, line0 + 14, NK.resLX + 30, NK.resY - 27, 0.3)
+            }),
+            state: 'Both diagonals give ' + v.left + ', so ' + v.left + ' is the left part of the answer.',
+            motion: 'Both results glow together, then ' + v.left + ' travels into the left result slot.',
+            coach: 'Either diagonal gives the same number.',
+            data: 'show_left_part: value, sources (number_a, number_b)'
+          },
+          {
+            step: v.label('multiply_deviations'),
+            svg: nikhilamStage(v, {
+              base: 'normal', a: 'muted', b: 'muted', devA: 'active', devB: 'active', resL: { value: v.left, state: 'normal' }, resR: { cells: emptyCells, states: emptyStates },
+              work: [[productText, hi(v.right, 'write')]],
+              extra: mathLine(NK.devA.x, NK.devA.y + 20, NK.devB.x, NK.devB.y - 20) + txt(NK.devA.x + 16, (NK.devA.y + NK.devB.y) / 2, '\u00d7', { size: 16, fill: C.teal })
+            }),
+            state: 'Deviation A \u00d7 deviation B: ' + productText + v.right + '.',
+            motion: 'Both deviation tiles highlight and a link joins them. The product appears.',
+            coach: 'Now multiply the two deviations.',
+            data: 'multiply_deviations: operands (deviation_a, deviation_b), values, value'
+          },
+          {
+            step: v.label('multiply_deviations'),
+            svg: nikhilamStage(v, {
+              base: 'active', devA: 'normal', devB: 'normal', resL: { value: v.left, state: 'normal' }, resR: { cells: cellsBefore, states: statesBefore },
+              work: [[productText, hi(v.right, 'ghost')]],
+              extra: motionArrow(W.x + 2, line0, lastCellX + 6, NK.resY - 27, -0.3)
+            }),
+            state: v.right + ' goes in the right part. Base ' + base + ' gives the right part ' + v.rightDigits + ' digit places. ' +
+              (padCount === 1 ? 'One place is still empty.' : padCount + ' places are still empty.'),
+            motion: v.right + ' travels into the last place of the right result slot. The base marker pulses to link it to the number of places.',
+            data: 'show_right_part: value; show_base: right_digits'
+          },
+          {
+            step: v.label('combine'),
+            svg: nikhilamStage(v, {
+              base: 'normal', devA: 'normal', devB: 'normal', resL: { value: v.left, state: 'normal' }, resR: { cells: cellsAfter, states: statesAfter },
+              work: [[String(k.right_part) + '  becomes  ', hi(k.formatted_right, 'write')]]
+            }),
+            state: (padCount === 1 ? 'A zero fills the empty place: ' : padCount + ' zeros fill the empty places: ') + k.right_part + ' becomes ' + k.formatted_right + '.',
+            motion: 'The zero fades into the empty place and the digits settle.',
+            coach: 'Base ' + base + ' needs ' + k.right_digits + ' digits on the right, so we write ' + k.formatted_right + '.',
+            data: 'pad_right_part: value, right_digits, padding_zeros, formatted'
+          },
+          {
+            step: v.label('combine'),
+            svg: nikhilamStage(v, {
+              base: 'normal', a: 'muted', b: 'muted', devA: 'muted', devB: 'muted',
+              resL: { value: k.left_part, state: 'active' }, resR: { cells: k.formatted_right.split(''), states: activeStates },
+              work: [[k.left_part + ' | ' + k.formatted_right]],
+              extra: motionArrow(NK.resLX - 30, NK.resY + 33, NK.barX - 8, NK.resY + 33, 0) + motionArrow(lastCellX + 14, NK.resY + 33, NK.barX + 8, NK.resY + 33, 0)
+            }),
+            state: 'The two parts sit side by side: ' + k.left_part + ' | ' + k.formatted_right + '.',
+            motion: 'Both result slots highlight and slide toward each other.',
+            coach: 'Put the two parts together.',
+            data: 'join_parts: left_part, formatted_right'
+          },
+          {
+            step: v.label('combine'),
+            svg: nikhilamStage(v, {
+              base: 'normal', devA: 'normal', devB: 'normal', joined: v.result,
+              work: [[a + ' \u00d7 ' + b + ' = ', hi(v.result, 'write')]]
+            }),
+            state: a + ' \u00d7 ' + b + ' = ' + v.result + '.',
+            motion: 'The divider fades and the digits join. One soft glow on the answer; nothing else moves.',
+            coach: 'That is the answer.',
+            data: 'reveal_result: value'
+          }
+        ];
+      }
+
+      function nikhilamBorrowFrames(lesson) {
+        var v = nikhilamValues(lesson);
+        var adj = v.adjust;
+        var k = v.combine;
+        if (!adj) { throw new Error('The borrow example has no adjust step in its backend data.'); }
+        var settled = { base: 'normal', devA: 'normal', devB: 'normal' };
+        var finalCells = k.formatted_right.split('');
+        var borrowing = adj.adjustment === 'borrow';
+        var leftSign = borrowing ? ' \u2212 ' : ' + ';
+        // right_change comes from the backend; only its sign is used to choose + or −.
+        var rightChangeText = adj.right_change < 0 ? ' \u2212 ' + String(adj.right_change).replace('-', '') : ' + ' + adj.right_change;
+
+        return [
+          {
+            step: v.label('adjust') + ' (before adjusting)',
+            svg: nikhilamStage(v, {
+              base: settled.base, devA: settled.devA, devB: settled.devB,
+              resL: { value: adj.left_before, state: 'normal' }, resR: { wide: adj.right_before, state: 'warn' },
+              work: [[adj.left_before + ' | ', hi(adj.right_before, 'carry')]]
+            }),
+            state: 'After the deviations multiply (' + signed(v.devA) + ' and ' + signed(v.devB) + '), the parts are ' + adj.left_before + ' | ' + fmt(adj.right_before) + '. ' +
+              (borrowing ? 'The right part is negative, so it cannot be written as digits yet.' : 'The right part has too many digits for base ' + v.base + '.'),
+            motion: 'The right result slot turns amber to show that an adjustment is needed.',
+            coach: borrowing ? 'The right part is below zero. We need to borrow.' : 'The right part is too big. We need to carry.',
+            data: 'adjust step: adjustment ("' + adj.adjustment + '"), left_before, right_before'
+          },
+          {
+            step: v.label('adjust'),
+            svg: nikhilamStage(v, {
+              base: 'active', devA: settled.devA, devB: settled.devB,
+              resL: { value: adj.left_after, state: 'active' }, resR: { wide: adj.right_after, state: 'active' },
+              work: [
+                [adj.left_before + leftSign, hi(adj.amount, 'carry'), ' = ', hi(adj.left_after, 'write')],
+                [paren(adj.right_before) + rightChangeText + ' = ', hi(adj.right_after, 'write')]
+              ],
+              extra: (borrowing
+                ? motionArrow(NK.resLX + 42, NK.resY + 12, NK.resR0 - 20, NK.resY + 12, 0.6)
+                : motionArrow(NK.resR0 - 20, NK.resY + 12, NK.resLX + 42, NK.resY + 12, -0.6)) + carryToken(NK.barX, NK.resY, adj.amount, false)
+            }),
+            state: adj.amount + (borrowing ? ' is borrowed from the left part: ' : ' is carried into the left part: ') + adj.left_before + leftSign + adj.amount + ' = ' + adj.left_after +
+              '. On the right it is worth ' + v.base + ': ' + paren(adj.right_before) + rightChangeText + ' = ' + adj.right_after + '.',
+            motion: borrowing
+              ? 'An amber token leaves the left slot, crosses the divider and merges into the right slot. Both slots update as it lands.'
+              : 'An amber token leaves the right slot, crosses the divider and merges into the left slot. Both slots update as it lands.',
+            coach: borrowing
+              ? 'Borrow ' + adj.amount + ' from the left. It is worth ' + v.base + ' on the right.'
+              : 'Carry ' + adj.amount + ' to the left. It takes ' + v.base + ' away from the right.',
+            data: 'adjust_parts: adjustment, source, destination, amount, base, left_before, left_after, right_before, right_after, right_change'
+          },
+          {
+            step: v.label('combine'),
+            svg: nikhilamStage(v, {
+              base: 'normal', devA: settled.devA, devB: settled.devB, joined: v.result,
+              work: [[v.a + ' \u00d7 ' + v.b + ' = ', hi(v.result, 'write')]]
+            }),
+            state: 'The adjusted parts ' + k.left_part + ' | ' + k.formatted_right + ' join: ' + v.a + ' \u00d7 ' + v.b + ' = ' + v.result + '.' +
+              (k.padding_zeros > 0 ? ' The right part was first padded to ' + k.formatted_right + '.' : ' No padding is needed: ' + k.formatted_right + ' already has ' + k.right_digits + ' digits.'),
+            motion: 'The parts slide together, the divider fades, one soft glow.',
+            coach: 'Now the two parts can be joined.',
+            data: 'reveal_result: value'
+          }
+        ];
+      }
+
+      // ===============================================================
+      // URDHVA TIRYAGBHYAM
+      // ===============================================================
+
+      // Logical grid: place 0 is the units column on the right.
+      var UR = {
+        x: function (place) { return 214 - place * 58; },
+        yA: 44,
+        yB: 122,
+        ruleY: 153,
+        laneY: 182,
+        resY: 238,
+        work: { x: 262, y: 20, w: 206, h: 262 }
+      };
+
+      function urdhvaFrames(lesson) {
+        var steps = lesson.teaching_steps;
+        var intro = steps.filter(function (s) { return s.type === 'introduction'; })[0];
+        var a = intro.numbers[0], b = intro.numbers[1];
+        var digitsA = String(a).split(''), digitsB = String(b).split('');
+        var columns = steps.filter(function (s) { return s.type === 'multiplication_column' || s.type === 'final_carry'; });
+        var combine = steps.filter(function (s) { return s.type === 'combine'; })[0];
+        var instruction = lesson.animation_steps[0].events.filter(function (e) { return e.action === 'show_instruction'; })[0].text;
+        var W = UR.work;
+
+        function label(step) { return 'Step ' + step.id + ' of ' + steps.length + ' \u00b7 ' + step.title; }
+        function copy(object) { var out = {}; Object.keys(object).forEach(function (key) { out[key] = object[key]; }); return out; }
+        function placeA(position) { return digitsA.length - 1 - position; }
+        function placeB(position) { return digitsB.length - 1 - position; }
+
+        function stage(o) {
+          var pairs = o.pairs || [];
+          var usedA = {}, usedB = {};
+          pairs.forEach(function (p) { usedA[p.position_a] = true; usedB[p.position_b] = true; });
+          var focus = pairs.length > 0;
+          var out = '';
+
+          digitsA.forEach(function (digit, i) {
+            out += tile(UR.x(placeA(i)), UR.yA, digit, usedA[i] ? 'active' : (focus ? 'muted' : 'normal'), 44, 44, 24);
+          });
+          digitsB.forEach(function (digit, i) {
+            out += tile(UR.x(placeB(i)), UR.yB, digit, usedB[i] ? 'active' : (focus ? 'muted' : 'normal'), 44, 44, 24);
+          });
+          out += txt(UR.x(Math.max(digitsA.length, digitsB.length) - 1) - 46, UR.yB, '\u00d7', { size: 22 });
+          out += '<line x1="' + (UR.x(columns.length - 1) - 26) + '" y1="' + UR.ruleY + '" x2="' + (UR.x(0) + 26) + '" y2="' + UR.ruleY +
+            '" stroke="' + C.navy + '" stroke-width="2" stroke-linecap="round"/>';
+
+          pairs.forEach(function (p) {
+            out += mathLine(UR.x(placeA(p.position_a)), UR.yA + 25, UR.x(placeB(p.position_b)), UR.yB - 25);
+          });
+
+          out += txt(28, UR.laneY, 'carry', { size: 11.5 }) + txt(28, UR.resY, 'answer', { size: 11.5 });
+          columns.forEach(function (column, i) {
+            var number = i + 1, x = UR.x(i);
+            out += '<circle cx="' + x + '" cy="' + UR.laneY + '" r="15" fill="none" stroke="' + C.line + '" stroke-width="1.5" stroke-dasharray="3 4"/>';
+            if (o.lane && o.lane[number] !== undefined) { out += carryToken(x, UR.laneY, o.lane[number], false); }
+            if (o.laneGhost && o.laneGhost[number] !== undefined) { out += carryToken(x, UR.laneY, o.laneGhost[number], true); }
+            if (o.joined) { return; }
+            if (o.written && o.written[number] !== undefined) {
+              out += tile(x, UR.resY, o.written[number], (o.activeColumn === number || o.allActive) ? 'active' : 'normal', 44, 44, 24);
+            } else {
+              out += tile(x, UR.resY, '', 'empty', 44, 44, 24);
+            }
+          });
+          if (o.joined) { out += joinedAnswer((UR.x(0) + UR.x(columns.length - 1)) / 2, UR.resY, o.joined); }
+          if (o.work) { out += workPanel(W, o.title || 'Working', o.work, 27); }
+          return out + (o.extra || '');
+        }
+
+        var frames = [];
+        var written = {};
+        var lane = {};
+
+        frames.push({
+          step: label(intro),
+          svg: stage({ written: {}, work: [], title: 'Working' }),
+          state: 'The digits of ' + a + ' and ' + b + ' sit in separate tiles, lined up by place value.',
+          motion: 'The digit tiles fade in. Empty answer slots and the carry lane appear below the line.',
+          coach: instruction,
+          coachLabel: 'Explanation (from backend)',
+          data: 'show_numbers: number1, number2; show_instruction: text',
+          gap: 'Products are not labelled vertical or crosswise in the contract, so the frames below call them "linked pairs".',
+          gapRow: ['Whether a product is vertical or crosswise', 'Add a kind label to each product in a column.']
+        });
+
+        columns.forEach(function (column, i) {
+          var number = i + 1;
+          var title = 'Working \u00b7 column ' + number;
+
+          if (column.type === 'final_carry') {
+            written[number] = column.write_digit;
+            var ghost = {}; ghost[number] = column.incoming_carry;
+            frames.push({
+              step: label(column),
+              svg: stage({ written: copy(written), activeColumn: number, laneGhost: ghost, work: [['write ', hi(column.write_digit, 'write')]], title: title,
+                extra: motionArrow(UR.x(i) + 20, UR.laneY + 6, UR.x(i) + 20, UR.resY - 20, -0.4) }),
+              state: 'No digits are left to multiply. The waiting carry ' + column.incoming_carry + ' is written as the next answer digit.',
+              motion: 'The carry token drops from the lane straight into the answer slot.',
+              coach: 'Write the last carry at the front.',
+              data: 'write_final_carry: digit, column'
+            });
+            lane = {};
+            return;
+          }
+
+          var productLines = column.products.map(function (p) {
+            return [p.digit_a + ' \u00d7 ' + p.digit_b + ' = ', hi(p.product, 'strong')];
+          });
+          var many = column.products.length > 1;
+          var sumLines = many ? [[column.products.map(function (p) { return p.product; }).join(' + ') + ' = ', hi(column.subtotal, 'strong')]] : [];
+          var productWords = column.products.map(function (p) { return p.digit_a + ' \u00d7 ' + p.digit_b + ' = ' + p.product; });
+
+          // Beat 1: multiply the linked digits.
+          frames.push({
+            step: label(column),
+            svg: stage({ pairs: column.products, written: copy(written), lane: copy(lane), work: productLines.concat(sumLines), title: title }),
+            state: many
+              ? 'The linked pairs give ' + productWords.join(' and ') + '. Together: ' + column.products.map(function (p) { return p.product; }).join(' + ') + ' = ' + column.subtotal + '.'
+              : 'The linked pair gives ' + productWords[0] + '.',
+            motion: (many
+              ? 'The lines draw one pair at a time, and each product is listed as its line appears. Then the products add.'
+              : 'The two digits highlight and a line joins them. The product appears in the working area.') +
+              (column.incoming_carry > 0 ? ' The carry ' + column.incoming_carry + ' keeps waiting in the lane above this column.' : ''),
+            coach: many ? 'Multiply each linked pair, then add the products.' : 'Multiply the linked digits.',
+            data: 'highlight_and_connect: position_a, position_b, digit_a, digit_b, product; show_subtotal: value'
+          });
+
+          // Beat 2: the waiting carry joins the sum.
+          if (column.incoming_carry > 0) {
+            var ghostLane = {}; ghostLane[number] = column.incoming_carry;
+            frames.push({
+              step: label(column),
+              svg: stage({
+                pairs: column.products, written: copy(written), laneGhost: ghostLane, title: title,
+                work: productLines.concat(sumLines, [[column.subtotal + ' + ', hi(column.incoming_carry, 'carry'), ' = ', hi(column.total, 'strong')]]),
+                extra: motionArrow(UR.x(i) + 18, UR.laneY - 4, W.x + 2, UR.laneY - 4, 0.08)
+              }),
+              state: 'The waiting carry joins the sum: ' + column.subtotal + ' + ' + column.incoming_carry + ' = ' + column.total + '.',
+              motion: 'The amber carry token leaves the lane and lands in the addition. The lane slot is left empty.',
+              coach: 'Do not forget the carry from the last column.',
+              data: 'add_carry: value, total'
+            });
+            lane = {};
+          }
+
+          // Beat 3: split the total, write the digit, park the new carry.
+          written[number] = column.write_digit;
+          var hasCarry = column.outgoing_carry > 0;
+          if (hasCarry) { lane = {}; lane[number + 1] = column.outgoing_carry; }
+          var splitLines = [
+            ['Total ', hi(column.total, 'strong')],
+            hasCarry ? ['write ', hi(column.write_digit, 'write'), '    carry ', hi(column.outgoing_carry, 'carry')] : ['write ', hi(column.write_digit, 'write')]
+          ];
+          frames.push({
+            step: label(column),
+            svg: stage({
+              written: copy(written), activeColumn: number, lane: copy(lane), work: splitLines, title: title,
+              extra: motionArrow(W.x + 2, UR.resY + 32, UR.x(i), UR.resY + 25, 0) +
+                (hasCarry ? motionArrow(W.x + 2, UR.laneY - 4, UR.x(i + 1) + 17, UR.laneY - 4, 0.1) : '')
+            }),
+            state: hasCarry
+              ? column.total + ' splits into ' + column.write_digit + ' to write and ' + column.outgoing_carry + ' to carry.'
+              : 'Write ' + column.write_digit + '. The carry out is ' + column.outgoing_carry + ', so nothing waits in the lane.',
+            motion: column.write_digit + ' drops into answer slot ' + number + ' (counting from the right).' +
+              (hasCarry ? ' The new carry ' + column.outgoing_carry + ' travels to the lane above the next column and waits there.' : ''),
+            coach: hasCarry ? 'Write the last digit and carry the rest.' : 'Write the digit. Nothing to carry.',
+            data: 'write_digit: digit, column' + (hasCarry ? '; move_carry: value' : '') + '; total (teaching step)'
+          });
+        });
+
+        var answerDigits = columns.map(function (column) { return column.write_digit; }).reverse();
+        frames.push({
+          step: label(combine),
+          svg: stage({ written: copy(written), allActive: true, work: [[answerDigits.join(' | ')]], title: 'Working' }),
+          state: 'The answer digits are assembled: ' + answerDigits.join(' | ') + '.',
+          motion: 'All the answer slots highlight together.',
+          coach: 'Read the answer digits from left to right.',
+          data: 'write_digit: digit, column (all columns)'
+        });
+        frames.push({
+          step: label(combine),
+          svg: stage({ joined: combine.result, work: [[a + ' \u00d7 ' + b + ' = ', hi(combine.result, 'write')]], title: 'Working' }),
+          state: a + ' \u00d7 ' + b + ' = ' + combine.result + '.',
+          motion: 'The slots close up into one number. One soft glow on the answer; nothing else moves.',
+          coach: 'That is the answer.',
+          data: 'reveal_result: value'
+        });
+        return frames;
+      }
+
+      // ===============================================================
+      // EKADHIKENA PURVENA
+      // ===============================================================
+
+      var EK = {
+        number: { x: 140, y: 56 },
+        previous: { x: 108, y: 56 },
+        last: { x: 172, y: 56 },
+        next: { x: 108, y: 152 },
+        work: { x: 262, y: 92, w: 206, h: 118 },
+        resY: 258,
+        resLX: 96,
+        barX: 152,
+        resRX: 204
+      };
+
+      function ekadhikenaFrames(lesson) {
+        var ev = {};
+        lesson.animation_steps.forEach(function (event) { ev[event.action] = event; });
+        var number = ev.show_number.number;
+        var previous = ev.highlight_last_digit.previous;
+        var lastDigit = ev.highlight_last_digit.digit;
+        var next = ev.show_next_number.next_number;
+        var product = ev.multiply_previous;
+        var append = ev.append_25;
+        var result = ev.reveal_result.result;
+        var teaching = lesson.teaching_steps;
+        var W = EK.work;
+        var line0 = workLineY(W, 0) - 6;
+
+        function label(index) { return 'Step ' + teaching[index].step + ' of ' + teaching.length + ' \u00b7 ' + teaching[index].title; }
+
+        function stage(o) {
+          var out = '';
+          if (o.whole) {
+            out += tile(EK.number.x, EK.number.y, number, 'normal', 84, 46) + txt(EK.number.x + 54, EK.number.y - 18, '2', { size: 17, num: true, fill: C.navy });
+          } else {
+            out += tile(EK.previous.x, EK.previous.y, previous, o.previous || 'normal', 56, 46);
+            out += tile(EK.last.x, EK.last.y, lastDigit, o.last || 'normal', 56, 46);
+            out += txt(EK.previous.x + 28, EK.previous.y - 36, 'preceding part', { anchor: 'end', size: 11.5 });
+            out += txt(EK.last.x - 20, EK.last.y - 36, 'last digit', { anchor: 'start', size: 11.5 });
+          }
+          if (o.next) {
+            out += tile(EK.next.x, EK.next.y, next, o.next, 56, 46) + txt(EK.next.x + 38, EK.next.y, 'one more', { anchor: 'start', size: 11.5 });
+          }
+          if (o.work) { out += workPanel(W, 'Working', o.work); }
+          if (o.resL) {
+            out += txt(EK.resLX, EK.resY - 33, 'left part');
+            out += o.resL === 'empty' ? tile(EK.resLX, EK.resY, '', 'empty', 84, 46) : tile(EK.resLX, EK.resY, o.resL.value, o.resL.state, 84, 46);
+            out += '<line x1="' + EK.barX + '" y1="' + (EK.resY - 22) + '" x2="' + EK.barX + '" y2="' + (EK.resY + 22) + '" stroke="' + C.grey + '" stroke-width="2"/>';
+            out += txt(EK.resRX, EK.resY - 33, 'right part');
+            out += o.resR ? tile(EK.resRX, EK.resY, o.resR.value, o.resR.state, 74, 46) : tile(EK.resRX, EK.resY, '', 'empty', 74, 46);
+          }
+          if (o.joined) { out += joinedAnswer(EK.barX, EK.resY, o.joined); }
+          return out + (o.extra || '');
+        }
+
+        var fromBackend = 'Explanation (from backend)';
+        return [
+          {
+            step: label(0),
+            svg: stage({ whole: true }),
+            state: 'The number ' + number + ' is on the stage, to be squared.',
+            motion: 'The number tile fades in.',
+            coach: teaching[0].explanation, coachLabel: fromBackend,
+            data: 'show_number: number'
+          },
+          {
+            step: label(1),
+            svg: stage({ previous: 'normal', last: 'active' }),
+            state: number + ' is split into the preceding part ' + previous + ' and the last digit ' + lastDigit + '.',
+            motion: 'The tile separates into two tiles. The last digit highlights.',
+            coach: teaching[1].explanation, coachLabel: fromBackend,
+            data: 'highlight_last_digit: digit, previous'
+          },
+          {
+            step: label(2),
+            svg: stage({
+              previous: 'active', last: 'muted', next: 'active', work: [[previous + ' + 1 = ', hi(next, 'write')]],
+              extra: motionArrow(EK.previous.x - 14, EK.previous.y + 25, EK.next.x - 14, EK.next.y - 26, 0) +
+                '<rect x="' + (EK.previous.x - 62) + '" y="' + ((EK.previous.y + EK.next.y) / 2 - 13) + '" width="38" height="26" rx="13" fill="' + C.lav + '" stroke="' + C.lavLine + '" stroke-width="1.5"/>' +
+                txt(EK.previous.x - 43, (EK.previous.y + EK.next.y) / 2, '+1', { size: 14, num: true, fill: C.purple })
+            }),
+            state: 'One more than ' + previous + ' is ' + next + '.',
+            motion: 'A copy of ' + previous + ' moves down, a +1 token merges into it, and it becomes ' + next + '.',
+            coach: teaching[2].explanation, coachLabel: fromBackend,
+            data: 'show_next_number: previous, next_number'
+          },
+          {
+            step: label(3),
+            svg: stage({
+              previous: 'active', last: 'muted', next: 'active', resL: { value: product.value, state: 'active' },
+              work: [[product.a + ' \u00d7 ' + product.b + ' = ', hi(product.value, 'ghost')]],
+              extra: mathLine(EK.previous.x + 12, EK.previous.y + 25, EK.next.x + 12, EK.next.y - 25) +
+                txt(EK.previous.x + 26, (EK.previous.y + EK.next.y) / 2, '\u00d7', { size: 16, fill: C.teal }) +
+                motionArrow(W.x + 2, line0, EK.resLX + 30, EK.resY - 27, 0.3)
+            }),
+            state: product.a + ' \u00d7 ' + product.b + ' = ' + product.value + '. This is the left part of the answer.',
+            motion: 'A link joins ' + product.a + ' and ' + product.b + '. The product appears, then travels into the left result slot.',
+            coach: teaching[3].explanation, coachLabel: fromBackend,
+            data: 'multiply_previous: a, b, value'
+          },
+          {
+            step: label(4),
+            svg: stage({
+              previous: 'muted', last: 'active', next: 'muted', resL: { value: append.left_part, state: 'normal' }, resR: { value: append.right_part, state: 'active' },
+              work: [[append.left_part + ' | ', hi(append.right_part, 'write')]]
+            }),
+            state: append.right_part + ' is appended as the right part: ' + append.left_part + ' | ' + append.right_part + '.',
+            motion: append.right_part + ' fades into the right result slot while the last digit stays highlighted.',
+            coach: teaching[4].explanation, coachLabel: fromBackend,
+            data: 'append_25: left_part, right_part',
+            gap: 'The contract supplies ' + append.right_part + ' but no step showing where it comes from, so the animation cannot explain it yet.',
+            gapRow: ['Where the right part ' + append.right_part + ' comes from', 'Add an event for squaring the last digit, with its two factors and product.']
+          },
+          {
+            step: label(5),
+            svg: stage({ previous: 'muted', last: 'muted', next: 'muted', joined: result, work: [[teaching[5].explanation]] }),
+            state: 'The two parts join to give ' + result + '.',
+            motion: 'The divider fades and the digits join. One soft glow on the answer; nothing else moves.',
+            coach: teaching[5].explanation, coachLabel: fromBackend,
+            data: 'reveal_result: result'
+          }
+        ];
+      }
+
+      // ===============================================================
+      // Page assembly
+      // ===============================================================
+
+      function mount(id, prefix, frames) {
+        frames.forEach(function (frame, i) { frame.code = prefix + (i + 1); });
+        document.getElementById(id).innerHTML = frames.map(frameHTML).join('');
+        return frames;
+      }
+
+      function render() {
+        var data = window.LESSON_DATA;
+        if (!data) { throw new Error('lesson-data.js did not load. Keep it in the same folder as this page.'); }
+        var L = data.lessons;
+
+        document.getElementById('provenance').textContent =
+          'Every number on this page is read from lesson-data.js, the unmodified output of the Python backend ' +
+          '(API version ' + data.apiVersion + ', commit ' + data.gitCommit + ', captured ' + data.capturedAt + '). No value was typed by hand or worked out in the browser.';
+
+        function lede(id, text, key) {
+          document.getElementById(id).innerHTML = esc(text) + ' Source: <code>' + esc(L[key].request) + '</code>';
+        }
+        lede('lede-nikhilam', 'The reference example, with every beat of the five backend steps. Deviations follow the convention ' +
+          nikhilamValues(L.nikhilam.response).convention + ', so numbers below the base have positive deviations.', 'nikhilam');
+        lede('lede-nikhilam-borrow', 'A number above the base has a negative deviation, so the right part can come out negative. The backend then adds an adjust step before combining; only those beats are shown.', 'nikhilamBorrow');
+        lede('lede-urdhva', 'Each column repeats the same beats; the carry is a token you can follow from where it is made to where it is used.', 'urdhva');
+        lede('lede-ekadhikena', 'Squaring a number that ends in 5, using the engine now on main. The explanation text here comes from the backend itself.', 'ekadhikena');
+
+        var all = []
+          .concat(mount('frames-nikhilam', 'N', nikhilamFrames(L.nikhilam.response)))
+          .concat(mount('frames-nikhilam-borrow', 'B', nikhilamBorrowFrames(L.nikhilamBorrow.response)))
+          .concat(mount('frames-urdhva', 'U', urdhvaFrames(L.urdhva.response)))
+          .concat(mount('frames-ekadhikena', 'E', ekadhikenaFrames(L.ekadhikena.response)));
+
+        document.getElementById('gap-rows').innerHTML = all.filter(function (frame) { return frame.gapRow; }).map(function (frame) {
+          return '<tr><td>' + esc(frame.code) + '</td><td>' + esc(frame.gapRow[0]) + '</td><td>' + esc(frame.gapRow[1]) + '</td></tr>';
+        }).join('');
+
+        document.body.setAttribute('data-frames', String(all.length));
+      }
+
+      try {
+        render();
+      } catch (error) {
+        var box = document.getElementById('app-error');
+        box.style.display = 'block';
+        box.textContent = 'The storyboards could not be drawn: ' + error.message;
+      }
+    })();
+  </script>
+</body>
+</html>

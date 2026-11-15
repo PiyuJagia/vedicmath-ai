@@ -34,7 +34,7 @@ from backend.practice import (
 app = FastAPI(
     title="VedicMath AI",
     description="Interactive Vedic Mathematics Learning API",
-    version="0.4.0",
+    version="0.5.0",
 )
 
 # Browser origins allowed to call the API, comma-separated.
@@ -590,4 +590,11 @@ def check_sutra_answers(sutra_name: str, body: AnswerSheet):
         "all_correct": len(results) == len(questions) and all(result["is_correct"] for result in results),
         "results": results,
     }
+
+
+# Coach animation handoff (Tollgate 5A) — typed actions separate from chat prose.
+# Import api.router only (not handoff package actions) after engine helpers exist.
+from backend.agents.vedic_math_coach.handoff.api import router as coach_router  # noqa: E402
+
+app.include_router(coach_router)
 

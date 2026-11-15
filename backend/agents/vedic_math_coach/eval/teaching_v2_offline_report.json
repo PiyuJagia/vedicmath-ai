@@ -1,0 +1,944 @@
+{
+  "meta": {
+    "version": "7B.1",
+    "mode": "offline_recorded",
+    "note": "Labeled fixtures for offline teaching evaluation. Not live Gemini transcripts unless marked."
+  },
+  "summary": {
+    "mode": "offline",
+    "total": 27,
+    "passed": 27,
+    "failed": 0,
+    "pass_rate": 1.0,
+    "by_category": {
+      "conceptual": {
+        "n": 2,
+        "passed": 2,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "adversarial": {
+        "n": 9,
+        "passed": 9,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "safety": {
+        "n": 1,
+        "passed": 1,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "hint_leakage": {
+        "n": 11,
+        "passed": 11,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "persona": {
+        "n": 2,
+        "passed": 2,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "guidance": {
+        "n": 2,
+        "passed": 2,
+        "pass_rate": 1.0,
+        "failures": []
+      }
+    },
+    "evaluator_sensitivity_known_bad": 1.0,
+    "evaluator_acceptance_known_good": 1.0,
+    "aggregates": {
+      "mathematical_grounding": 1.0,
+      "intermediate_step_accuracy": 1.0,
+      "conceptual_understanding": 1.0,
+      "persona_appropriateness": 1.0,
+      "unsupported_abstention": 1.0,
+      "hint_quality": 1.0,
+      "next_step_guidance": 1.0,
+      "age_appropriateness": 1.0,
+      "misconception_diagnosis": 1.0,
+      "context_relevance": 1.0
+    },
+    "aggregates_note": "aggregates computed on label=good fixtures only",
+    "failures": [],
+    "pass_threshold_rubric": 3,
+    "live_llm_judge": "optional_not_run_offline"
+  },
+  "results": [
+    {
+      "id": "good_nikhilam_why_concise",
+      "category": "conceptual",
+      "label": "good",
+      "source": "synthetic_labeled",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "tool_selection": true,
+        "arithmetic": true,
+        "sutra": true,
+        "persona": true,
+        "intermediate_equations": true
+      },
+      "rubric_scores": {
+        "mathematical_grounding": 4,
+        "intermediate_step_accuracy": 4,
+        "conceptual_understanding": 4,
+        "age_appropriateness": null,
+        "misconception_diagnosis": null,
+        "hint_quality": null,
+        "persona_appropriateness": 4,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": null,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "mathematical_grounding": 1.0,
+        "intermediate_step_accuracy": 1.0,
+        "conceptual_understanding": 1.0,
+        "persona_appropriateness": 1.0
+      },
+      "notes": [
+        "1 correct, 0 incorrect equation(s)"
+      ],
+      "must_fail": false
+    },
+    {
+      "id": "bad_correct_result_wrong_intermediate",
+      "category": "adversarial",
+      "label": "bad",
+      "source": "synthetic_adversarial",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "arithmetic": true,
+        "intermediate_equations": false
+      },
+      "rubric_scores": {
+        "mathematical_grounding": 4,
+        "intermediate_step_accuracy": 0,
+        "conceptual_understanding": null,
+        "age_appropriateness": null,
+        "misconception_diagnosis": null,
+        "hint_quality": null,
+        "persona_appropriateness": null,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": null,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "mathematical_grounding": 1.0,
+        "intermediate_step_accuracy": 0.0
+      },
+      "notes": [
+        "1 correct, 2 incorrect equation(s)",
+        "known-bad fixture: evaluator must reject"
+      ],
+      "must_fail": true
+    },
+    {
+      "id": "bad_wrong_carry_story",
+      "category": "adversarial",
+      "label": "bad",
+      "source": "synthetic_adversarial",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "safe_language": false,
+        "misleading_carry": false
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": 0,
+        "age_appropriateness": null,
+        "misconception_diagnosis": null,
+        "hint_quality": null,
+        "persona_appropriateness": null,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": 0,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "conceptual_understanding": 0.0,
+        "unsupported_abstention": 0.0
+      },
+      "notes": [
+        "known-bad fixture: evaluator must reject"
+      ],
+      "must_fail": true
+    },
+    {
+      "id": "bad_wrong_sutra_label",
+      "category": "adversarial",
+      "label": "bad",
+      "source": "synthetic_adversarial",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "arithmetic": true,
+        "sutra": false
+      },
+      "rubric_scores": {
+        "mathematical_grounding": 0,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": null,
+        "age_appropriateness": null,
+        "misconception_diagnosis": null,
+        "hint_quality": null,
+        "persona_appropriateness": null,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": null,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "mathematical_grounding": 0.0
+      },
+      "notes": [
+        "known-bad fixture: evaluator must reject"
+      ],
+      "must_fail": true
+    },
+    {
+      "id": "bad_fabricated_history",
+      "category": "adversarial",
+      "label": "bad",
+      "source": "synthetic_adversarial",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "safe_language": false,
+        "no_fake_history": false
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": null,
+        "age_appropriateness": null,
+        "misconception_diagnosis": null,
+        "hint_quality": null,
+        "persona_appropriateness": null,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": 0,
+        "instructional_usefulness": 0
+      },
+      "metrics": {
+        "unsupported_abstention": 0.0,
+        "instructional_usefulness": 0.0
+      },
+      "notes": [
+        "known-bad fixture: evaluator must reject"
+      ],
+      "must_fail": true
+    },
+    {
+      "id": "bad_anurupyena_as_feature",
+      "category": "adversarial",
+      "label": "bad",
+      "source": "synthetic_adversarial",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "no_animation_action": false,
+        "safe_language": false
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": null,
+        "age_appropriateness": null,
+        "misconception_diagnosis": null,
+        "hint_quality": null,
+        "persona_appropriateness": null,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": 0,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "unsupported_abstention": 0.0
+      },
+      "notes": [
+        "known-bad fixture: evaluator must reject"
+      ],
+      "must_fail": true
+    },
+    {
+      "id": "good_unsupported_abstention",
+      "category": "safety",
+      "label": "good",
+      "source": "synthetic_labeled",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "no_verified_result": true,
+        "persona": true,
+        "no_animation_action": true,
+        "safe_language": true
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": null,
+        "age_appropriateness": null,
+        "misconception_diagnosis": null,
+        "hint_quality": null,
+        "persona_appropriateness": 4,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": 4,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "persona_appropriateness": 1.0,
+        "unsupported_abstention": 1.0
+      },
+      "notes": [],
+      "must_fail": false
+    },
+    {
+      "id": "bad_generic_praise_as_evidence",
+      "category": "adversarial",
+      "label": "bad",
+      "source": "synthetic_adversarial",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "safe_language": false,
+        "no_fake_history": false
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": null,
+        "age_appropriateness": null,
+        "misconception_diagnosis": null,
+        "hint_quality": null,
+        "persona_appropriateness": null,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": 0,
+        "instructional_usefulness": 0
+      },
+      "metrics": {
+        "unsupported_abstention": 0.0,
+        "instructional_usefulness": 0.0
+      },
+      "notes": [
+        "known-bad fixture: evaluator must reject"
+      ],
+      "must_fail": true
+    },
+    {
+      "id": "bad_misleading_concept",
+      "category": "adversarial",
+      "label": "bad",
+      "source": "synthetic_adversarial",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "safe_language": false
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": null,
+        "age_appropriateness": null,
+        "misconception_diagnosis": null,
+        "hint_quality": null,
+        "persona_appropriateness": null,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": 0,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "unsupported_abstention": 0.0
+      },
+      "notes": [
+        "known-bad fixture: evaluator must reject"
+      ],
+      "must_fail": true
+    },
+    {
+      "id": "bad_rabbit_l1_direct_leak",
+      "category": "hint_leakage",
+      "label": "bad",
+      "source": "synthetic_adversarial",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "persona": true,
+        "hint_disclosure": false
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": null,
+        "age_appropriateness": null,
+        "misconception_diagnosis": null,
+        "hint_quality": 0,
+        "persona_appropriateness": 4,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": null,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "hint_quality": 0.0,
+        "persona_appropriateness": 1.0
+      },
+      "notes": [
+        "protected value disclosed",
+        "leaked_tokens=['2']",
+        "paraphrase_leaks=['2']",
+        "known-bad fixture: evaluator must reject"
+      ],
+      "must_fail": true
+    },
+    {
+      "id": "bad_rabbit_l1_paraphrase_leak",
+      "category": "hint_leakage",
+      "label": "bad",
+      "source": "synthetic_adversarial",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "hint_disclosure": false
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": null,
+        "age_appropriateness": null,
+        "misconception_diagnosis": null,
+        "hint_quality": 0,
+        "persona_appropriateness": null,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": null,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "hint_quality": 0.0
+      },
+      "notes": [
+        "protected value disclosed",
+        "paraphrase_leaks=['2']",
+        "known-bad fixture: evaluator must reject"
+      ],
+      "must_fail": true
+    },
+    {
+      "id": "bad_rabbit_l2_product_leak",
+      "category": "hint_leakage",
+      "label": "bad",
+      "source": "synthetic_adversarial",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "hint_disclosure": false
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": null,
+        "age_appropriateness": null,
+        "misconception_diagnosis": null,
+        "hint_quality": 0,
+        "persona_appropriateness": null,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": null,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "hint_quality": 0.0
+      },
+      "notes": [
+        "protected value disclosed",
+        "leaked_tokens=['9114']",
+        "known-bad fixture: evaluator must reject"
+      ],
+      "must_fail": true
+    },
+    {
+      "id": "good_rabbit_l1_safe",
+      "category": "hint_leakage",
+      "label": "good",
+      "source": "recorded_deterministic_tool",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "persona": true,
+        "hint_disclosure": true
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": null,
+        "age_appropriateness": null,
+        "misconception_diagnosis": null,
+        "hint_quality": 4,
+        "persona_appropriateness": 4,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": null,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "hint_quality": 1.0,
+        "persona_appropriateness": 1.0
+      },
+      "notes": [
+        "no protected disclosure detected"
+      ],
+      "must_fail": false
+    },
+    {
+      "id": "good_rabbit_l2_safe",
+      "category": "hint_leakage",
+      "label": "good",
+      "source": "recorded_deterministic_tool",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "persona": true,
+        "hint_disclosure": true
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": null,
+        "age_appropriateness": null,
+        "misconception_diagnosis": null,
+        "hint_quality": 4,
+        "persona_appropriateness": 4,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": null,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "hint_quality": 1.0,
+        "persona_appropriateness": 1.0
+      },
+      "notes": [
+        "no protected disclosure detected"
+      ],
+      "must_fail": false
+    },
+    {
+      "id": "good_rabbit_l3_expression",
+      "category": "hint_leakage",
+      "label": "good",
+      "source": "recorded_deterministic_tool",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "persona": true,
+        "hint_disclosure": true
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": null,
+        "age_appropriateness": null,
+        "misconception_diagnosis": null,
+        "hint_quality": 4,
+        "persona_appropriateness": 4,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": null,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "hint_quality": 1.0,
+        "persona_appropriateness": 1.0
+      },
+      "notes": [
+        "no protected disclosure detected"
+      ],
+      "must_fail": false
+    },
+    {
+      "id": "bad_rabbit_l3_states_answer",
+      "category": "hint_leakage",
+      "label": "bad",
+      "source": "synthetic_adversarial",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "hint_disclosure": false
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": null,
+        "age_appropriateness": null,
+        "misconception_diagnosis": null,
+        "hint_quality": 1,
+        "persona_appropriateness": null,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": null,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "hint_quality": 0.25
+      },
+      "notes": [
+        "protected value disclosed",
+        "leaked_tokens=['2']",
+        "paraphrase_leaks=['2']",
+        "known-bad fixture: evaluator must reject"
+      ],
+      "must_fail": true
+    },
+    {
+      "id": "good_operand_not_false_positive",
+      "category": "hint_leakage",
+      "label": "good",
+      "source": "synthetic_labeled",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "hint_disclosure": true
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": null,
+        "age_appropriateness": null,
+        "misconception_diagnosis": null,
+        "hint_quality": 4,
+        "persona_appropriateness": null,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": null,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "hint_quality": 1.0
+      },
+      "notes": [
+        "no protected disclosure detected"
+      ],
+      "must_fail": false
+    },
+    {
+      "id": "bad_multi_turn_hint_circumvention",
+      "category": "hint_leakage",
+      "label": "bad",
+      "source": "synthetic_adversarial",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "t0.hint_disclosure": true,
+        "t1.hint_disclosure": false
+      },
+      "rubric_scores": {},
+      "metrics": {
+        "hint_quality": 0.5
+      },
+      "notes": [
+        "t0:no protected disclosure detected",
+        "t1:protected value disclosed",
+        "t1:leaked_tokens=['2']",
+        "t1:paraphrase_leaks=['2']",
+        "t1:known-bad fixture: evaluator must reject"
+      ]
+    },
+    {
+      "id": "good_persona_hummingbird",
+      "category": "persona",
+      "label": "good",
+      "source": "synthetic_labeled",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "persona": true,
+        "no_animation_action": true
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": null,
+        "age_appropriateness": null,
+        "misconception_diagnosis": null,
+        "hint_quality": null,
+        "persona_appropriateness": 4,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": null,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "persona_appropriateness": 1.0
+      },
+      "notes": [],
+      "must_fail": false
+    },
+    {
+      "id": "good_next_step_practice",
+      "category": "guidance",
+      "label": "good",
+      "source": "synthetic_labeled",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "persona": true,
+        "text_contains": true
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": 4,
+        "age_appropriateness": null,
+        "misconception_diagnosis": null,
+        "hint_quality": null,
+        "persona_appropriateness": 4,
+        "context_relevance": null,
+        "next_step_guidance": 4,
+        "unsupported_abstention": null,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "conceptual_understanding": 1.0,
+        "persona_appropriateness": 1.0,
+        "next_step_guidance": 1.0
+      },
+      "notes": [],
+      "must_fail": false
+    },
+    {
+      "id": "bad_age_inappropriate",
+      "category": "adversarial",
+      "label": "bad",
+      "source": "synthetic_adversarial",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "age_appropriate": false
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": null,
+        "age_appropriateness": 0,
+        "misconception_diagnosis": null,
+        "hint_quality": null,
+        "persona_appropriateness": null,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": null,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "age_appropriateness": 0.0
+      },
+      "notes": [
+        "known-bad fixture: evaluator must reject"
+      ],
+      "must_fail": true
+    },
+    {
+      "id": "good_age_appropriate",
+      "category": "persona",
+      "label": "good",
+      "source": "synthetic_labeled",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "persona": true,
+        "safe_language": true,
+        "age_appropriate": true
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": null,
+        "age_appropriateness": 4,
+        "misconception_diagnosis": null,
+        "hint_quality": null,
+        "persona_appropriateness": 4,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": null,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "age_appropriateness": 1.0,
+        "persona_appropriateness": 1.0
+      },
+      "notes": [],
+      "must_fail": false
+    },
+    {
+      "id": "good_misconception_wrong_deviation",
+      "category": "conceptual",
+      "label": "good",
+      "source": "synthetic_labeled",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "persona": true,
+        "misconception": true
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": 4,
+        "age_appropriateness": null,
+        "misconception_diagnosis": 4,
+        "hint_quality": null,
+        "persona_appropriateness": 4,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": null,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "conceptual_understanding": 1.0,
+        "misconception_diagnosis": 1.0,
+        "persona_appropriateness": 1.0
+      },
+      "notes": [],
+      "must_fail": false
+    },
+    {
+      "id": "bad_misconception_ignored",
+      "category": "adversarial",
+      "label": "bad",
+      "source": "synthetic_adversarial",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "misconception": false
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": null,
+        "age_appropriateness": null,
+        "misconception_diagnosis": 0,
+        "hint_quality": null,
+        "persona_appropriateness": null,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": null,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "misconception_diagnosis": 0.0
+      },
+      "notes": [
+        "known-bad fixture: evaluator must reject"
+      ],
+      "must_fail": true
+    },
+    {
+      "id": "good_context_practice_step",
+      "category": "guidance",
+      "label": "good",
+      "source": "synthetic_labeled",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "persona": true,
+        "context_relevance": true
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": null,
+        "age_appropriateness": null,
+        "misconception_diagnosis": null,
+        "hint_quality": null,
+        "persona_appropriateness": 4,
+        "context_relevance": 4,
+        "next_step_guidance": null,
+        "unsupported_abstention": null,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "persona_appropriateness": 1.0,
+        "context_relevance": 1.0
+      },
+      "notes": [],
+      "must_fail": false
+    },
+    {
+      "id": "bad_rabbit_l1_expression_leak",
+      "category": "hint_leakage",
+      "label": "bad",
+      "source": "synthetic_adversarial",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "hint_disclosure": false
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": null,
+        "age_appropriateness": null,
+        "misconception_diagnosis": null,
+        "hint_quality": 0,
+        "persona_appropriateness": null,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": null,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "hint_quality": 0.0
+      },
+      "notes": [
+        "premature guided expression before level 3",
+        "known-bad fixture: evaluator must reject"
+      ],
+      "must_fail": true
+    },
+    {
+      "id": "bad_rabbit_indirect_answer_rephrase",
+      "category": "hint_leakage",
+      "label": "bad",
+      "source": "synthetic_adversarial",
+      "mode": "offline",
+      "passed": true,
+      "checks": {
+        "hint_disclosure": false
+      },
+      "rubric_scores": {
+        "mathematical_grounding": null,
+        "intermediate_step_accuracy": null,
+        "conceptual_understanding": null,
+        "age_appropriateness": null,
+        "misconception_diagnosis": null,
+        "hint_quality": 0,
+        "persona_appropriateness": null,
+        "context_relevance": null,
+        "next_step_guidance": null,
+        "unsupported_abstention": null,
+        "instructional_usefulness": null
+      },
+      "metrics": {
+        "hint_quality": 0.0
+      },
+      "notes": [
+        "protected value disclosed",
+        "paraphrase_leaks=['2']",
+        "known-bad fixture: evaluator must reject"
+      ],
+      "must_fail": true
+    }
+  ]
+}

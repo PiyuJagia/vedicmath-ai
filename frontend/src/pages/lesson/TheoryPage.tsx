@@ -4,8 +4,10 @@ import { AnimationControls } from '../../animation/player/AnimationControls'
 import { usePlayback } from '../../animation/playback'
 import { SutraStage } from '../../animation/stage/SutraStage'
 import { useLesson } from '../../animation/useLesson'
+import { isCoachHandoffEnabled } from '../../api/coachClient'
 import { CharacterOrchestrator } from '../../characters/CharacterContext'
 import { CharacterDialogue, CoachCharacter, type CoachMood } from '../../characters/Characters'
+import { LiveCoachAsk } from '../../components/coach/LiveCoachAsk'
 import { Breadcrumbs } from '../../components/layout/Breadcrumbs'
 import { Button } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
@@ -15,7 +17,7 @@ import { problemLabel } from '../../content/lessons'
 import { demoCoach } from '../../services/coach'
 import { useProgress } from '../../services/ProgressContext'
 import { useSettings } from '../../services/SettingsContext'
-import { DIFFICULTY_LABELS } from '../../types/learning'
+import { DIFFICULTY_LABELS, type Difficulty } from '../../types/learning'
 import { LessonGuard } from './LessonGuard'
 import { LessonStatus } from './LessonStatus'
 import { useSutraRoute } from './useSutraRoute'
@@ -57,7 +59,9 @@ export function TheoryPage() {
               <TheoryBody
                 key={lesson.timeline.key}
                 idea={level.idea}
+                sutraId={sutra.id}
                 sutraName={sutra.name}
+                difficulty={difficulty}
                 timeline={lesson.timeline}
                 exampleLabel={problemLabel(level.theoryExample)}
                 version={content.version}
@@ -79,20 +83,25 @@ export function TheoryPage() {
 
 function TheoryBody({
   idea,
+  sutraId,
   sutraName,
+  difficulty,
   timeline,
   exampleLabel,
   version,
   approved,
 }: {
   idea: string
+  sutraId: string
   sutraName: string
+  difficulty: Difficulty
   timeline: import('../../animation/types').Timeline
   exampleLabel: string
   version: string
   approved: boolean
 }) {
   const { settings } = useSettings()
+  const liveCoach = isCoachHandoffEnabled(settings.role)
   const [speed, setSpeed] = useState(1)
   const playback = usePlayback({ frameCount: timeline.frames.length, resetKey: timeline.key, speed: speed * settings.animationSpeed })
   const frame = timeline.frames[playback.index]
@@ -134,6 +143,20 @@ function TheoryBody({
                 Why does this work?
               </Button>
             </div>
+            {liveCoach && (
+              <LiveCoachAsk
+                density="compact"
+                context={{
+                  screen: 'theory',
+                  sutra_id: sutraId,
+                  difficulty,
+                  problem_label: exampleLabel,
+                  frame_index: playback.index,
+                  frame_state: frame.state,
+                  step_title: frame.stepTitle,
+                }}
+              />
+            )}
           </div>
         </div>
       </div>

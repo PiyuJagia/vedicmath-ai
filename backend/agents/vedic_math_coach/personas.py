@@ -2,6 +2,8 @@
 
 Only one persona should speak in a given agent reply. The instruction file
 asks the model to prefix that reply with a speaker tag.
+
+Learner-facing primary tutor name is **Rishi**. Internal id remains `boy_coach`.
 """
 
 from __future__ import annotations
@@ -11,20 +13,25 @@ from enum import Enum
 
 
 class Persona(str, Enum):
-    BOY_COACH = "Boy Coach"
+    BOY_COACH = "Boy Coach"  # internal enum value; display as Rishi
     RABBIT = "Rabbit"
     HUMMINGBIRD = "Hummingbird"
 
 
 PERSONA_TAGS = {
-    Persona.BOY_COACH: "[Boy Coach]",
+    Persona.BOY_COACH: "[Rishi]",
     Persona.RABBIT: "[Rabbit]",
     Persona.HUMMINGBIRD: "[Hummingbird]",
 }
 
 _SPEAKER_RE = re.compile(
-    r"^\s*\[(?P<name>Boy Coach|Rabbit|Hummingbird)\]\s*",
+    r"^\s*\[(?P<name>Rishi|Boy Coach|Rabbit|Hummingbird)\]\s*",
     re.IGNORECASE | re.MULTILINE,
+)
+
+_ANY_SPEAKER_RE = re.compile(
+    r"\[(Rishi|Boy Coach|Rabbit|Hummingbird)\]",
+    re.IGNORECASE,
 )
 
 
@@ -33,19 +40,25 @@ def parse_speaker(reply: str) -> Persona | None:
     match = _SPEAKER_RE.search(reply or "")
     if not match:
         return None
-    name = match.group("name").title()
-    if name.lower() == "boy coach":
+    name = match.group("name").strip().lower()
+    if name in {"boy coach", "rishi"}:
         return Persona.BOY_COACH
-    if name.lower() == "rabbit":
+    if name == "rabbit":
         return Persona.RABBIT
-    if name.lower() == "hummingbird":
+    if name == "hummingbird":
         return Persona.HUMMINGBIRD
     return None
 
 
 def count_speakers(reply: str) -> int:
     """How many distinct persona tags appear anywhere in the reply."""
-    found = {match.group(1).lower() for match in re.finditer(r"\[(Boy Coach|Rabbit|Hummingbird)\]", reply or "", re.I)}
+    found = set()
+    for match in _ANY_SPEAKER_RE.finditer(reply or ""):
+        name = match.group(1).lower()
+        if name in {"boy coach", "rishi"}:
+            found.add("rishi")
+        else:
+            found.add(name)
     return len(found)
 
 

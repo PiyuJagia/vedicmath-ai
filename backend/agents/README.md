@@ -60,8 +60,25 @@ Maths tools (Tollgate 4B): `calculate_sutra`, `get_lesson`, `check_practice_answ
 in `vedic_math_coach/tools/`. They wrap the existing Python engines; the LLM must
 not invent arithmetic or animation events.
 
+Animation handoff (Tollgate 5A): typed FastAPI routes under `/coach/*` in
+`vedic_math_coach/handoff/`. Backend builds `watch_animation` / `open_animation`
+actions from session-owned `calculation_id` values; React must not parse LLM prose
+for animation events.
+
+| Route | Purpose |
+|---|---|
+| `POST /coach/sessions` | Mint a learner session id |
+| `POST /coach/calculations` | Deterministic calc + optional Watch action |
+| `POST /coach/animations` | Resolve Watch/Open from structured `intent` enum |
+| `POST /coach/handoff` | Compose message + optional structured action |
+
+Tollgate 6A live chat: `POST /coach/chat` runs the ADK Runner; React harness at
+`/coach-handoff` (local DEV, `VITE_COACH_HANDOFF=true`, or admin). Scripted
+Theory/Practice coaches stay on `demoCoach`.
+
 ```powershell
-python -m pytest backend/tests/test_vedic_math_coach.py backend/tests/test_coach_tools.py -v
+python -m pytest backend/tests/test_vedic_math_coach.py backend/tests/test_coach_tools.py backend/tests/test_animation_handoff.py backend/tests/test_coach_chat.py -v
+cd frontend; npm test
 ```
 
 ## Running the ADK development UI

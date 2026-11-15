@@ -1,0 +1,37 @@
+{
+  "mode": "offline_deterministic",
+  "n": 7,
+  "passed": 7,
+  "failed": [],
+  "results": [
+    {
+      "id": "test_teaching_quality_dataset_has_at_least_30_cases",
+      "passed": true
+    },
+    {
+      "id": "test_baseline_golden_still_intact",
+      "passed": true
+    },
+    {
+      "id": "test_reject_correct_answer_wrong_explanation_text",
+      "passed": true
+    },
+    {
+      "id": "test_reject_generic_feedback_as_personalized",
+      "passed": true
+    },
+    {
+      "id": "test_reject_rabbit_answer_dump",
+      "passed": true
+    },
+    {
+      "id": "test_reject_wrong_sutra_claimed_in_calculation",
+      "passed": true
+    },
+    {
+      "id": "test_reject_unnecessary_launch_claim",
+      "passed": true
+    }
+  ],
+  "note": "7 judge-calibration tests; rejects known-bad coaching responses without live LLM"
+}

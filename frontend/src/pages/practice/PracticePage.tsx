@@ -5,9 +5,11 @@ import { SutraStage } from '../../animation/stage/SutraStage'
 import type { Timeline } from '../../animation/types'
 import { friendlyError, useLesson } from '../../animation/useLesson'
 import { checkAnswer, fetchQuestions } from '../../api/client'
+import { isCoachHandoffEnabled } from '../../api/coachClient'
 import type { Lesson, LessonSutraId, PracticeQuestion, Problem } from '../../api/types'
 import { CharacterOrchestrator } from '../../characters/CharacterContext'
 import { CharacterDialogue, CoachCharacter, HintBubble, HummingbirdCompanion, RabbitAssistant, type CoachMood } from '../../characters/Characters'
+import { LiveCoachAsk } from '../../components/coach/LiveCoachAsk'
 import { Breadcrumbs } from '../../components/layout/Breadcrumbs'
 import { Button } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
@@ -181,6 +183,7 @@ function PracticeSession({
   timeline: Timeline
 }) {
   const { settings } = useSettings()
+  const liveCoach = isCoachHandoffEnabled(settings.role)
   const { passLevel } = useProgress()
   const [questions, setQuestions] = useState<PracticeQuestion[] | null>(null)
   const [loadError, setLoadError] = useState<string | null>(null)
@@ -193,6 +196,7 @@ function PracticeSession({
   const [rabbitDismissed, setRabbitDismissed] = useState(false)
   const [idleSeconds, setIdleSeconds] = useState(0)
   const [feedback, setFeedback] = useState<Feedback | null>(null)
+  const [lastCheckStatus, setLastCheckStatus] = useState<'correct' | 'incorrect' | 'invalid' | null>(null)
   const [checking, setChecking] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -279,6 +283,7 @@ function PracticeSession({
     setAttempts((all) => ({ ...all, [key]: attempt }))
     try {
       const check = await checkAnswer(lessonId, problem, difficulty, question.key, answer)
+      setLastCheckStatus(check.status)
       const reply = demoCoach.respond({ intent: 'feedback', mode: 'practice', check, question, answer, attempts: attempt })
       if (check.status === 'correct') {
         if (settings.soundEffects) playCue('correct')
@@ -390,6 +395,26 @@ function PracticeSession({
           <RabbitAssistant state={rabbitVisible ? 'present' : 'hidden'} size={78} onSelect={showHint} label="Ask the rabbit for a hint" />
         </div>
         {!done && <p className={styles.hintNote}>Stuck? Tap the rabbit or press Hint. Hints get more detailed each time.</p>}
+        {liveCoach && (
+          <LiveCoachAsk
+            density="compact"
+            context={{
+              screen: 'practice',
+              sutra_id: sutraId,
+              difficulty,
+              problem_label: timeline.problemLabel,
+              step_id: question?.step_id ?? null,
+              step_title: question ? timeline.steps.find((step) => step.id === question.step_id)?.title ?? null : null,
+              frame_index: playback.index,
+              frame_state: timeline.frames[playback.index]?.state ?? null,
+              question_key: question?.key ?? null,
+              learner_answer: answer.trim() ? answer.trim() : null,
+              check_status: lastCheckStatus,
+              hint_level: level,
+              hint_count: level,
+            }}
+          />
+        )}
       </Card>
     </>
   )

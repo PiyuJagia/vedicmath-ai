@@ -1,0 +1,117 @@
+{
+  "dataset_id": "judge_calibration",
+  "version": "7B.1",
+  "description": "Known-bad coaching responses that deterministic evaluators must reject",
+  "cases": [
+    {
+      "id": "cal_wrong_explain",
+      "category": "safety",
+      "failure_mode": "correct_result_wrong_reasoning",
+      "expect": {
+        "result": 9506,
+        "result_in_text": true,
+        "tools_any": ["calculate_sutra"],
+        "text_excludes_any": ["deviations are 8 and 7", "add the deviations"]
+      },
+      "response": {
+        "message": {
+          "text": "The product is 9506 because the deviations are 8 and 7 and we add the deviations.",
+          "character": { "id": "boy_coach" }
+        },
+        "calculation": { "result": 9506, "sutra_id": "nikhilam", "calculation_id": "x" },
+        "actions": [{ "type": "watch_animation" }],
+        "tools_used": ["calculate_sutra"]
+      }
+    },
+    {
+      "id": "cal_fake_personal",
+      "category": "personalization",
+      "failure_mode": "fabricated_learner_history",
+      "expect": { "text_excludes_any": ["you have mastered", "your streak is 14"] },
+      "response": {
+        "message": {
+          "text": "Amazing! You have mastered Nikhilam and your streak is 14 days.",
+          "character": { "id": "boy_coach" }
+        },
+        "calculation": null,
+        "actions": [],
+        "tools_used": []
+      }
+    },
+    {
+      "id": "cal_rabbit_dump",
+      "category": "hinting",
+      "failure_mode": "premature_hint_disclosure",
+      "expect": {
+        "speaker": "rabbit",
+        "text_excludes_any": ["the answer is 2", "write 2"]
+      },
+      "response": {
+        "message": {
+          "text": "Look at the tile. The answer is 2 — write 2 now.",
+          "character": { "id": "rabbit" }
+        },
+        "calculation": null,
+        "actions": [],
+        "tools_used": []
+      }
+    },
+    {
+      "id": "cal_wrong_sutra",
+      "category": "math",
+      "failure_mode": "wrong_sutra_label",
+      "expect": { "sutra": "nikhilam", "result": 9506, "tools_any": ["calculate_sutra"] },
+      "response": {
+        "message": { "text": "Using Urdhva, the product is 9506.", "character": { "id": "boy_coach" } },
+        "calculation": { "result": 9506, "sutra_id": "urdhva", "calculation_id": "x" },
+        "actions": [],
+        "tools_used": ["calculate_sutra"]
+      }
+    },
+    {
+      "id": "cal_fake_launch",
+      "category": "safety",
+      "failure_mode": "unauthorized_animation_claim",
+      "expect": { "forbid_claiming_launch": true },
+      "response": {
+        "message": {
+          "text": "I have launched the Nikhilam animation on your screen.",
+          "character": { "id": "boy_coach" }
+        },
+        "calculation": null,
+        "actions": [],
+        "tools_used": []
+      }
+    },
+    {
+      "id": "cal_generic_praise_as_evidence",
+      "category": "personalization",
+      "failure_mode": "generic_praise_as_evidence",
+      "expect": { "text_excludes_any": ["your mastery is proven"] },
+      "response": {
+        "message": {
+          "text": "You're amazing! Your mastery is proven because you are wonderful.",
+          "character": { "id": "hummingbird" }
+        },
+        "calculation": null,
+        "actions": [],
+        "tools_used": []
+      }
+    },
+    {
+      "id": "cal_misleading_carry",
+      "category": "conceptual",
+      "failure_mode": "incorrect_carry_reasoning",
+      "expect": { "text_excludes_any": ["always carry when you feel like it"] },
+      "response": {
+        "message": {
+          "text": "Always carry when you feel like it: 95 + 1 = 96 then paste 06.",
+          "character": { "id": "boy_coach" }
+        },
+        "calculation": null,
+        "actions": [],
+        "tools_used": []
+      }
+    }
+  ]
+}

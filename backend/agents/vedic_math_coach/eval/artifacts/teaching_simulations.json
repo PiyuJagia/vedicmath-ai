@@ -1,0 +1,378 @@
+{
+  "generated_at": "2026-11-15T00:42:16Z",
+  "base": "http://127.0.0.1:8010",
+  "archetypes": [
+    {
+      "id": "learner_a_beginner",
+      "label": "Learner A \u2014 Beginner",
+      "session_id": "b1a703e0-9796-4831-95f0-95ce6f199e18",
+      "turns": [
+        {
+          "message": "What is Nikhilam?",
+          "context": {
+            "screen": "theory",
+            "sutra_id": "nikhilam",
+            "difficulty": "beginner"
+          },
+          "http_status": 200,
+          "elapsed_s": 7.21,
+          "speaker": "boy_coach",
+          "text": "Welcome! I'm so glad you asked.\n\n**Nikhilam** is one of the most famous and magical sutras (or shortcuts) in Vedic Mathematics! Its full Sanskrit name is *Nikhilam Navatashcaramam Dashatah*, which means:\n\n> *\"All from 9 and the last from 10.\"*\n\nIn maths, we use Nikhilam as a superpower whenever we need to multiply numbers that are close to a nice, round \"base\" number\u2014like **10**, **100**, or **1,000**.\n\nInstead of doing long multiplication, Nikhilam looks at how far each number is away from the base (we call this the **deviation** or difference). \n\nFor example, when multiplying **9 \u00d7 8**:\n- Both numbers are close to base **10**.\n- 9 is **1 below** 10 (deviation -1).\n- 8 is **2 below** 10 (deviation -2).\n\nWith just a simple cross-subtraction and multiplying those tiny differences, you get the answer in seconds!\n\nWould you like to try solving a fun problem like **9 \u00d7 8** or **98 \u00d7 97** together using Nikhilam?",
+          "tools_used": [],
+          "calculation": null,
+          "actions": [],
+          "error": null
+        },
+        {
+          "message": "Why do we use 100? What does base mean?",
+          "context": {
+            "screen": "theory",
+            "sutra_id": "nikhilam",
+            "difficulty": "beginner",
+            "problem_label": "98 \u00d7 97",
+            "frame_index": 0,
+            "step_title": "Choose a base"
+          },
+          "http_status": 200,
+          "elapsed_s": 5.37,
+          "speaker": "boy_coach",
+          "text": "That is such a fantastic question!\n\nThink of a **base** as a handy landmark or a friendly \"anchor\" number. In Vedic Maths, our favourite bases are numbers starting with 1 followed by zeros\u2014like **10**, **100**, and **1,000**. They are super easy to work with because multiplying or subtracting with them is a breeze!\n\nWe pick a base that is **closest** to the numbers we want to multiply.\n\nFor **98 \u00d7 97**:\n- Base **10** is way too small (98 is 88 away from 10).\n- Base **1,000** is way too big (98 is more than 900 away from 1,000).\n- But Base **100** is right next door! \n\n98 is just 2 away from 100, and 97 is just 3 away. Because those differences are so tiny, working with 100 turns a big multiplication problem into simple mental maths.\n\nCan you spot how far **96** and **95** are from our base 100?",
+          "tools_used": [],
+          "calculation": null,
+          "actions": [],
+          "error": null
+        },
+        {
+          "message": "Why are we subtracting? I still don't understand. Can you explain it another way?",
+          "context": {
+            "screen": "theory",
+            "sutra_id": "nikhilam",
+            "difficulty": "beginner",
+            "problem_label": "98 \u00d7 97",
+            "frame_index": 1
+          },
+          "http_status": 200,
+          "elapsed_s": 13.7,
+          "speaker": "boy_coach",
+          "text": "It is completely normal to wonder about that! Let's look at it in a fun, real-world way.\n\nImagine you have two boxes of chocolates:\n- A full box is supposed to hold **100** chocolates.\n- Box A only has **98** chocolates. It's missing **2**.\n- Box B only has **97** chocolates. It's missing **3**.\n\nBecause both numbers are **less** than 100, they have a shortfall\u2014they are missing pieces! That is why we write:\n- 98 is **2 below** 100\n- 97 is **3 below** 100\n\n### Why do we cross-subtract?\n\nThink of it like this:\nIf you take Box A (98 chocolates) and also take away the **3** chocolates that Box B was missing, you get:\n**98 - 3 = 95**\n\nOr, if you take Box B (97 chocolates) and take away the **2** chocolates Box A was missing:\n**97 - 2 = 95**\n\nNotice how both give the exact same number: **95**! That gives us the left part of our answer.\n\nWe subtract because our numbers are **below** our landmark of 100. (If a number were *above* 100, like 103, we would actually add!)\n\nHow does that feel now\u2014does thinking of it as \"how many are missing\" make more sense?",
+          "tools_used": [
+            "calculate_sutra"
+          ],
+          "calculation": {
+            "calculation_id": "231591db-ea37-4155-88e5-9a5cc4506ccf",
+            "sutra_id": "nikhilam",
+            "difficulty": "beginner",
+            "numbers": [
+              98,
+              97
+            ],
+            "result": 9506
+          },
+          "actions": [
+            "watch_animation"
+          ],
+          "error": null
+        },
+        {
+          "message": "Can you show me a verified example with calculate_sutra?",
+          "context": {
+            "screen": "theory",
+            "sutra_id": "nikhilam",
+            "difficulty": "beginner"
+          },
+          "http_status": 200,
+          "elapsed_s": 11.46,
+          "speaker": "boy_coach",
+          "text": "Here is a verified calculation using the Nikhilam engine for **96 \u00d7 97**:\n\n### Step 1: Choose a base\nBoth numbers are very close to **100**, so our base is **100** (which has 2 zeros).\n\n### Step 2: Find the deviations\n- 96 is **4** below 100\n- 97 is **3** below 100\n\n### Step 3: Cross-subtract (Left part)\nSubtract across either way:\n- **96 - 3 = 93**  \n*(or 97 - 4 = 93)*  \nThe left part of our answer is **93**.\n\n### Step 4: Multiply the deviations (Right part)\nMultiply the two differences:\n- **4 \u00d7 3 = 12**  \nBecause base 100 has 2 zeros, the right side needs 2 digits, and **12** fits perfectly!\n\n### Step 5: Combine the parts\nPut the left and right parts together:\n- **93** and **12** gives **9312**.\n\nSo, **96 \u00d7 97 = 9312**!\n\nYou can tap the **Watch animation** button in the app to see the digits and arrows move step by step. Would you like to try one on your own now?",
+          "tools_used": [
+            "calculate_sutra"
+          ],
+          "calculation": {
+            "calculation_id": "527266bb-1b2a-45ae-a27f-e69bc7ea5d9b",
+            "sutra_id": "nikhilam",
+            "difficulty": "beginner",
+            "numbers": [
+              96,
+              97
+            ],
+            "result": 9312
+          },
+          "actions": [
+            "watch_animation"
+          ],
+          "error": null
+        },
+        {
+          "message": "What should I learn next?",
+          "context": {
+            "screen": "theory",
+            "sutra_id": "nikhilam",
+            "difficulty": "beginner"
+          },
+          "http_status": 200,
+          "elapsed_s": 6.24,
+          "speaker": "boy_coach",
+          "text": "You're doing fantastic! Here are three exciting paths you can explore next:\n\n1. **Practice Beginner Nikhilam**:\n   Try a couple of quick practice problems in the app (like **95 \u00d7 98**) to get super speedy with finding deviations and cross-subtracting.\n\n2. **Level Up to Numbers Above 100**:\n   Learn how Nikhilam works when numbers are *greater* than 100 (like **104 \u00d7 103**). Instead of subtracting, you get to add!\n\n3. **Try a Brand New Sutra**:\n   - **Ekadhikena Purvena**: A magic trick for squaring any number ending in 5 in under two seconds (like **35\u00b2** or **75\u00b2**)!\n   - **Urdhva Tiryagbhyam**: The universal \"vertical and crosswise\" method that lets you multiply *any* two numbers anywhere.\n\nWhich one sounds like the most fun to explore next?",
+          "tools_used": [],
+          "calculation": null,
+          "actions": [],
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "learner_b_struggling",
+      "label": "Learner B \u2014 Struggling",
+      "session_id": "f75c4c27-b229-48f6-aced-c1696490930f",
+      "turns": [
+        {
+          "message": "My answer was wrong. Why is my answer wrong? I put 2 for the deviation of 98.",
+          "context": {
+            "screen": "practice",
+            "sutra_id": "nikhilam",
+            "difficulty": "beginner",
+            "problem_label": "98 \u00d7 93",
+            "question_key": "deviation_a",
+            "learner_answer": "2",
+            "check_status": "incorrect",
+            "hint_level": 0
+          },
+          "http_status": 200,
+          "elapsed_s": 26.21,
+          "speaker": "boy_coach",
+          "text": "Actually, your thinking is completely right! For 98, the deviation is indeed 2.\n\nIn Nikhilam multiplication for numbers close to 100, we choose 100 as our base. To find how far 98 is from our base, we subtract:\n100 \u2212 98 = 2.\n\nOur verified check confirms that 2 is the correct deviation. You did that calculation perfectly!\n\nNow that we have 2 for 98, what deviation do you get for the second number, 93?",
+          "tools_used": [
+            "calculate_sutra",
+            "check_practice_answer"
+          ],
+          "calculation": {
+            "calculation_id": "d8383f5a-1b4a-42e7-9399-feaaac4d2e7a",
+            "sutra_id": "nikhilam",
+            "difficulty": "beginner",
+            "numbers": [
+              98,
+              93
+            ],
+            "result": 9114
+          },
+          "actions": [
+            "watch_animation"
+          ],
+          "error": null
+        },
+        {
+          "message": "I don't get it. This is too hard. Can you give me a hint instead of the answer?",
+          "context": {
+            "screen": "practice",
+            "sutra_id": "nikhilam",
+            "difficulty": "beginner",
+            "check_status": "incorrect",
+            "hint_level": 1,
+            "learner_answer": "2"
+          },
+          "http_status": 200,
+          "elapsed_s": 9.43,
+          "speaker": "rabbit",
+          "text": "Take a deep breath\u2014we can take it one small step at a time!\n\nLook at the big base tile at the top, which is 100. \n\nFor 93, picture walking along a number line from 93 up to 100. How many steps do you need to jump from 93 to reach 100?",
+          "tools_used": [
+            "get_lesson"
+          ],
+          "calculation": {
+            "calculation_id": "d8383f5a-1b4a-42e7-9399-feaaac4d2e7a",
+            "sutra_id": "nikhilam",
+            "difficulty": "beginner",
+            "numbers": [
+              98,
+              93
+            ],
+            "result": 9114
+          },
+          "actions": [
+            "watch_animation"
+          ],
+          "error": null
+        },
+        {
+          "message": "As Rabbit only, give a short visual hint about deviation from the base. Do not give the final product.",
+          "context": {
+            "screen": "practice",
+            "sutra_id": "nikhilam",
+            "difficulty": "beginner",
+            "hint_level": 2
+          },
+          "http_status": 200,
+          "elapsed_s": 4.18,
+          "speaker": "rabbit",
+          "text": "Picture the base tile **100** sitting right above your numbers!\n\nDraw a little arrow pointing from 100 down to each number tile. The deviation is just the gap shown by that arrow:\n- For **98**, the arrow drops by **2** to reach the tile.\n- For **93**, see how many units that arrow has to drop from 100 to touch 93.\n\nCan you see how wide that gap is for 93?",
+          "tools_used": [],
+          "calculation": null,
+          "actions": [],
+          "error": null
+        },
+        {
+          "message": "I keep making the same mistake with the sign. Help me without telling me the answer number.",
+          "context": {
+            "screen": "practice",
+            "sutra_id": "nikhilam",
+            "difficulty": "beginner",
+            "check_status": "incorrect",
+            "hint_level": 2
+          },
+          "http_status": 200,
+          "elapsed_s": 9.03,
+          "speaker": "boy_coach",
+          "text": "That is a really common spot to pause, so let's clear up how the signs work here!\n\nIn our beginner Nikhilam lessons, the engine uses the rule:\n**Base \u2212 Number = Deviation**\n\nThink of the deviation simply as the distance missing from the base. Even though our number is below 100, we write the deviation as a plain, positive number\u2014no minus sign needed! \n\nThe method already takes care of the \"below the base\" part when you cross-subtract in the next step.\n\nWhen you think of the deviation as just the positive distance from the base, does that help you see what sign to enter?",
+          "tools_used": [],
+          "calculation": null,
+          "actions": [],
+          "error": null
+        },
+        {
+          "message": "I finally got it right after struggling. Cheer me as Hummingbird only.",
+          "context": {
+            "screen": "practice",
+            "sutra_id": "nikhilam",
+            "difficulty": "beginner",
+            "check_status": "correct"
+          },
+          "http_status": 200,
+          "elapsed_s": 4.46,
+          "speaker": "hummingbird",
+          "text": "*Flutters wings excitedly!* \n\nYou did it! I am so, so proud of you for sticking with it! \n\nWorking through tricky spots and not giving up is where real math strength comes from. Every time you push through a struggle, your brain grows stronger and faster. \n\nTake a moment to smile\u2014you earned this win! Ready to soar into the next step whenever you are!",
+          "tools_used": [],
+          "calculation": null,
+          "actions": [],
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "learner_c_advanced",
+      "label": "Learner C \u2014 Advanced",
+      "session_id": "34630f09-d1a8-45f2-ae6d-62941c743745",
+      "turns": [
+        {
+          "message": "Why does this Nikhilam trick always work? Prove why 98\u00d797 works algebraically, using calculate_sutra for the verified product.",
+          "context": {
+            "screen": "theory",
+            "sutra_id": "nikhilam",
+            "difficulty": "advanced"
+          },
+          "http_status": 200,
+          "elapsed_s": 14.3,
+          "speaker": "boy_coach",
+          "text": "That is one of my favourite questions! Understanding *why* a shortcut works turns it from a neat magic trick into real mathematical power.\n\nFirst, our verified engine calculation confirms that **98 \u00d7 97 = 9506**.\n\nHere is the algebraic proof showing why Nikhilam works every single time:\n\n### 1. Set up the numbers with algebra\nLet our base be $B$ (for 98 and 97, the base $B = 100$).  \nLet the deviations (how much each number falls short of the base) be $a$ and $b$.\n\nSo, our two numbers can be written as:\n- First number: $(B - a)$\n- Second number: $(B - b)$\n\nFor $98 \\times 97$:\n- $98 = 100 - 2$ (so $a = 2$)\n- $97 = 100 - 3$ (so $b = 3$)\n\n---\n\n### 2. Multiply them algebraically\nNow expand the brackets just like in standard algebra:\n\n$$(B - a)(B - b) = B^2 - B \\cdot b - B \\cdot a + (a \\times b)$$\n\nFactor out $B$ from the first three terms:\n\n$$= B \\cdot (B - a - b) + (a \\times b)$$\n\n---\n\n### 3. See how the steps appear!\nLook closely at that grouped term: $(B - a - b)$.\n\n- Since $(B - a)$ is our first number (98), $(B - a - b)$ is simply **(First number) \u2212 $b$** $\\rightarrow 98 - 3 = 95$.\n- Notice it also equals $(B - b) - a$, which is **(Second number) \u2212 $a$** $\\rightarrow 97 - 2 = 95$.\n\nThat is our **cross-subtraction** step!\n\nMultiplying by $B$ (100) shifts that 95 into the hundreds place:\n$$95 \\times 100 = 9500$$\n\nFinally, look at the remaining term:\n$$+(a \\times b)$$\n\nThat is the **product of the deviations**:\n$$2 \\times 3 = 6$$\n\nPutting it all together:\n$$9500 + 6 = 9506$$\n\nIsn't it neat how the algebra splits perfectly into a left part and a right part? Does seeing the algebra make the cross-subtraction feel natural to you?",
+          "tools_used": [
+            "calculate_sutra"
+          ],
+          "calculation": {
+            "calculation_id": "08bdb291-c6cb-4f9d-bb7a-f9e71744b7bd",
+            "sutra_id": "nikhilam",
+            "difficulty": "beginner",
+            "numbers": [
+              98,
+              97
+            ],
+            "result": 9506
+          },
+          "actions": [
+            "watch_animation"
+          ],
+          "error": null
+        },
+        {
+          "message": "What's the difference between Nikhilam and Urdhva? When should I use each?",
+          "context": {
+            "screen": "theory",
+            "sutra_id": "nikhilam",
+            "difficulty": "advanced"
+          },
+          "http_status": 200,
+          "elapsed_s": 8.91,
+          "speaker": "boy_coach",
+          "text": "That is a key distinction in Vedic Mathematics! The simplest way to remember it is: **Nikhilam is a specialized power-tool, while Urdhva is the universal multi-tool.**\n\nHere is how they differ and when to pick each one:\n\n### 1. Nikhilam (*All from 9 and the Last from 10*)\n- **How it works:** It compares numbers to a nearby base (like 10, 100, 1,000) and works with their deviations (how much they are above or below the base).\n- **When to use it:** When both numbers are **very close to a base of 10**.\n  - Examples: $98 \\times 97$, $103 \\times 107$, or $996 \\times 994$.\n- **Why:** Finding deviations and cross-calculating takes just a couple of seconds when numbers are near a base. But if you tried using Nikhilam on $43 \\times 67$, the base deviations (57 and 33) would be harder to multiply than the original problem!\n\n---\n\n### 2. Urdhva Tiryagbhyam (*Vertically and Crosswise*)\n- **How it works:** It multiplies digits in vertical and diagonal patterns, adding carries as you move left to right or right to left.\n- **When to use it:** **Anytime!** It is the universal method that works for any two numbers, especially when they are far from any base.\n  - Examples: $43 \\times 67$, $24 \\times 81$, or $312 \\times 456$.\n- **Why:** You never have to worry about finding a base or checking if numbers are close together.\n\n---\n\n### A quick rule of thumb\nAsk yourself: **\"Are these numbers hovering right next to 10, 100, 1,000, etc.?\"**\n- If **yes** $\\rightarrow$ Reach for **Nikhilam**.\n- If **no** $\\rightarrow$ Reach for **Urdhva**.\n\nWould you like to try picking the best sutra for a few sample numbers together to test your intuition?",
+          "tools_used": [],
+          "calculation": null,
+          "actions": [],
+          "error": null
+        },
+        {
+          "message": "Give me something harder \u2014 use calculate_sutra for nikhilam advanced a=9998 b=9997.",
+          "context": {
+            "screen": "practice",
+            "sutra_id": "nikhilam",
+            "difficulty": "advanced"
+          },
+          "http_status": 200,
+          "elapsed_s": 7.72,
+          "speaker": "boy_coach",
+          "text": "Here is that advanced challenge! Working with numbers near 10,000 shows just how powerful Nikhilam really is.\n\nOur verified engine calculation confirms that **9998 \u00d7 9997 = 99,950,006**.\n\nHere is how the steps break down:\n\n### Step 1: Choose a base\nBoth numbers are just under **10,000**.\nNotice that 10,000 has **4 zeros**, so our right-hand side must hold **4 digits**.\n\n### Step 2: Find the deviations\n- $10,000 - 9998 = 2$\n- $10,000 - 9997 = 3$\n\n### Step 3: Cross-subtract (Left part)\nSubtract either deviation from the opposite number:\n- $9998 - 3 = 9995$  \n*(or $9997 - 2 = 9995$)*\n\nSo our left part is **9995**.\n\n### Step 4: Multiply deviations (Right part)\nMultiply the two deviations:\n- $2 \\times 3 = 6$\n\nSince base 10,000 requires 4 digits on the right, pad it with three leading zeros:\n- Right part = **0006**\n\n### Step 5: Combine the parts\nPlace the left and right parts together:\n$$\\mathbf{9995} \\text{ and } \\mathbf{0006} \\longrightarrow \\mathbf{99,950,006}$$\n\nNotice how quickly a problem with 8-digit answers dissolves into simple arithmetic? Would you like to try calculating one on your own next, like $9996 \\times 9995$?",
+          "tools_used": [
+            "calculate_sutra"
+          ],
+          "calculation": {
+            "calculation_id": "99eaf845-f490-47d6-badd-3cd4800d99d5",
+            "sutra_id": "nikhilam",
+            "difficulty": "advanced",
+            "numbers": [
+              9998,
+              9997
+            ],
+            "result": 99950006
+          },
+          "actions": [
+            "watch_animation"
+          ],
+          "error": null
+        },
+        {
+          "message": "What happens if the number is outside the base range, like nikhilam beginner 50\u00d797?",
+          "context": {
+            "screen": "theory",
+            "sutra_id": "nikhilam",
+            "difficulty": "beginner"
+          },
+          "http_status": 200,
+          "elapsed_s": 9.11,
+          "speaker": "boy_coach",
+          "text": "When we check that in our calculation engine, it tells us:\n> *\"beginner requires numbers between 90 and 109.\"*\n\nSo $50 \\times 97$ is outside the supported range for beginner Nikhilam. Here is why:\n\n### Why 50 doesn't fit standard Nikhilam\nNikhilam works best when numbers are close to a power of 10 (like 100).\n- 97 has a tiny deviation: $100 - 97 = 3$.\n- But 50 has a huge deviation: $100 - 50 = 50$.\n\nWhen one of the deviations is large, multiplying deviations and adjusting parts defeats the whole purpose of mental math!\n\n### What to do instead\nWhen numbers are near 50, or far from a standard base of 10, mathematicians use either:\n1. **A sub-base method (Anurupyena)**, which treats 50 as $\\frac{100}{2}$.\n2. **Urdhva Tiryagbhyam (*Vertically and Crosswise*)**, which handles any pair of numbers without needing them to be near 100.\n\nFor beginner Nikhilam practice, numbers between **90 and 109** give you the cleanest, speediest calculations. Would you like to try a valid pair in that range, like $96 \\times 97$?",
+          "tools_used": [
+            "calculate_sutra"
+          ],
+          "calculation": null,
+          "actions": [],
+          "error": null
+        },
+        {
+          "message": "Can I solve 23\u00d714 using another Sutra than Urdhva?",
+          "context": {
+            "screen": "theory",
+            "sutra_id": "urdhva",
+            "difficulty": "beginner"
+          },
+          "http_status": 200,
+          "elapsed_s": 18.46,
+          "speaker": "boy_coach",
+          "text": "Great thinking! In Vedic Mathematics, there is often more than one path to the right answer, though some paths are much smoother than others.\n\nOur verified calculation engine gives **23 \u00d7 14 = 322**. \n\nHere is how other methods compare for this problem:\n\n### 1. Could you use Nikhilam?\nIn theory, Vedic math has an extension called **Anurupyena** (sub-base method), where you could use a working base of 20 (with deviations $+3$ and $-6$) or a base of 10. However:\n- Standard Nikhilam is built for numbers clustered around 10, 100, or 1,000.\n- With 23 and 14, the deviations are messy, and you have to juggle sub-base ratios and mixed signs. It creates extra work rather than saving time.\n\n### 2. Mental Partitioning (Split and Multiply)\nYou could also break the problem down:\n- $23 \\times 10 = 230$\n- $23 \\times 4 = 92$\n- $230 + 92 = 322$\n\n### Why Urdhva is the champion here\n**Urdhva Tiryagbhyam (*Vertically and Crosswise*)** is tailor-made for numbers like $23 \\times 14$:\n1. **Vertical right:** $3 \\times 4 = 12$ (write 2, carry 1)\n2. **Crosswise:** $(2 \\times 4) + (3 \\times 1) + 1 = 8 + 3 + 1 = 12$ (write 2, carry 1)\n3. **Vertical left:** $(2 \\times 1) + 1 = 3$\n4. **Result:** **322**\n\nBecause the digits (2, 3, 1, 4) are small, Urdhva lets you write the single-line answer from right to left in just a few seconds!\n\nWould you like to try walking through the Urdhva cross-steps on another pair of 2-digit numbers together?",
+          "tools_used": [
+            "calculate_sutra"
+          ],
+          "calculation": {
+            "calculation_id": "51892547-31a3-41ca-9b0f-8120fe4d11f2",
+            "sutra_id": "urdhva",
+            "difficulty": "beginner",
+            "numbers": [
+              23,
+              14
+            ],
+            "result": 322
+          },
+          "actions": [
+            "watch_animation"
+          ],
+          "error": null
+        }
+      ]
+    }
+  ]
+}

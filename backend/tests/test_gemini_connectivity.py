@@ -19,17 +19,13 @@ from backend.agents.gemini_connectivity import (
     redact_secrets,
     require_ai_studio_config,
 )
+from backend.tests.live_gate import LIVE_SKIP_REASON, ENV_PATH, live_gemini_ready
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-ENV_PATH = REPO_ROOT / ".env"
 
 
 def _live_ready() -> bool:
-    if not ENV_PATH.is_file():
-        return False
-    load_llm_env(ENV_PATH)
-    flag = (os.getenv("GOOGLE_GENAI_USE_VERTEXAI") or "false").strip().lower()
-    return bool(os.getenv("GOOGLE_API_KEY")) and flag in {"false", "0", "no"}
+    return live_gemini_ready()
 
 
 def test_env_example_documents_ai_studio_flag():
@@ -83,7 +79,7 @@ def test_invalid_api_key_fails_without_leaking_secret(monkeypatch):
     assert bogus not in text
 
 
-@pytest.mark.skipif(not _live_ready(), reason="Live Gemini .env not configured")
+@pytest.mark.skipif(not _live_ready(), reason=LIVE_SKIP_REASON)
 def test_gemini_responds_to_hello():
     load_llm_env(ENV_PATH)
     require_ai_studio_config()

@@ -16,10 +16,10 @@ export interface CharacterIdentity {
 export const CHARACTERS: Record<CharacterId, CharacterIdentity> = {
   boy: {
     id: 'boy',
-    name: 'Coach',
+    name: 'Rishi',
     role: 'Main teacher',
     image: coachBoy,
-    alt: 'The coach: a young boy with dark hair, a cream outfit and a lavender sash, sitting cross-legged in front of a soft golden halo',
+    alt: 'Rishi, the coach: a young boy with dark hair, a cream outfit and a lavender sash, sitting cross-legged in front of a soft golden halo',
   },
   rabbit: {
     id: 'rabbit',
@@ -37,9 +37,20 @@ export const CHARACTERS: Record<CharacterId, CharacterIdentity> = {
   },
 }
 
-export type ScreenId = 'onboarding' | 'home' | 'theory' | 'learn' | 'practice' | 'play' | 'progress' | 'explore' | 'overview' | 'settings'
+export type ScreenId =
+  | 'onboarding'
+  | 'home'
+  | 'theory'
+  | 'learn'
+  | 'practice'
+  | 'play'
+  | 'progress'
+  | 'explore'
+  | 'overview'
+  | 'settings'
+  | 'coach_handoff'
 
-/** Who speaks on each screen. Only the primary speaker shows dialogue. */
+/** Who speaks on each screen. Only the primary speaker shows dialogue (except coach_handoff). */
 export const SCREEN_ROLES: Record<ScreenId, { primary: CharacterId; secondary: CharacterId[] }> = {
   onboarding: { primary: 'boy', secondary: ['rabbit'] },
   home: { primary: 'boy', secondary: ['hummingbird'] },
@@ -51,4 +62,6 @@ export const SCREEN_ROLES: Record<ScreenId, { primary: CharacterId; secondary: C
   explore: { primary: 'hummingbird', secondary: [] },
   overview: { primary: 'boy', secondary: ['hummingbird'] },
   settings: { primary: 'hummingbird', secondary: [] },
+  // Dev harness: any handoff character may speak one at a time.
+  coach_handoff: { primary: 'boy', secondary: ['rabbit', 'hummingbird'] },
 }

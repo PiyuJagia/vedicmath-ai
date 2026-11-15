@@ -1,0 +1,61 @@
+{
+  "concept_id": "foundation.place_value",
+  "sutra_id": null,
+  "title": "Place value and powers of ten",
+  "concept_type": "foundation",
+  "difficulty_levels": [
+    "beginner",
+    "intermediate",
+    "advanced"
+  ],
+  "prerequisites": [],
+  "explanation": {
+    "default": "Our number system groups digits by powers of ten. A base such as 100 or 1000 is just a clean power of ten that makes mental regrouping easier.",
+    "beginner": "100 means 1 hundred. Numbers near 100 are easier to compare to that landmark.",
+    "intermediate": "Bases 100, 1000, and 10000 are powers of ten used as convenient landmarks.",
+    "advanced": "Working relative to 10^n is the same algebra as expanding (10^n ± d)."
+  },
+  "misconceptions": [],
+  "examples": [],
+  "source_references": [
+    {
+      "document_id": "scert_fundamentals_2014",
+      "title": "Fundamentals & Applications of Vedic Mathematics (2014)",
+      "url": "https://navavani.org.in/wp/wp-content/uploads/2017/07/FUNDAMENTALANDVEDICMATHEMATICS.pdf",
+      "author_publisher": "SCERT New Delhi",
+      "section": "Introduction / place-value arithmetic context",
+      "pdf_page_index": 7,
+      "printed_page_note": "PDF page index 7 (0-based); printed page may differ",
+      "verification_status": "mapped",
+      "note": ""
+    },
+    {
+      "document_id": "vedicmath_ai_engines",
+      "title": "VedicMath AI deterministic engines",
+      "url": "local://backend/",
+      "author_publisher": "Project engines (authoritative for calculations)",
+      "section": "Lesson bases in Nikhilam/Yavadunam levels",
+      "pdf_page_index": null,
+      "printed_page_note": "n/a",
+      "verification_status": "independently_checked",
+      "note": ""
+    }
+  ],
+  "aliases": [
+    "place value",
+    "powers of 10",
+    "base 10"
+  ],
+  "keywords": [
+    "place value",
+    "tens",
+    "hundreds",
+    "powers of ten",
+    "base"
+  ],
+  "related_concepts": [],
+  "app_supported": true,
+  "review_status": "approved_for_agent",
+  "content_version": "7C.1",
+  "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+}

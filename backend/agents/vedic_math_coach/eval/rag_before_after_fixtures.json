@@ -1,0 +1,87 @@
+{
+  "meta": {
+    "version": "7C.1",
+    "mode": "offline_simulated_before_after",
+    "note": "Matched prompts with labeled baseline vs RAG-grounded responses. NOT live Gemini comparison. Do not treat as measured live improvement."
+  },
+  "prompts": [
+    {
+      "id": "ba_nikhilam_why",
+      "prompt": "Rishi, why does Nikhilam work?",
+      "sutra_id": "nikhilam",
+      "difficulty": "beginner",
+      "A_baseline_without_rag": {
+        "label": "plausible_but_ungrounded",
+        "text": "Nikhilam is a clever Vedic trick near 100. You cross-subtract and multiply the gaps. It just works that way because ancient sages discovered it.",
+        "issues": ["disputed_history_as_fact", "no_algebraic_grounding", "no_approved_source"],
+        "rubric_notes": {
+          "conceptual_understanding": 2,
+          "grounding": 0,
+          "age_appropriateness": 3
+        }
+      },
+      "B_with_rag": {
+        "label": "retrieval_grounded",
+        "retrieval_concept_ids": ["sutra.nikhilam.principle"],
+        "text": "Nikhilam works because of ordinary algebra. With base 100 and this app’s rule deviation = base − number, 98 and 97 are (100−2) and (100−3). Expanding gives 100×(100−2−3)+2×3 = 9506. The stage’s cross-subtraction and deviation product are that identity in disguise. Want to check what the deviation of 98 should be?",
+        "tools_used": ["search_vedic_math_knowledge", "calculate_sutra"],
+        "issues": [],
+        "rubric_notes": {
+          "conceptual_understanding": 4,
+          "grounding": 4,
+          "age_appropriateness": 4,
+          "history_hygiene": 4
+        }
+      },
+      "offline_verdict": {
+        "B_better_on": ["conceptual_understanding", "grounding", "history_hygiene"],
+        "live_comparison": "pending_credits"
+      }
+    },
+    {
+      "id": "ba_urdhva_carry",
+      "prompt": "I don't understand why we carry 1 in Urdhva.",
+      "sutra_id": "urdhva",
+      "A_baseline_without_rag": {
+        "label": "handwavy",
+        "text": "You carry whenever the number looks big. Trust the animation arrow.",
+        "issues": ["no_place_value_explanation", "may_invent_when_to_carry"],
+        "rubric_notes": { "conceptual_understanding": 1, "misconception_diagnosis": 1, "grounding": 1 }
+      },
+      "B_with_rag": {
+        "label": "retrieval_grounded",
+        "retrieval_concept_ids": ["foundation.carrying", "sutra.urdhva.principle"],
+        "text": "A carry is place-value bookkeeping: when a column total is 10 or more, write the units digit and pass the tens to the next higher place. In Urdhva each sweep is one place-value column. I will not invent a carry digit—use the verified lesson column if we check this problem with tools.",
+        "tools_used": ["search_vedic_math_knowledge", "get_lesson"],
+        "issues": [],
+        "rubric_notes": { "conceptual_understanding": 4, "misconception_diagnosis": 4, "grounding": 4 }
+      },
+      "offline_verdict": {
+        "B_better_on": ["conceptual_understanding", "misconception_diagnosis", "grounding"],
+        "live_comparison": "pending_credits"
+      }
+    },
+    {
+      "id": "ba_anurupyena",
+      "prompt": "Can you show me Anurupyena in the app?",
+      "A_baseline_without_rag": {
+        "label": "risk_of_fake_feature",
+        "text": "Sure—Anurupyena is ready. Watch the animation.",
+        "issues": ["unsupported_method_as_feature"],
+        "rubric_notes": { "unsupported_abstention": 0 }
+      },
+      "B_with_rag": {
+        "label": "boundary_grounded",
+        "retrieval_concept_ids": ["foundation.unsupported_methods"],
+        "text": "Anurupyena appears in some reference lists, but this app does not implement it as an interactive method. For general products here, use Urdhva; if both numbers are near a base, try Nikhilam.",
+        "tools_used": ["search_vedic_math_knowledge"],
+        "issues": [],
+        "rubric_notes": { "unsupported_abstention": 4 }
+      },
+      "offline_verdict": {
+        "B_better_on": ["unsupported_abstention"],
+        "live_comparison": "pending_credits"
+      }
+    }
+  ]
+}

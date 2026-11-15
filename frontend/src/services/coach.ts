@@ -49,7 +49,7 @@ export const demoCoach: CoachService = {
     switch (request.intent) {
       case 'welcome':
         return reply(
-          `Namaste${request.learnerName ? `, ${request.learnerName}` : ''}! I am your coach. I will show you clever ways to work with numbers, one step at a time.`,
+          `Namaste${request.learnerName ? `, ${request.learnerName}` : ''}! I am Rishi, your coach. I will show you clever ways to work with numbers, one step at a time.`,
           'speaking',
         )
       case 'explain':

@@ -1,0 +1,84 @@
+{
+  "catalog_version": "7B.5.1",
+  "description": "Git-managed golden fixture registry. LangSmith UI edits must not diverge from these paths.",
+  "datasets": [
+    {
+      "dataset_id": "golden_adk_cases",
+      "version": "6B.3",
+      "category": "agent_reliability",
+      "path": "../golden_cases.json",
+      "description": "31 ADK golden scenarios: math, persona, safety, multi-turn, animation authorization",
+      "grading": "deterministic_expect_checks",
+      "case_count": 31,
+      "langsmith_dataset_id": null,
+      "change_history": [
+        { "version": "6B.1", "note": "Initial expanded golden set" },
+        { "version": "6B.3", "note": "Rishi greeting + Anurupyena + Rabbit leak cases" }
+      ]
+    },
+    {
+      "dataset_id": "teaching_quality_cases",
+      "version": "7A.1",
+      "category": "teaching_intelligence",
+      "path": "../teaching_quality_cases.json",
+      "description": "32 teaching-quality prompts across conceptual, misconception, hinting, safety",
+      "grading": "deterministic_plus_optional_llm_judge",
+      "case_count": 32,
+      "langsmith_dataset_id": null,
+      "change_history": [
+        { "version": "7A.1", "note": "Teaching intelligence audit dataset" }
+      ]
+    },
+    {
+      "dataset_id": "teaching_v2_offline_fixtures",
+      "version": "7B.1",
+      "category": "teaching_intelligence",
+      "path": "../offline_fixtures.json",
+      "description": "Labeled good/bad fixtures for offline teaching eval v2 (adversarial + hint leakage)",
+      "grading": "rubric_0_4_plus_oracles",
+      "case_count": 27,
+      "langsmith_dataset_id": null,
+      "change_history": [
+        { "version": "7B.1", "note": "Phase 7B offline fixtures with known-bad sensitivity" }
+      ]
+    },
+    {
+      "dataset_id": "judge_calibration",
+      "version": "7B.1",
+      "category": "calibration",
+      "path": "../calibration/known_bad_cases.json",
+      "description": "Known-bad responses the evaluator must reject",
+      "grading": "must_fail_deterministic",
+      "case_count": 7,
+      "langsmith_dataset_id": null,
+      "change_history": [
+        { "version": "7B.1", "note": "Extracted from test_teaching_eval_calibration.py" }
+      ]
+    },
+    {
+      "dataset_id": "rag_retrieval_cases",
+      "version": "7C.1-prep",
+      "category": "rag_quality",
+      "path": "../rag_retrieval_cases.json",
+      "description": "Retrieval-focused cases prepared for Phase 7C; scores invalid until RAG approved",
+      "grading": "retrieval_hit_precision_abstention",
+      "case_count": 33,
+      "langsmith_dataset_id": null,
+      "status": "prepared_not_baseline",
+      "change_history": [
+        { "version": "7C.1-prep", "note": "Catalogued under 7B.5; do not claim live RAG teaching gains" }
+      ]
+    },
+    {
+      "dataset_id": "rag_before_after_offline",
+      "version": "7C.1-prep",
+      "category": "paired_comparison_fixtures",
+      "path": "../rag_before_after_fixtures.json",
+      "description": "Offline simulated A/B teaching fixtures (not live Gemini)",
+      "grading": "labeled_offline_only",
+      "case_count": 3,
+      "langsmith_dataset_id": null,
+      "status": "prepared_not_baseline"
+    }
+  ]
+}

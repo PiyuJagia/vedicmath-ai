@@ -13,6 +13,8 @@ from backend.agents.vedic_math_coach.tools import (
 from backend.agents.vedic_math_coach.tools.service import animation_format
 from backend.agents.vedic_math_coach.tools.store import clear_store, get_calculation
 
+SESSION = "coach-tools-session"
+
 
 @pytest.fixture(autouse=True)
 def _clean_store():
@@ -31,7 +33,7 @@ def test_root_agent_registers_three_maths_tools():
 
 
 def test_calculate_nikhilam_beginner():
-    out = calculate_sutra("nikhilam", "beginner", a=98, b=97)
+    out = calculate_sutra("nikhilam", "beginner", a=98, b=97, session_id=SESSION)
     assert out["ok"] is True
     assert out["result"] == 98 * 97 == 9506
     assert out["numbers"] == [98, 97]
@@ -41,8 +43,8 @@ def test_calculate_nikhilam_beginner():
 
 
 def test_get_lesson_reuses_calculation_id_and_animation():
-    calc = calculate_sutra("nikhilam", "beginner", a=98, b=97)
-    lesson = get_lesson(calculation_id=calc["calculation_id"])
+    calc = calculate_sutra("nikhilam", "beginner", a=98, b=97, session_id=SESSION)
+    lesson = get_lesson(calculation_id=calc["calculation_id"], session_id=SESSION)
     assert lesson["ok"] is True
     assert lesson["result"] == calc["result"]
     assert lesson["animation_steps"]
@@ -69,10 +71,10 @@ def test_get_lesson_reuses_calculation_id_and_animation():
     ],
 )
 def test_calculate_all_five_sutras_beginner(sutra, kwargs, expected):
-    out = calculate_sutra(sutra, "beginner", **kwargs)
+    out = calculate_sutra(sutra, "beginner", session_id=SESSION, **kwargs)
     assert out["ok"] is True
     assert out["result"] == expected
-    lesson = get_lesson(calculation_id=out["calculation_id"])
+    lesson = get_lesson(calculation_id=out["calculation_id"], session_id=SESSION)
     assert lesson["ok"] is True
     assert lesson["result"] == expected
     assert lesson["animation_format"] in {"grouped", "flat"}
@@ -93,16 +95,17 @@ def test_calculate_all_five_sutras_beginner(sutra, kwargs, expected):
     ],
 )
 def test_calculate_higher_levels(sutra, difficulty, kwargs, expected):
-    out = calculate_sutra(sutra, difficulty, **kwargs)
+    out = calculate_sutra(sutra, difficulty, session_id=SESSION, **kwargs)
     assert out["ok"] is True
     assert out["result"] == expected
 
 
 def test_invalid_operands_and_unsupported_sutra():
-    assert calculate_sutra("nikhilam", "beginner", a=50, b=97)["ok"] is False
-    assert calculate_sutra("paravartya", "beginner", a=1, b=2)["code"] == "unsupported_sutra"
-    assert calculate_sutra("ekadhikena", "beginner", number=34)["ok"] is False
-    assert get_lesson(calculation_id="missing")["code"] == "unknown_calculation"
+    assert calculate_sutra("nikhilam", "beginner", a=50, b=97, session_id=SESSION)["ok"] is False
+    assert calculate_sutra("paravartya", "beginner", a=1, b=2, session_id=SESSION)["code"] == "unsupported_sutra"
+    assert calculate_sutra("ekadhikena", "beginner", number=34, session_id=SESSION)["ok"] is False
+    assert get_lesson(calculation_id="missing", session_id=SESSION)["code"] == "unknown_calculation"
+    assert calculate_sutra("nikhilam", "beginner", a=98, b=97)["code"] == "missing_session"
 
 
 def test_check_practice_answer_nikhilam():

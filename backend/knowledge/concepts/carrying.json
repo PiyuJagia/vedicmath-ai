@@ -1,0 +1,82 @@
+{
+  "concept_id": "foundation.carrying",
+  "sutra_id": null,
+  "title": "Carrying in place-value multiplication",
+  "concept_type": "foundation",
+  "difficulty_levels": [
+    "beginner",
+    "intermediate",
+    "advanced"
+  ],
+  "prerequisites": [],
+  "explanation": {
+    "default": "When a place-value column sum is 10 or more, write the units digit and pass the tens as a carry into the next higher place. Carries are ordinary place-value bookkeeping, not a separate mysterious rule.",
+    "beginner": "If a column makes 14, write 4 and remember 1 for the next column.",
+    "intermediate": "In Urdhva, each vertical/crosswise sweep is one place-value column plus any incoming carry.",
+    "advanced": "Carrying is reduction modulo 10 with quotient moved one power of ten higher."
+  },
+  "misconceptions": [
+    {
+      "misconception_id": "mis.carry.concat_blocks",
+      "observable_error": "Writing raw column products side-by-side without carrying",
+      "correct_concept": "Each column contributes one digit after carry normalization",
+      "teaching_intervention": "Replay one Urdhva column and show write_digit vs outgoing_carry",
+      "rabbit_hint_strategy": "Level 2: watch the carry arrow; do not state the digit yet",
+      "follow_up_practice": "Urdhva beginner with a mid-size cross product"
+    }
+  ],
+  "examples": [],
+  "source_references": [
+    {
+      "document_id": "scert_fundamentals_2014",
+      "title": "Fundamentals & Applications of Vedic Mathematics (2014)",
+      "url": "https://navavani.org.in/wp/wp-content/uploads/2017/07/FUNDAMENTALANDVEDICMATHEMATICS.pdf",
+      "author_publisher": "SCERT New Delhi",
+      "section": "Vertical and crosswise multiplication chapters",
+      "pdf_page_index": 32,
+      "printed_page_note": "PDF page index 32 (0-based); printed page may differ",
+      "verification_status": "mapped",
+      "note": ""
+    },
+    {
+      "document_id": "vedamu_methods",
+      "title": "Vedic Mathematics - Methods",
+      "url": "https://www.vedamu.org/veda/1795%24vedic_mathematics_methods.pdf",
+      "author_publisher": "Compiled PDF (author metadata: sandeep.kattekola / Word Preface)",
+      "section": "Urdhva sections",
+      "pdf_page_index": 41,
+      "printed_page_note": "PDF page index 41 (0-based); printed page may differ",
+      "verification_status": "mapped",
+      "note": ""
+    },
+    {
+      "document_id": "internal_sutras_math_notes",
+      "title": "Internal research notes: sutras-math.md",
+      "url": "local://research_notes/Vedic maths teaching foundations/sutras-math.md",
+      "author_publisher": "Project research notes",
+      "section": "Urdhva carry misconceptions",
+      "pdf_page_index": null,
+      "printed_page_note": "n/a",
+      "verification_status": "independently_checked",
+      "note": ""
+    }
+  ],
+  "aliases": [
+    "carry",
+    "carrying"
+  ],
+  "keywords": [
+    "carry",
+    "carrying",
+    "place value",
+    "overflow",
+    "column"
+  ],
+  "related_concepts": [
+    "sutra.urdhva.principle"
+  ],
+  "app_supported": true,
+  "review_status": "approved_for_agent",
+  "content_version": "7C.1",
+  "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+}

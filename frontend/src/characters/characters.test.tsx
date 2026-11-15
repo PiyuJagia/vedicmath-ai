@@ -44,7 +44,7 @@ describe('character orchestration', () => {
         </CharacterOrchestrator>
       </Providers>,
     )
-    expect(screen.getByText('Scripted demo coach, not live AI')).toBeTruthy()
+    expect(screen.getByText(/Lesson coach \(scripted\).*Ask Rishi/i)).toBeTruthy()
   })
 })
 

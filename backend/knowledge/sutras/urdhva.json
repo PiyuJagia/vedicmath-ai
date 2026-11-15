@@ -1,0 +1,257 @@
+{
+  "sutra_id": "urdhva",
+  "content_version": "7C.1",
+  "entries": [
+    {
+      "concept_id": "sutra.urdhva.overview",
+      "sutra_id": "urdhva",
+      "title": "Urdhva Tiryagbhyam — overview",
+      "concept_type": "sutra_overview",
+      "difficulty_levels": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [
+        "foundation.place_value",
+        "foundation.carrying"
+      ],
+      "explanation": {
+        "default": "Urdhva Tiryagbhyam multiplies by taking vertical and crosswise digit products, one place-value column at a time, with carries. It is a general method for positive integers.",
+        "translation": "Vertically and crosswise."
+      },
+      "misconceptions": [],
+      "examples": [
+        {
+          "example_id": "ex.urdhva.beginner.23x14",
+          "sutra_id": "urdhva",
+          "difficulty": "beginner",
+          "operands": {
+            "a": 23,
+            "b": 14
+          },
+          "expected_result": 322,
+          "engine_verified": true,
+          "independent_check": 322,
+          "app_supported": true
+        }
+      ],
+      "source_references": [
+        {
+          "document_id": "vedamu_methods",
+          "title": "Vedic Mathematics - Methods",
+          "url": "https://www.vedamu.org/veda/1795%24vedic_mathematics_methods.pdf",
+          "author_publisher": "Compiled PDF (author metadata: sandeep.kattekola / Word Preface)",
+          "section": "Urdhva sections",
+          "pdf_page_index": 41,
+          "printed_page_note": "PDF page index 41 (0-based); printed page may differ",
+          "verification_status": "mapped",
+          "note": ""
+        },
+        {
+          "document_id": "scert_fundamentals_2014",
+          "title": "Fundamentals & Applications of Vedic Mathematics (2014)",
+          "url": "https://navavani.org.in/wp/wp-content/uploads/2017/07/FUNDAMENTALANDVEDICMATHEMATICS.pdf",
+          "author_publisher": "SCERT New Delhi",
+          "section": "Vertical / crosswise multiplication",
+          "pdf_page_index": 32,
+          "printed_page_note": "PDF page index 32 (0-based); printed page may differ",
+          "verification_status": "mapped",
+          "note": ""
+        },
+        {
+          "document_id": "vedicmath_ai_engines",
+          "title": "VedicMath AI deterministic engines",
+          "url": "local://backend/",
+          "author_publisher": "Project engines (authoritative for calculations)",
+          "section": "backend/urdhva.py",
+          "pdf_page_index": null,
+          "printed_page_note": "n/a",
+          "verification_status": "independently_checked",
+          "note": ""
+        }
+      ],
+      "aliases": [
+        "urdhva",
+        "vertically and crosswise",
+        "criss-cross"
+      ],
+      "keywords": [
+        "urdhva",
+        "vertical",
+        "crosswise",
+        "general multiplication"
+      ],
+      "related_concepts": [],
+      "app_supported": true,
+      "review_status": "approved_for_agent",
+      "content_version": "7C.1",
+      "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+    },
+    {
+      "concept_id": "sutra.urdhva.principle",
+      "sutra_id": "urdhva",
+      "title": "Why Urdhva works",
+      "concept_type": "principle",
+      "difficulty_levels": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [],
+      "explanation": {
+        "default": "For two-digit factors (10a+b)(10c+d)=100ac+10(ad+bc)+bd. Each Urdhva sweep collects the products that belong to the same power of ten, then carrying writes a standard decimal number.",
+        "beginner": "You still multiply digit by digit; you just collect them by place in one line.",
+        "intermediate": "Larger factors need more sweeps (2n−1 for equal n-digit factors) and careful carries.",
+        "advanced": "It is discrete convolution of digit sequences with base-10 carries.",
+        "derivation": "(10a+b)(10c+d)=100ac+10(ad+bc)+bd."
+      },
+      "misconceptions": [
+        {
+          "misconception_id": "mis.urdhva.no_carry",
+          "observable_error": "Concatenating column products without carry",
+          "correct_concept": "Normalize each column to one digit; pass carry left",
+          "teaching_intervention": "Use foundation.carrying with the current column totals",
+          "rabbit_hint_strategy": "Level 2: watch carry arrow",
+          "follow_up_practice": "Urdhva problem with cross sum ≥ 10"
+        }
+      ],
+      "examples": [
+        {
+          "example_id": "ex.urdhva.beginner.23x14",
+          "sutra_id": "urdhva",
+          "difficulty": "beginner",
+          "operands": {
+            "a": 23,
+            "b": 14
+          },
+          "expected_result": 322,
+          "engine_verified": true,
+          "independent_check": 322,
+          "app_supported": true
+        }
+      ],
+      "source_references": [
+        {
+          "document_id": "internal_sutras_math_notes",
+          "title": "Internal research notes: sutras-math.md",
+          "url": "local://research_notes/Vedic maths teaching foundations/sutras-math.md",
+          "author_publisher": "Project research notes",
+          "section": "Urdhva FOIL / convolution framing",
+          "pdf_page_index": null,
+          "printed_page_note": "n/a",
+          "verification_status": "independently_checked",
+          "note": ""
+        },
+        {
+          "document_id": "scert_fundamentals_2014",
+          "title": "Fundamentals & Applications of Vedic Mathematics (2014)",
+          "url": "https://navavani.org.in/wp/wp-content/uploads/2017/07/FUNDAMENTALANDVEDICMATHEMATICS.pdf",
+          "author_publisher": "SCERT New Delhi",
+          "section": "Vertical and crosswise",
+          "pdf_page_index": 49,
+          "printed_page_note": "PDF page index 49 (0-based); printed page may differ",
+          "verification_status": "mapped",
+          "note": ""
+        }
+      ],
+      "aliases": [
+        "why urdhva",
+        "why carry"
+      ],
+      "keywords": [
+        "why",
+        "carry",
+        "urdhva",
+        "foil",
+        "place value"
+      ],
+      "related_concepts": [],
+      "app_supported": true,
+      "review_status": "approved_for_agent",
+      "content_version": "7C.1",
+      "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+    },
+    {
+      "concept_id": "sutra.urdhva.alt_foil",
+      "sutra_id": "urdhva",
+      "title": "Urdhva — FOIL / another way",
+      "concept_type": "alternate_explanation",
+      "difficulty_levels": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [],
+      "explanation": {
+        "default": "If you know FOIL for binomials, Urdhva for two-digit numbers is the same idea written in place-value columns: First, Outside+Inside, Last, then carry."
+      },
+      "misconceptions": [],
+      "examples": [],
+      "source_references": [
+        {
+          "document_id": "internal_sutras_math_notes",
+          "title": "Internal research notes: sutras-math.md",
+          "url": "local://research_notes/Vedic maths teaching foundations/sutras-math.md",
+          "author_publisher": "Project research notes",
+          "section": "FOIL equivalence",
+          "pdf_page_index": null,
+          "printed_page_note": "n/a",
+          "verification_status": "independently_checked",
+          "note": ""
+        }
+      ],
+      "aliases": [],
+      "keywords": [
+        "another way",
+        "foil",
+        "urdhva"
+      ],
+      "related_concepts": [],
+      "app_supported": true,
+      "review_status": "approved_for_agent",
+      "content_version": "7C.1",
+      "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+    },
+    {
+      "concept_id": "sutra.urdhva.applicability",
+      "sutra_id": "urdhva",
+      "title": "Urdhva applicability",
+      "concept_type": "applicability",
+      "difficulty_levels": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [],
+      "explanation": {
+        "default": "Use Urdhva as the general multiplier in this app. Prefer Nikhilam only when both numbers sit near the same power-of-ten base in the supported window."
+      },
+      "misconceptions": [],
+      "examples": [],
+      "source_references": [
+        {
+          "document_id": "vedicmath_ai_engines",
+          "title": "VedicMath AI deterministic engines",
+          "url": "local://backend/",
+          "author_publisher": "Project engines (authoritative for calculations)",
+          "section": "urdhva engine",
+          "pdf_page_index": null,
+          "printed_page_note": "n/a",
+          "verification_status": "independently_checked",
+          "note": ""
+        }
+      ],
+      "aliases": [],
+      "keywords": [
+        "general",
+        "when to use urdhva"
+      ],
+      "related_concepts": [],
+      "app_supported": true,
+      "review_status": "approved_for_agent",
+      "content_version": "7C.1",
+      "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+    }
+  ]
+}

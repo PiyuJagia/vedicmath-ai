@@ -36,6 +36,12 @@ export function DesignSystemPage() {
         <p className={styles.lede}>
           Shared building blocks for every screen. Numbers shown here are sample data for review only.
         </p>
+        <div className={styles.lede}>
+          Tollgate 5B animation handoff harness:{' '}
+          <Button to="/coach-handoff" variant="secondary" size="md">
+            Open coach handoff
+          </Button>
+        </div>
       </div>
 
       <section className={styles.section} aria-labelledby="ds-colours">

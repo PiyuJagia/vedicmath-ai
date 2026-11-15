@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router'
 import { AppShell, MinimalShell } from '../components/layout/AppShell'
+import { CoachHandoffPage } from '../pages/coach/CoachHandoffPage'
 import { DesignSystemPage } from '../pages/DesignSystemPage'
 import { ExplorePage } from '../pages/ExplorePage'
 import { HomePage } from '../pages/HomePage'
@@ -30,7 +31,9 @@ export function AppRoutes() {
         <Route path="progress" element={<ProgressPage />} />
         <Route path="settings" element={<SettingsPage />} />
         <Route path="design-system" element={<DesignSystemPage />} />
+        <Route path="coach-handoff" element={<CoachHandoffPage />} />
         <Route path="*" element={<NotFoundPage />} />
+
       </Route>
     </Routes>
   )

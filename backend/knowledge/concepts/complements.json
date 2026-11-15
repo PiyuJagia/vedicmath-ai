@@ -1,0 +1,74 @@
+{
+  "concept_id": "foundation.complements",
+  "sutra_id": null,
+  "title": "Complements from a power-of-ten base",
+  "concept_type": "foundation",
+  "difficulty_levels": [
+    "beginner",
+    "intermediate",
+    "advanced"
+  ],
+  "prerequisites": [],
+  "explanation": {
+    "default": "A complement tells how far a number sits from a chosen base. In this app's Nikhilam engine the signed gap is computed as base − number.",
+    "beginner": "From 100 down to 97, the gap is 3. That gap is the complement idea.",
+    "intermediate": "Complements turn a hard product into a small product of gaps plus a simple left part.",
+    "advanced": "Algebraically, complements are the ±d terms in (B ± d)."
+  },
+  "misconceptions": [],
+  "examples": [],
+  "source_references": [
+    {
+      "document_id": "vedamu_methods",
+      "title": "Vedic Mathematics - Methods",
+      "url": "https://www.vedamu.org/veda/1795%24vedic_mathematics_methods.pdf",
+      "author_publisher": "Compiled PDF (author metadata: sandeep.kattekola / Word Preface)",
+      "section": "Complement / Nikhilam related sections",
+      "pdf_page_index": 14,
+      "printed_page_note": "PDF page index 14 (0-based); printed page may differ",
+      "verification_status": "mapped",
+      "note": "PDF indexes ~14–17, 30–31"
+    },
+    {
+      "document_id": "scert_fundamentals_2014",
+      "title": "Fundamentals & Applications of Vedic Mathematics (2014)",
+      "url": "https://navavani.org.in/wp/wp-content/uploads/2017/07/FUNDAMENTALANDVEDICMATHEMATICS.pdf",
+      "author_publisher": "SCERT New Delhi",
+      "section": "All from 9 / base subtraction devices",
+      "pdf_page_index": 18,
+      "printed_page_note": "PDF page index 18 (0-based); printed page may differ",
+      "verification_status": "mapped",
+      "note": ""
+    },
+    {
+      "document_id": "vedicmath_ai_engines",
+      "title": "VedicMath AI deterministic engines",
+      "url": "local://backend/",
+      "author_publisher": "Project engines (authoritative for calculations)",
+      "section": "Nikhilam convention base - number",
+      "pdf_page_index": null,
+      "printed_page_note": "n/a",
+      "verification_status": "independently_checked",
+      "note": ""
+    }
+  ],
+  "aliases": [
+    "complement",
+    "all from 9",
+    "deficiency"
+  ],
+  "keywords": [
+    "complement",
+    "all from 9",
+    "last from 10",
+    "deficiency",
+    "distance from base"
+  ],
+  "related_concepts": [
+    "sutra.nikhilam.principle"
+  ],
+  "app_supported": true,
+  "review_status": "approved_for_agent",
+  "content_version": "7C.1",
+  "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+}

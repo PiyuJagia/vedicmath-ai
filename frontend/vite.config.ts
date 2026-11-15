@@ -8,7 +8,8 @@ export default defineConfig({
     proxy: {
       // The FastAPI backend: python -m uvicorn backend.main:app --reload --port 8000
       '/api': {
-        target: 'http://127.0.0.1:8000',
+        // Override when port 8000 is occupied: VITE_PROXY_TARGET=http://127.0.0.1:8010
+        target: process.env.VITE_PROXY_TARGET || 'http://127.0.0.1:8000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },

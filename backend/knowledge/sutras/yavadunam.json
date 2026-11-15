@@ -1,0 +1,213 @@
+{
+  "sutra_id": "yavadunam",
+  "content_version": "7C.1",
+  "entries": [
+    {
+      "concept_id": "sutra.yavadunam.overview",
+      "sutra_id": "yavadunam",
+      "title": "Yavadunam — overview",
+      "concept_type": "sutra_overview",
+      "difficulty_levels": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [],
+      "explanation": {
+        "default": "Yavadunam squares a number near a power-of-ten base. In this app, deviation is number − base (so 97 gives −3 at base 100). That is intentionally different from Nikhilam’s base − number convention."
+      },
+      "misconceptions": [],
+      "examples": [
+        {
+          "example_id": "ex.yavadunam.beginner.97",
+          "sutra_id": "yavadunam",
+          "difficulty": "beginner",
+          "operands": {
+            "number": 97,
+            "base": 100
+          },
+          "expected_result": 9409,
+          "engine_verified": true,
+          "independent_check": 9409,
+          "intermediate": {
+            "deviation_convention": "number - base",
+            "deviation": -3
+          },
+          "app_supported": true,
+          "note": "Yavadunam uses number−base; do not swap with Nikhilam’s base−number convention."
+        }
+      ],
+      "source_references": [
+        {
+          "document_id": "vedamu_methods",
+          "title": "Vedic Mathematics - Methods",
+          "url": "https://www.vedamu.org/veda/1795%24vedic_mathematics_methods.pdf",
+          "author_publisher": "Compiled PDF (author metadata: sandeep.kattekola / Word Preface)",
+          "section": "Yavadunam sections",
+          "pdf_page_index": 87,
+          "printed_page_note": "PDF page index 87 (0-based); printed page may differ",
+          "verification_status": "mapped",
+          "note": ""
+        },
+        {
+          "document_id": "scert_fundamentals_2014",
+          "title": "Fundamentals & Applications of Vedic Mathematics (2014)",
+          "url": "https://navavani.org.in/wp/wp-content/uploads/2017/07/FUNDAMENTALANDVEDICMATHEMATICS.pdf",
+          "author_publisher": "SCERT New Delhi",
+          "section": "Squaring numbers near a base",
+          "pdf_page_index": 53,
+          "printed_page_note": "PDF page index 53 (0-based); printed page may differ",
+          "verification_status": "mapped",
+          "note": ""
+        },
+        {
+          "document_id": "vedicmath_ai_engines",
+          "title": "VedicMath AI deterministic engines",
+          "url": "local://backend/",
+          "author_publisher": "Project engines (authoritative for calculations)",
+          "section": "backend/yavadunam.py",
+          "pdf_page_index": null,
+          "printed_page_note": "n/a",
+          "verification_status": "independently_checked",
+          "note": ""
+        }
+      ],
+      "aliases": [
+        "yavadunam",
+        "squaring near a base"
+      ],
+      "keywords": [
+        "yavadunam",
+        "square near base",
+        "deficiency"
+      ],
+      "related_concepts": [],
+      "app_supported": true,
+      "review_status": "approved_for_agent",
+      "content_version": "7C.1",
+      "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+    },
+    {
+      "concept_id": "sutra.yavadunam.principle",
+      "sutra_id": "yavadunam",
+      "title": "Why Yavadunam squaring works",
+      "concept_type": "principle",
+      "difficulty_levels": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [],
+      "explanation": {
+        "default": "If n=B+d with d=n−B, then n²=(B+d)²=B²+2Bd+d²=B(B+2d)+d²=B(n+d)+d². The method writes a left part from n+d (with carry from d²) and a right part from d².",
+        "beginner": "For 97: d=−3; left uses 97+(−3)=94; right is 09 from (−3)²; result 9409.",
+        "derivation": "(B+d)²=B(B+2d)+d²=B(n+d)+d²."
+      },
+      "misconceptions": [
+        {
+          "misconception_id": "mis.yavadunam.nikhilam_sign",
+          "observable_error": "Using base−number for Yavadunam",
+          "correct_concept": "Yavadunam engine uses number−base",
+          "teaching_intervention": "Contrast the two formulas explicitly; do not ‘fix’ either engine",
+          "rabbit_hint_strategy": "Level 2: name which formula this stage uses",
+          "follow_up_practice": "Yavadunam beginner"
+        }
+      ],
+      "examples": [
+        {
+          "example_id": "ex.yavadunam.beginner.97",
+          "sutra_id": "yavadunam",
+          "difficulty": "beginner",
+          "operands": {
+            "number": 97,
+            "base": 100
+          },
+          "expected_result": 9409,
+          "engine_verified": true,
+          "independent_check": 9409,
+          "intermediate": {
+            "deviation_convention": "number - base",
+            "deviation": -3
+          },
+          "app_supported": true,
+          "note": "Yavadunam uses number−base; do not swap with Nikhilam’s base−number convention."
+        }
+      ],
+      "source_references": [
+        {
+          "document_id": "internal_sutras_math_notes",
+          "title": "Internal research notes: sutras-math.md",
+          "url": "local://research_notes/Vedic maths teaching foundations/sutras-math.md",
+          "author_publisher": "Project research notes",
+          "section": "Near-base squaring identity",
+          "pdf_page_index": null,
+          "printed_page_note": "n/a",
+          "verification_status": "independently_checked",
+          "note": ""
+        },
+        {
+          "document_id": "vedicmath_ai_engines",
+          "title": "VedicMath AI deterministic engines",
+          "url": "local://backend/",
+          "author_publisher": "Project engines (authoritative for calculations)",
+          "section": "yavadunam deviation = number - base",
+          "pdf_page_index": null,
+          "printed_page_note": "n/a",
+          "verification_status": "independently_checked",
+          "note": ""
+        }
+      ],
+      "aliases": [],
+      "keywords": [
+        "why",
+        "yavadunam",
+        "square"
+      ],
+      "related_concepts": [],
+      "app_supported": true,
+      "review_status": "approved_for_agent",
+      "content_version": "7C.1",
+      "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+    },
+    {
+      "concept_id": "sutra.yavadunam.applicability",
+      "sutra_id": "yavadunam",
+      "title": "Yavadunam applicability",
+      "concept_type": "applicability",
+      "difficulty_levels": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [],
+      "explanation": {
+        "default": "Same numeric windows as Nikhilam levels (near 100/1000/10000), but for squaring one number."
+      },
+      "misconceptions": [],
+      "examples": [],
+      "source_references": [
+        {
+          "document_id": "vedicmath_ai_engines",
+          "title": "VedicMath AI deterministic engines",
+          "url": "local://backend/",
+          "author_publisher": "Project engines (authoritative for calculations)",
+          "section": "Yavadunam LEVELS",
+          "pdf_page_index": null,
+          "printed_page_note": "n/a",
+          "verification_status": "independently_checked",
+          "note": ""
+        }
+      ],
+      "aliases": [],
+      "keywords": [
+        "range",
+        "yavadunam"
+      ],
+      "related_concepts": [],
+      "app_supported": true,
+      "review_status": "approved_for_agent",
+      "content_version": "7C.1",
+      "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+    }
+  ]
+}
