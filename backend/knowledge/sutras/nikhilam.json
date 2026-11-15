@@ -1,0 +1,403 @@
+{
+  "sutra_id": "nikhilam",
+  "content_version": "7C.1",
+  "entries": [
+    {
+      "concept_id": "sutra.nikhilam.overview",
+      "sutra_id": "nikhilam",
+      "title": "Nikhilam Navatashcaramam Dashatah — overview",
+      "concept_type": "sutra_overview",
+      "difficulty_levels": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [
+        "foundation.place_value",
+        "foundation.complements"
+      ],
+      "explanation": {
+        "default": "Nikhilam means working with numbers near a power-of-ten base. Instead of multiplying the large numbers directly, we multiply their gaps from the base and rebuild the product from a left part and a right part.",
+        "translation": "Commonly glossed as “all from 9 and the last from 10.”",
+        "app_support": "Interactive Theory/Practice for beginner/intermediate/advanced near-base ranges."
+      },
+      "misconceptions": [],
+      "examples": [
+        {
+          "example_id": "ex.nikhilam.beginner.98x97",
+          "sutra_id": "nikhilam",
+          "difficulty": "beginner",
+          "operands": {
+            "a": 98,
+            "b": 97,
+            "base": 100
+          },
+          "expected_result": 9506,
+          "engine_verified": true,
+          "independent_check": 9506,
+          "intermediate": {
+            "deviation_convention": "base - number",
+            "deviations": [
+              2,
+              3
+            ]
+          },
+          "app_supported": true
+        },
+        {
+          "example_id": "ex.nikhilam.beginner.98x103",
+          "sutra_id": "nikhilam",
+          "difficulty": "beginner",
+          "operands": {
+            "a": 98,
+            "b": 103,
+            "base": 100
+          },
+          "expected_result": 10094,
+          "engine_verified": true,
+          "independent_check": 10094,
+          "intermediate": {
+            "deviation_convention": "base - number",
+            "deviations": [
+              2,
+              -3
+            ]
+          },
+          "app_supported": true
+        },
+        {
+          "example_id": "ex.nikhilam.intermediate.996x997",
+          "sutra_id": "nikhilam",
+          "difficulty": "intermediate",
+          "operands": {
+            "a": 996,
+            "b": 997,
+            "base": 1000
+          },
+          "expected_result": 993012,
+          "engine_verified": true,
+          "independent_check": 993012,
+          "intermediate": {
+            "deviation_convention": "base - number",
+            "deviations": [
+              4,
+              3
+            ]
+          },
+          "app_supported": true
+        }
+      ],
+      "source_references": [
+        {
+          "document_id": "vedamu_methods",
+          "title": "Vedic Mathematics - Methods",
+          "url": "https://www.vedamu.org/veda/1795%24vedic_mathematics_methods.pdf",
+          "author_publisher": "Compiled PDF (author metadata: sandeep.kattekola / Word Preface)",
+          "section": "Nikhilam chapters",
+          "pdf_page_index": 19,
+          "printed_page_note": "PDF page index 19 (0-based); printed page may differ",
+          "verification_status": "mapped",
+          "note": ""
+        },
+        {
+          "document_id": "scert_fundamentals_2014",
+          "title": "Fundamentals & Applications of Vedic Mathematics (2014)",
+          "url": "https://navavani.org.in/wp/wp-content/uploads/2017/07/FUNDAMENTALANDVEDICMATHEMATICS.pdf",
+          "author_publisher": "SCERT New Delhi",
+          "section": "Base Method / special multiplication",
+          "pdf_page_index": 32,
+          "printed_page_note": "PDF page index 32 (0-based); printed page may differ",
+          "verification_status": "mapped",
+          "note": ""
+        },
+        {
+          "document_id": "vedicmath_ai_engines",
+          "title": "VedicMath AI deterministic engines",
+          "url": "local://backend/",
+          "author_publisher": "Project engines (authoritative for calculations)",
+          "section": "backend/nikhilam.py",
+          "pdf_page_index": null,
+          "printed_page_note": "n/a",
+          "verification_status": "independently_checked",
+          "note": ""
+        }
+      ],
+      "aliases": [
+        "nikhilam",
+        "near base multiplication",
+        "all from 9 and last from 10"
+      ],
+      "keywords": [
+        "nikhilam",
+        "near base",
+        "base 100",
+        "deviation",
+        "why nikhilam"
+      ],
+      "related_concepts": [
+        "sutra.nikhilam.principle",
+        "sutra.yavadunam.overview"
+      ],
+      "app_supported": true,
+      "review_status": "approved_for_agent",
+      "content_version": "7C.1",
+      "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact.",
+      "full_name": "Nikhilam Navatashcaramam Dashatah",
+      "related_sutras": [
+        "yavadunam",
+        "urdhva"
+      ]
+    },
+    {
+      "concept_id": "sutra.nikhilam.principle",
+      "sutra_id": "nikhilam",
+      "title": "Why Nikhilam works",
+      "concept_type": "principle",
+      "difficulty_levels": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [
+        "foundation.algebraic_expansion",
+        "foundation.complements"
+      ],
+      "explanation": {
+        "default": "Let B be a base such as 100. Write the factors as (B − d) and (B − e) using this app’s convention deviation = base − number. Then (B − d)(B − e) = B(B − d − e) + de. The left part is the cross-subtraction; the right part is the product of deviations, padded to the base width with carry if needed.",
+        "beginner": "Near 100, the hard product becomes a small gap×gap plus a simple left number. For 98×97: gaps 2 and 3; left 95; right 06; product 9506.",
+        "intermediate": "Same identity with base 1000; pad the right part to three digits.",
+        "advanced": "Mixed signs (one above base, one below) still follow the identity; negative right parts need borrow/adjust.",
+        "derivation": "(B-d)(B-e)=B²−B(d+e)+de=B(B−d−e)+de."
+      },
+      "misconceptions": [
+        {
+          "misconception_id": "mis.nikhilam.reversed_deviation",
+          "observable_error": "Computing number − base instead of base − number for Nikhilam",
+          "correct_concept": "This app uses base - number for Nikhilam",
+          "teaching_intervention": "Point to the base landmark and ask which way the tile sits",
+          "rabbit_hint_strategy": "Level 2: relationship base − number; forbid stating the digit",
+          "follow_up_practice": "Nikhilam beginner deviation_a"
+        },
+        {
+          "misconception_id": "mis.nikhilam.wrong_base",
+          "observable_error": "Choosing a base far from both numbers",
+          "correct_concept": "Choose the nearby power-of-ten supported by the difficulty level",
+          "teaching_intervention": "Compare distances to 100 vs 1000",
+          "rabbit_hint_strategy": "Level 1: look at the base landmark",
+          "follow_up_practice": "Stay inside the level’s numeric window"
+        }
+      ],
+      "examples": [
+        {
+          "example_id": "ex.nikhilam.beginner.98x97",
+          "sutra_id": "nikhilam",
+          "difficulty": "beginner",
+          "operands": {
+            "a": 98,
+            "b": 97,
+            "base": 100
+          },
+          "expected_result": 9506,
+          "engine_verified": true,
+          "independent_check": 9506,
+          "intermediate": {
+            "deviation_convention": "base - number",
+            "deviations": [
+              2,
+              3
+            ]
+          },
+          "app_supported": true
+        }
+      ],
+      "source_references": [
+        {
+          "document_id": "internal_sutras_math_notes",
+          "title": "Internal research notes: sutras-math.md",
+          "url": "local://research_notes/Vedic maths teaching foundations/sutras-math.md",
+          "author_publisher": "Project research notes",
+          "section": "Nikhilam algebraic identity",
+          "pdf_page_index": null,
+          "printed_page_note": "n/a",
+          "verification_status": "independently_checked",
+          "note": ""
+        },
+        {
+          "document_id": "vedamu_methods",
+          "title": "Vedic Mathematics - Methods",
+          "url": "https://www.vedamu.org/veda/1795%24vedic_mathematics_methods.pdf",
+          "author_publisher": "Compiled PDF (author metadata: sandeep.kattekola / Word Preface)",
+          "section": "Nikhilam worked methods",
+          "pdf_page_index": 21,
+          "printed_page_note": "PDF page index 21 (0-based); printed page may differ",
+          "verification_status": "mapped",
+          "note": ""
+        },
+        {
+          "document_id": "vedicmath_ai_engines",
+          "title": "VedicMath AI deterministic engines",
+          "url": "local://backend/",
+          "author_publisher": "Project engines (authoritative for calculations)",
+          "section": "Deviation convention base - number",
+          "pdf_page_index": null,
+          "printed_page_note": "n/a",
+          "verification_status": "independently_checked",
+          "note": ""
+        }
+      ],
+      "aliases": [
+        "why nikhilam",
+        "nikhilam algebra"
+      ],
+      "keywords": [
+        "why",
+        "works",
+        "algebra",
+        "identity",
+        "base",
+        "deviation"
+      ],
+      "related_concepts": [],
+      "app_supported": true,
+      "review_status": "approved_for_agent",
+      "content_version": "7C.1",
+      "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+    },
+    {
+      "concept_id": "sutra.nikhilam.alt_place_value",
+      "sutra_id": "nikhilam",
+      "title": "Nikhilam — place-value explanation",
+      "concept_type": "alternate_explanation",
+      "difficulty_levels": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [],
+      "explanation": {
+        "default": "Think of 98 as 100 − 2. Multiplying by 97 is like taking 97 hundreds and then adjusting because of the missing 2×97. That adjustment becomes the deviation product and the cross-subtraction you see on the stage.",
+        "beginner": "Start from a round hundred, then fix the leftover gaps."
+      },
+      "misconceptions": [],
+      "examples": [],
+      "source_references": [
+        {
+          "document_id": "vedicmath_ai_engines",
+          "title": "VedicMath AI deterministic engines",
+          "url": "local://backend/",
+          "author_publisher": "Project engines (authoritative for calculations)",
+          "section": "Teaching narrative aligned to engine steps",
+          "pdf_page_index": null,
+          "printed_page_note": "n/a",
+          "verification_status": "independently_checked",
+          "note": ""
+        }
+      ],
+      "aliases": [
+        "another way nikhilam",
+        "explain differently"
+      ],
+      "keywords": [
+        "another way",
+        "different explanation",
+        "place value",
+        "nikhilam"
+      ],
+      "related_concepts": [
+        "sutra.nikhilam.principle"
+      ],
+      "app_supported": true,
+      "review_status": "approved_for_agent",
+      "content_version": "7C.1",
+      "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+    },
+    {
+      "concept_id": "sutra.nikhilam.check_base_choice",
+      "sutra_id": "nikhilam",
+      "title": "Understanding check: why choose this base?",
+      "concept_type": "understanding_check",
+      "difficulty_levels": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [],
+      "explanation": {
+        "prompt": "Why did we choose 100 as our base for 98×97?",
+        "expected_reasoning": "Both numbers are close to 100, so gaps are small and easy.",
+        "misconception_indicators": [
+          "any base works the same",
+          "base is random"
+        ]
+      },
+      "misconceptions": [],
+      "examples": [],
+      "source_references": [
+        {
+          "document_id": "vedicmath_ai_engines",
+          "title": "VedicMath AI deterministic engines",
+          "url": "local://backend/",
+          "author_publisher": "Project engines (authoritative for calculations)",
+          "section": "Nikhilam beginner window 90–109",
+          "pdf_page_index": null,
+          "printed_page_note": "n/a",
+          "verification_status": "independently_checked",
+          "note": ""
+        }
+      ],
+      "aliases": [],
+      "keywords": [
+        "why base",
+        "choose 100",
+        "check"
+      ],
+      "related_concepts": [],
+      "app_supported": true,
+      "review_status": "approved_for_agent",
+      "content_version": "7C.1",
+      "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+    },
+    {
+      "concept_id": "sutra.nikhilam.applicability",
+      "sutra_id": "nikhilam",
+      "title": "Nikhilam applicability and limits",
+      "concept_type": "applicability",
+      "difficulty_levels": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [],
+      "explanation": {
+        "default": "Best when both factors are near the same 10^n. In this app: beginner base 100 (90–109), intermediate 1000 (990–1009), advanced 10000 (9990–10009). Outside that, prefer Urdhva."
+      },
+      "misconceptions": [],
+      "examples": [],
+      "source_references": [
+        {
+          "document_id": "vedicmath_ai_engines",
+          "title": "VedicMath AI deterministic engines",
+          "url": "local://backend/",
+          "author_publisher": "Project engines (authoritative for calculations)",
+          "section": "NIKHILAM_LEVELS in main.py",
+          "pdf_page_index": null,
+          "printed_page_note": "n/a",
+          "verification_status": "independently_checked",
+          "note": ""
+        }
+      ],
+      "aliases": [],
+      "keywords": [
+        "range",
+        "limit",
+        "when to use",
+        "nikhilam"
+      ],
+      "related_concepts": [],
+      "app_supported": true,
+      "review_status": "approved_for_agent",
+      "content_version": "7C.1",
+      "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+    }
+  ]
+}

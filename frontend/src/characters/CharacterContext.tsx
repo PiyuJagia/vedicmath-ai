@@ -18,7 +18,10 @@ export function CharacterOrchestrator({ screen, children }: { screen: ScreenId; 
     screen,
     primary: roles.primary,
     secondary: roles.secondary,
-    canSpeak: (character) => character === roles.primary,
+    canSpeak: (character) =>
+      screen === 'coach_handoff'
+        ? character === roles.primary || roles.secondary.includes(character)
+        : character === roles.primary,
   }
   return <CharacterContext.Provider value={value}>{children}</CharacterContext.Provider>
 }

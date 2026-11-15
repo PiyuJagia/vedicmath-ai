@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Check, Flame, Gamepad2, Lock, Trophy } from 'lucide-react'
 import { CharacterOrchestrator } from '../characters/CharacterContext'
 import { CharacterDialogue, HummingbirdCompanion } from '../characters/Characters'
@@ -9,6 +10,7 @@ import { Card } from '../components/ui/Card'
 import { Pill } from '../components/ui/Pill'
 import { SUTRAS, findSutra } from '../content/sutras'
 import { learningSummary } from '../content/summary'
+import { useLiveCoach } from '../services/LiveCoachContext'
 import { countPassedLevels, countUnlocked, currentSutraIndex, masteryOf, passedAny, sutraStatus } from '../services/progressModel'
 import { useProgress } from '../services/ProgressContext'
 import { useSettings } from '../services/SettingsContext'
@@ -20,6 +22,7 @@ const SECTION_LABEL = { theory: 'Theory', learn: "Let's Learn More", practice: '
 export function ProgressPage() {
   const { progress } = useProgress()
   const { settings } = useSettings()
+  const { enabled, triggerEvent } = useLiveCoach()
   const admin = settings.role === 'admin'
   const lessonSutras = SUTRAS.filter((sutra) => sutra.lessonId)
   const current = currentSutraIndex(SUTRAS, progress, admin)
@@ -28,6 +31,32 @@ export function ProgressPage() {
     (total, sutra) => total + DIFFICULTIES.filter((level) => admin || masteryOf(progress, sutra.id)[level]).length,
     0,
   )
+  const passed = countPassedLevels(progress)
+  const fallback =
+    passed > 0
+      ? `You have passed ${passed} level${passed === 1 ? '' : 's'}. Keep it up!`
+      : 'Pass your first Practice to start collecting badges.'
+  const [birdText, setBirdText] = useState(fallback)
+  const [birdLive, setBirdLive] = useState(false)
+
+  useEffect(() => {
+    if (!enabled || progress.isSample) return
+    const note = `passed_levels=${passed}; streak_days=${progress.streakDays}; explored=${progress.explored.length}; sample=${Boolean(progress.isSample)}`
+    void triggerEvent(
+      'progress-encourage',
+      {
+        message: `Encourage the learner about verified local progress only. Facts: ${note}. Do not invent mastery.`,
+        intent: 'encourage',
+        context: { screen: 'progress', progress_note: note, preferred_persona: 'hummingbird' },
+      },
+      { debounceMs: 400 },
+    ).then((reply) => {
+      if (reply?.isLive && reply.text) {
+        setBirdText(reply.text)
+        setBirdLive(true)
+      }
+    })
+  }, [enabled, passed, progress.explored.length, progress.isSample, progress.streakDays, triggerEvent])
 
   const badges = [
     { id: 'first-pass', name: 'First level passed', earned: countPassedLevels(progress) > 0, Icon: Check },
@@ -44,8 +73,8 @@ export function ProgressPage() {
           {progress.isSample && <Pill tone="neutral">Sample data</Pill>}
           <div className={styles.bird}>
             <HummingbirdCompanion size={64} />
-            <CharacterDialogue character="hummingbird" tail="left">
-              {countPassedLevels(progress) > 0 ? `You have passed ${countPassedLevels(progress)} level${countPassedLevels(progress) === 1 ? '' : 's'}. Keep it up!` : 'Pass your first Practice to start collecting badges.'}
+            <CharacterDialogue character="hummingbird" tail="left" demo={!birdLive}>
+              {birdText}
             </CharacterDialogue>
           </div>
         </div>

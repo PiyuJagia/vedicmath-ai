@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ArrowLeft, ChevronRight, Flame, Lock, Star, Trophy } from 'lucide-react'
 import { Link } from 'react-router'
 import { CharacterOrchestrator } from '../characters/CharacterContext'
@@ -11,6 +11,7 @@ import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
 import { Pill } from '../components/ui/Pill'
 import { SUTRAS, type SutraInfo } from '../content/sutras'
+import { useLiveCoach } from '../services/LiveCoachContext'
 import { countUnlocked, currentSutraIndex, masteryOf, passedAll, sutraStatus, type SutraStatus } from '../services/progressModel'
 import { useProgress } from '../services/ProgressContext'
 import { useSettings } from '../services/SettingsContext'
@@ -27,14 +28,39 @@ const STATUS_LABEL: Record<SutraStatus, string> = {
 export function ExplorePage() {
   const { progress } = useProgress()
   const { settings } = useSettings()
+  const { enabled, triggerEvent } = useLiveCoach()
   const admin = settings.role === 'admin'
   const current = currentSutraIndex(SUTRAS, progress, admin)
   const mastered = SUTRAS.filter((sutra) => passedAll(masteryOf(progress, sutra.id))).length
   const unlocked = countUnlocked(SUTRAS, progress, admin)
-  const message =
+  const fallback =
     current >= 0
       ? `Welcome back! ${SUTRAS[current].name} is ready for you.`
       : 'Your journey is ready to begin.'
+  const [message, setMessage] = useState(fallback)
+  const [messageLive, setMessageLive] = useState(false)
+
+  useEffect(() => {
+    setMessage(fallback)
+    setMessageLive(false)
+    if (!enabled || progress.isSample) return
+    const sutraName = current >= 0 ? SUTRAS[current].name : 'the first Sutra'
+    const note = `current_sutra=${sutraName}; unlocked=${unlocked}; mastered=${mastered}; sample=${Boolean(progress.isSample)}`
+    void triggerEvent(
+      `explore-welcome-${sutraName}`,
+      {
+        message: `Brief Hummingbird welcome on Explore. Use only these facts: ${note}.`,
+        intent: 'encourage',
+        context: { screen: 'explore', progress_note: note, preferred_persona: 'hummingbird' },
+      },
+      { debounceMs: 400 },
+    ).then((reply) => {
+      if (reply?.isLive && reply.text) {
+        setMessage(reply.text)
+        setMessageLive(true)
+      }
+    })
+  }, [current, enabled, fallback, mastered, progress.isSample, triggerEvent, unlocked])
 
   return (
     <CharacterOrchestrator screen="explore">
@@ -78,7 +104,7 @@ export function ExplorePage() {
             <img src={rocket} alt="" className={styles.rocket} />
             <div className={styles.birdMessage}>
               <HummingbirdCompanion size={70} />
-              <CharacterDialogue character="hummingbird" tail="left">
+              <CharacterDialogue character="hummingbird" tail="left" demo={!messageLive}>
                 {message}
               </CharacterDialogue>
             </div>

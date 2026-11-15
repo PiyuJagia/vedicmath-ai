@@ -2,3 +2,9 @@
 # Development and test tools stay in the root requirements.txt.
 fastapi==0.162.4
 uvicorn[standard]==0.54.0
+# Google Agent Development Kit (tool-invoking educational agents).
+# Requires Python 3.11+; this project uses 3.12.10 (.python-version).
+google-adk==2.14.1
+# LangSmith tracing for Google ADK (Rishi coach observability).
+langsmith[google-adk]>=0.14.17
+python-dotenv>=1.0.0

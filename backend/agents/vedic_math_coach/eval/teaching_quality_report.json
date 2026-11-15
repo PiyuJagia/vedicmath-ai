@@ -1,0 +1,430 @@
+{
+  "summary": {
+    "total": 32,
+    "passed": 0,
+    "failed": 32,
+    "pass_rate": 0.0,
+    "aggregates": {},
+    "failures": [
+      "tq_nikhilam_what_is",
+      "tq_nikhilam_why_base_100",
+      "tq_nikhilam_explain_another_way",
+      "tq_nikhilam_verified_example",
+      "tq_what_next_after_theory",
+      "tq_struggle_wrong_deviation",
+      "tq_struggle_frustration_hummingbird",
+      "tq_rabbit_progressive_hint",
+      "tq_same_mistake_sign",
+      "tq_advanced_algebraic_why",
+      "tq_nikhilam_vs_urdhva",
+      "tq_harder_nikhilam_advanced",
+      "tq_out_of_range_honest",
+      "tq_urdhva_beginner_product",
+      "tq_ekadhikena_beginner_square",
+      "tq_yavadunam_beginner_square",
+      "tq_ekanyunena_beginner",
+      "tq_urdhva_intermediate",
+      "tq_ekadhikena_intermediate",
+      "tq_multi_turn_name_continuity",
+      "tq_theory_to_practice_context",
+      "tq_contradictory_learner_claim",
+      "tq_unsupported_division_abstain",
+      "tq_no_false_mastery_claim",
+      "tq_no_interrupt_while_working",
+      "tq_animation_frame_context",
+      "tq_rabbit_carry_visual",
+      "tq_hummingbird_effort",
+      "tq_missing_history_honest",
+      "tq_recommend_without_fake_unlock",
+      "tq_intermediate_nikhilam_product",
+      "tq_boy_coach_comprehension_check"
+    ]
+  },
+  "results": [
+    {
+      "id": "tq_nikhilam_what_is",
+      "category": "conceptual",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_nikhilam_why_base_100",
+      "category": "conceptual",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_nikhilam_explain_another_way",
+      "category": "conceptual",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_nikhilam_verified_example",
+      "category": "math",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_what_next_after_theory",
+      "category": "guidance",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_struggle_wrong_deviation",
+      "category": "misconception",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_struggle_frustration_hummingbird",
+      "category": "persona",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_rabbit_progressive_hint",
+      "category": "hinting",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_same_mistake_sign",
+      "category": "misconception",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_advanced_algebraic_why",
+      "category": "explanation",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_nikhilam_vs_urdhva",
+      "category": "conceptual",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_harder_nikhilam_advanced",
+      "category": "math",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_out_of_range_honest",
+      "category": "safety",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_urdhva_beginner_product",
+      "category": "math",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_ekadhikena_beginner_square",
+      "category": "math",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_yavadunam_beginner_square",
+      "category": "math",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_ekanyunena_beginner",
+      "category": "math",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_urdhva_intermediate",
+      "category": "math",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_ekadhikena_intermediate",
+      "category": "math",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_multi_turn_name_continuity",
+      "category": "multi_turn",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "{\"detail\":{\"ok\":false,\"code\":\"coach_unavailable\",\"message\":\"402 RESOURCE_EXHAUSTED. {'error': {'code': 402, 'message': 'Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. ', 'status': 'RESOURCE_EXHAUSTED'}}\"}}\nassert 503 == 200\n +  where 503 = <Response [503 Service Unavailable]>.status_code"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_theory_to_practice_context",
+      "category": "multi_turn",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "{\"detail\":{\"ok\":false,\"code\":\"coach_unavailable\",\"message\":\"402 RESOURCE_EXHAUSTED. {'error': {'code': 402, 'message': 'Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. ', 'status': 'RESOURCE_EXHAUSTED'}}\"}}\nassert 503 == 200\n +  where 503 = <Response [503 Service Unavailable]>.status_code"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_contradictory_learner_claim",
+      "category": "safety",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_unsupported_division_abstain",
+      "category": "safety",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_no_false_mastery_claim",
+      "category": "personalization",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_no_interrupt_while_working",
+      "category": "proactive_policy",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_animation_frame_context",
+      "category": "context",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_rabbit_carry_visual",
+      "category": "hinting",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_hummingbird_effort",
+      "category": "persona",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_missing_history_honest",
+      "category": "personalization",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_recommend_without_fake_unlock",
+      "category": "guidance",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_intermediate_nikhilam_product",
+      "category": "math",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    },
+    {
+      "id": "tq_boy_coach_comprehension_check",
+      "category": "pedagogy",
+      "passed": false,
+      "checks": {
+        "no_runtime_error": false
+      },
+      "notes": [
+        "HTTP 503"
+      ],
+      "metrics": {}
+    }
+  ],
+  "traces": []
+}

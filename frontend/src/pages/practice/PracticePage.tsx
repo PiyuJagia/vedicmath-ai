@@ -8,15 +8,16 @@ import { checkAnswer, fetchQuestions } from '../../api/client'
 import type { Lesson, LessonSutraId, PracticeQuestion, Problem } from '../../api/types'
 import { CharacterOrchestrator } from '../../characters/CharacterContext'
 import { CharacterDialogue, CoachCharacter, HintBubble, HummingbirdCompanion, RabbitAssistant, type CoachMood } from '../../characters/Characters'
+import { LiveCoachAsk } from '../../components/coach/LiveCoachAsk'
 import { Breadcrumbs } from '../../components/layout/Breadcrumbs'
 import { Button } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
 import { DifficultySelector } from '../../components/ui/DifficultySelector'
 import { Pill } from '../../components/ui/Pill'
 import { problemKey, problemLabel } from '../../content/lessons'
-import { questionText } from '../../content/practice'
-import { demoCoach } from '../../services/coach'
+import { feedbackText, questionText } from '../../content/practice'
 import { stepWhy } from '../../content/why'
+import { useLiveCoach } from '../../services/LiveCoachContext'
 import { useProgress } from '../../services/ProgressContext'
 import { useSettings } from '../../services/SettingsContext'
 import { playCue } from '../../services/sound'
@@ -164,6 +165,8 @@ function ProblemPicker({ sutra, current, onChoose }: { sutra: LessonSutraId; cur
 interface Feedback {
   text: string
   mood: CoachMood
+  speaker?: 'boy' | 'rabbit' | 'hummingbird'
+  isLive?: boolean
 }
 
 function PracticeSession({
@@ -182,6 +185,7 @@ function PracticeSession({
   timeline: Timeline
 }) {
   const { settings } = useSettings()
+  const { enabled: liveCoach, ask, busy: coachBusy, triggerEvent } = useLiveCoach()
   const { passLevel } = useProgress()
   const [questions, setQuestions] = useState<PracticeQuestion[] | null>(null)
   const [loadError, setLoadError] = useState<string | null>(null)
@@ -194,6 +198,7 @@ function PracticeSession({
   const [rabbitDismissed, setRabbitDismissed] = useState(false)
   const [idleSeconds, setIdleSeconds] = useState(0)
   const [feedback, setFeedback] = useState<Feedback | null>(null)
+  const [lastCheckStatus, setLastCheckStatus] = useState<'correct' | 'incorrect' | 'invalid' | null>(null)
   const [checking, setChecking] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -234,6 +239,28 @@ function PracticeSession({
       passLevel(sutraId, difficulty)
       if (settings.soundEffects) playCue('celebrate')
       if (settings.petSounds) playCue('hummingbird')
+      if (liveCoach) {
+        void triggerEvent(
+          `level_complete:${sutraId}:${difficulty}:${problemKey(problem)}`,
+          {
+            message: `The learner finished practice for ${problemLabel(problem)}.`,
+            intent: 'level_complete',
+            context: {
+              screen: 'practice',
+              sutra_id: sutraId,
+              difficulty,
+              problem_label: problemLabel(problem),
+              check_status: 'correct',
+              progress_note: `Completed ${questions.length} verified practice questions.`,
+            },
+          },
+          { force: true, debounceMs: 200 },
+        ).then((reply) => {
+          if (reply?.isLive && reply.text) {
+            setFeedback({ text: reply.text, mood: reply.mood, speaker: reply.speaker, isLive: true })
+          }
+        })
+      }
     }
     // Only when the session finishes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -258,9 +285,29 @@ function PracticeSession({
 
   const showHint = () => {
     if (!question) return
-    setHintLevel((levels) => ({ ...levels, [key]: nextHintLevel(levels[key] ?? 0) }))
+    const next = nextHintLevel(hintLevel[key] ?? 0)
+    setHintLevel((levels) => ({ ...levels, [key]: next }))
     setHintOpen(true)
     if (settings.petSounds) playCue('hop')
+    if (liveCoach) {
+      void ask({
+        message: `Learner asked Rabbit for hint level ${next} on ${text?.prompt ?? question.key}.`,
+        intent: 'hint',
+        context: {
+          screen: 'practice',
+          sutra_id: sutraId,
+          difficulty,
+          problem_label: problemLabel(problem),
+          question_key: question.key,
+          hint_level: next,
+          preferred_persona: 'rabbit',
+        },
+      }).then((reply) => {
+        if (reply.isLive && reply.text) {
+          setFeedback({ text: reply.text, mood: reply.mood, speaker: 'rabbit', isLive: true })
+        }
+      })
+    }
   }
 
   const closeHint = () => {
@@ -280,20 +327,51 @@ function PracticeSession({
     setAttempts((all) => ({ ...all, [key]: attempt }))
     try {
       const check = await checkAnswer(lessonId, problem, difficulty, question.key, answer)
+      setLastCheckStatus(check.status)
       const step = timeline.steps.find((s) => s.id === question.step_id)
-      const reply = demoCoach.respond({
-        intent: 'feedback',
-        mode: 'practice',
+      // Deterministic engine-owned feedback text (always available if live coach fails).
+      const engineText = feedbackText(
         check,
         question,
-        questionText: text ?? undefined,
-        stepWhy: step ? stepWhy(lessonId, step.title) : undefined,
         answer,
-        attempts: attempt,
-      })
+        attempt,
+        text ?? undefined,
+        step ? stepWhy(lessonId, step.title) : undefined,
+      )
+      const engineMood: CoachMood =
+        check.status === 'correct' ? 'celebrating' : check.status === 'invalid' ? 'speaking' : 'correcting'
+      setFeedback({ text: engineText, mood: engineMood, speaker: 'boy', isLive: false })
+
+      if (liveCoach) {
+        const wrongCount = (wrong[key] ?? 0) + (check.status === 'incorrect' ? 1 : 0)
+        void ask({
+          message: `Practice check finished. Engine status=${check.status}. Learner typed ${JSON.stringify(answer)}. Prompt: ${text?.prompt ?? question.key}.`,
+          intent: check.status === 'incorrect' && wrongCount >= 2 ? 'struggle' : 'feedback',
+          context: {
+            screen: 'practice',
+            sutra_id: sutraId,
+            difficulty,
+            problem_label: problemLabel(problem),
+            question_key: question.key,
+            learner_answer: answer,
+            check_status: check.status,
+            step_title: step?.title,
+            hint_level: hintLevel[key] ?? 0,
+          },
+        }).then((live) => {
+          if (live.isLive && live.text) {
+            setFeedback({
+              text: live.text,
+              mood: live.mood,
+              speaker: live.speaker,
+              isLive: true,
+            })
+          }
+        })
+      }
+
       if (check.status === 'correct') {
         if (settings.soundEffects) playCue('correct')
-        setFeedback(reply)
         setAnswer('')
         setHintOpen(false)
         setRabbitDismissed(false)
@@ -305,7 +383,6 @@ function PracticeSession({
           setRabbitDismissed(false)
           if (settings.soundEffects) playCue('try-again')
         }
-        setFeedback(reply)
         inputRef.current?.focus()
       }
     } catch (error) {
@@ -316,11 +393,17 @@ function PracticeSession({
   }
 
   const coachText = done
-    ? demoCoach.respond({ intent: 'complete', mode: 'practice', problemLabel: timeline.problemLabel }).text
+    ? feedback?.text ?? `You finished ${timeline.problemLabel}. Wonderful verified practice!`
     : feedback?.mood === 'celebrating' || !feedback
       ? `${feedback ? `${feedback.text} ` : ''}${text?.prompt ?? ''}`
       : feedback.text
-  const coachMood: CoachMood = done ? 'celebrating' : checking ? 'thinking' : (feedback?.mood ?? 'listening')
+  const coachMood: CoachMood = done
+    ? (feedback?.mood ?? 'celebrating')
+    : checking || coachBusy
+      ? 'thinking'
+      : (feedback?.mood ?? 'listening')
+  const coachSpeaker = feedback?.speaker ?? 'boy'
+  const coachIsLive = Boolean(feedback?.isLive)
 
   return (
     <>
@@ -392,7 +475,7 @@ function PracticeSession({
 
       <Card tone="lavender" padding="lg" className={styles.coachPanel}>
         <div id="practice-prompt">
-          <CharacterDialogue character="boy" tail="bottom" demo>
+          <CharacterDialogue character={coachSpeaker} tail="bottom" demo={!coachIsLive}>
             {coachText}
           </CharacterDialogue>
         </div>
@@ -401,6 +484,26 @@ function PracticeSession({
           <RabbitAssistant state={rabbitVisible ? 'present' : 'hidden'} size={78} onSelect={showHint} label="Ask the rabbit for a hint" />
         </div>
         {!done && <p className={styles.hintNote}>Stuck? Tap the rabbit or press Hint. Hints get more detailed each time.</p>}
+        {liveCoach && (
+          <LiveCoachAsk
+            density="compact"
+            context={{
+              screen: 'practice',
+              sutra_id: sutraId,
+              difficulty,
+              problem_label: timeline.problemLabel,
+              step_id: question?.step_id ?? null,
+              step_title: question ? timeline.steps.find((step) => step.id === question.step_id)?.title ?? null : null,
+              frame_index: playback.index,
+              frame_state: timeline.frames[playback.index]?.state ?? null,
+              question_key: question?.key ?? null,
+              learner_answer: answer.trim() ? answer.trim() : null,
+              check_status: lastCheckStatus,
+              hint_level: level,
+              hint_count: level,
+            }}
+          />
+        )}
       </Card>
     </>
   )

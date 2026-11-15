@@ -35,7 +35,7 @@ from backend.practice import (
 app = FastAPI(
     title="VedicMath AI",
     description="Interactive Vedic Mathematics Learning API",
-    version="0.4.0",
+    version="0.5.0",
 )
 
 # Browser origins allowed to call the API, comma-separated.
@@ -601,7 +601,6 @@ def check_sutra_answers(sutra_name: str, body: AnswerSheet):
     }
 
 
-
 # ---------- Number Rocket (game) ----------
 # Every number, prompt, hint and check comes from backend/rocket.py and the
 # Sutra engines. The game never fills Practice level rings.
@@ -678,3 +677,10 @@ def rocket_check(body: RocketCheck):
         return rocket.check_stage(problem, body.stage, str(body.answer))
     except rocket.RocketError as error:
         raise HTTPException(status_code=400, detail=str(error))
+
+
+# Coach animation handoff — typed actions separate from chat prose.
+# Import after engine helpers exist. Includes /coach/chat for live Rishi.
+from backend.agents.vedic_math_coach.handoff.api import router as coach_router  # noqa: E402
+
+app.include_router(coach_router)

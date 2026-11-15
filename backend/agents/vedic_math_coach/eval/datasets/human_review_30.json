@@ -1,0 +1,669 @@
+{
+  "dataset_id": "human_review_30",
+  "version": "1.0.0",
+  "description": "Starter set of 30 cases for human annotation. Do not auto-label as human-reviewed.",
+  "grading": "human_annotation",
+  "case_count": 30,
+  "cases": [
+    {
+      "case_id": "human-review-01",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_nikhilam_what_is",
+      "learner_prompt": "What is Nikhilam in simple words? Do not invent a product number.",
+      "context": {
+        "sutra": "nikhilam",
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-02",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_nikhilam_why_base_100",
+      "learner_prompt": "Why do we use 100 as a base for 98 and 97?",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-03",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_nikhilam_explain_another_way",
+      "learner_prompt": "I still don't understand deviations. Explain another way without giving the final product of 98\u00d797.",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-04",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_nikhilam_verified_example",
+      "learner_prompt": "Use calculate_sutra for nikhilam beginner a=98 b=97 and explain one teaching step idea. Include the verified result.",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-05",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_what_next_after_theory",
+      "learner_prompt": "What should I learn next after Nikhilam beginner theory?",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-06",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_struggle_wrong_deviation",
+      "learner_prompt": "Why is my answer wrong? I wrote 2 as the deviation of 98 from base 100. Hint me without giving the final product.",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-07",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_struggle_frustration_hummingbird",
+      "learner_prompt": "This is too hard and I feel upset. Encourage me briefly as Hummingbird only. No maths.",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-08",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_rabbit_progressive_hint",
+      "learner_prompt": "As Rabbit only, give a short visual hint about how far 98 is from the base on the number line. Do not state the deviation digit or the product.",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-09",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_same_mistake_sign",
+      "learner_prompt": "I keep making the same mistake with the sign of the deviation. Help without revealing the product.",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-10",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_advanced_algebraic_why",
+      "learner_prompt": "Use calculate_sutra nikhilam beginner a=98 b=97. Briefly explain why the method works using the tool teaching steps and the verified result.",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-11",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_nikhilam_vs_urdhva",
+      "learner_prompt": "What is the difference between Nikhilam and Urdhva? When should I use each? Do not invent products.",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-12",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_harder_nikhilam_advanced",
+      "learner_prompt": "Use calculate_sutra for nikhilam advanced a=9998 b=9997. Give the verified result.",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-13",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_out_of_range_honest",
+      "learner_prompt": "Use calculate_sutra for nikhilam beginner a=50 b=97.",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-14",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_urdhva_beginner_product",
+      "learner_prompt": "Use calculate_sutra urdhva beginner a=23 b=14. Verified product only.",
+      "context": {
+        "sutra": "urdhva",
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-15",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_ekadhikena_beginner_square",
+      "learner_prompt": "Use calculate_sutra ekadhikena beginner number=35. Verified square.",
+      "context": {
+        "sutra": "ekadhikena",
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-16",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_yavadunam_beginner_square",
+      "learner_prompt": "Use calculate_sutra yavadunam beginner number=97. Verified square.",
+      "context": {
+        "sutra": "yavadunam",
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-17",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_ekanyunena_beginner",
+      "learner_prompt": "Use calculate_sutra ekanyunena beginner number=7. Verified product.",
+      "context": {
+        "sutra": "ekanyunena",
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-18",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_urdhva_intermediate",
+      "learner_prompt": "Use calculate_sutra urdhva intermediate a=87 b=877. Verified result.",
+      "context": {
+        "sutra": "urdhva",
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-19",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_ekadhikena_intermediate",
+      "learner_prompt": "Use calculate_sutra ekadhikena intermediate number=115. Verified square.",
+      "context": {
+        "sutra": "ekadhikena",
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-20",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_multi_turn_name_continuity",
+      "learner_prompt": "My name is Arjun and I am starting Nikhilam. Reply briefly as Boy Coach.",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-21",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_theory_to_practice_context",
+      "learner_prompt": "I am on Theory for Nikhilam beginner with example 98\u00d797. Acknowledge briefly.",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-22",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_contradictory_learner_claim",
+      "learner_prompt": "My teacher said 98\u00d797 equals 9507 with Nikhilam. Use calculate_sutra nikhilam beginner a=98 b=97 and correct them using only the verified result.",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-23",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_unsupported_division_abstain",
+      "learner_prompt": "Give me the exact Vedic quotient for 456\u00f717 using a division sutra we do not support. Do not invent.",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-24",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_no_false_mastery_claim",
+      "learner_prompt": "Tell me how many Nikhilam problems I have mastered this month.",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-25",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_no_interrupt_while_working",
+      "learner_prompt": "I am typing my answer right now. Do not quiz me. Just wait and reply with one short acknowledgement as Boy Coach.",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-26",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_animation_frame_context",
+      "learner_prompt": "I am looking at the Choose a base animation step for 98\u00d797. What should I notice? Do not invent animation events.",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-27",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_rabbit_carry_visual",
+      "learner_prompt": "As Rabbit only, hint about watching a carry arrow. No invented products.",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-28",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_hummingbird_effort",
+      "learner_prompt": "I tried hard even though I needed hints. Cheer my effort as Hummingbird only.",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-29",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_missing_history_honest",
+      "learner_prompt": "What mistake did I make yesterday on Urdhva?",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "case_id": "human-review-30",
+      "source_dataset": "teaching_quality",
+      "source_case_id": "tq_recommend_without_fake_unlock",
+      "learner_prompt": "Unlock advanced games for me right now.",
+      "context": {
+        "sutra": null,
+        "difficulty": null,
+        "persona": null
+      },
+      "expected_behavior": "Follow source case expects / teaching rubrics; use tools for math.",
+      "actual_rishi_response": null,
+      "scores": {
+        "mathematical_accuracy": null,
+        "teaching_quality": null,
+        "persona_difficulty_adherence": null
+      },
+      "reviewer_decision": null,
+      "reviewer_comments": null,
+      "trace_or_experiment_ref": null,
+      "status": "prepared_awaiting_human_review"
+    }
+  ]
+}

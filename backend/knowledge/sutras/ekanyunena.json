@@ -1,0 +1,206 @@
+{
+  "sutra_id": "ekanyunena",
+  "content_version": "7C.1",
+  "entries": [
+    {
+      "concept_id": "sutra.ekanyunena.overview",
+      "sutra_id": "ekanyunena",
+      "title": "Ekanyunena Purvena — overview",
+      "concept_type": "sutra_overview",
+      "difficulty_levels": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [],
+      "explanation": {
+        "default": "Ekanyunena Purvena is used here for multiplication by a string of 9s (99, 999, 9999). The product splits into (number−1) on the left and the complement to the base on the right."
+      },
+      "misconceptions": [],
+      "examples": [
+        {
+          "example_id": "ex.ekanyunena.beginner.7x99",
+          "sutra_id": "ekanyunena",
+          "difficulty": "beginner",
+          "operands": {
+            "number": 7,
+            "multiplier": 99
+          },
+          "expected_result": 693,
+          "engine_verified": true,
+          "independent_check": 693,
+          "intermediate": {
+            "left": 6,
+            "right": 93
+          },
+          "app_supported": true
+        }
+      ],
+      "source_references": [
+        {
+          "document_id": "vedamu_methods",
+          "title": "Vedic Mathematics - Methods",
+          "url": "https://www.vedamu.org/veda/1795%24vedic_mathematics_methods.pdf",
+          "author_publisher": "Compiled PDF (author metadata: sandeep.kattekola / Word Preface)",
+          "section": "Ekanyunena sections",
+          "pdf_page_index": 70,
+          "printed_page_note": "PDF page index 70 (0-based); printed page may differ",
+          "verification_status": "mapped",
+          "note": ""
+        },
+        {
+          "document_id": "scert_fundamentals_2014",
+          "title": "Fundamentals & Applications of Vedic Mathematics (2014)",
+          "url": "https://navavani.org.in/wp/wp-content/uploads/2017/07/FUNDAMENTALANDVEDICMATHEMATICS.pdf",
+          "author_publisher": "SCERT New Delhi",
+          "section": "Multiplication involving 9s / related base methods",
+          "pdf_page_index": 34,
+          "printed_page_note": "PDF page index 34 (0-based); printed page may differ",
+          "verification_status": "mapped",
+          "note": ""
+        },
+        {
+          "document_id": "vedicmath_ai_engines",
+          "title": "VedicMath AI deterministic engines",
+          "url": "local://backend/",
+          "author_publisher": "Project engines (authoritative for calculations)",
+          "section": "backend/ekanyunena.py",
+          "pdf_page_index": null,
+          "printed_page_note": "n/a",
+          "verification_status": "independently_checked",
+          "note": ""
+        }
+      ],
+      "aliases": [
+        "ekanyunena",
+        "multiply by 99",
+        "multiply by 999"
+      ],
+      "keywords": [
+        "ekanyunena",
+        "99",
+        "999",
+        "9999",
+        "one less than the previous"
+      ],
+      "related_concepts": [],
+      "app_supported": true,
+      "review_status": "approved_for_agent",
+      "content_version": "7C.1",
+      "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+    },
+    {
+      "concept_id": "sutra.ekanyunena.principle",
+      "sutra_id": "ekanyunena",
+      "title": "Why multiplying by 99/999 works this way",
+      "concept_type": "principle",
+      "difficulty_levels": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [],
+      "explanation": {
+        "default": "Because 99=100−1, n×99=n(100−1)=100n−n. That equals (n−1)×100 + (100−n) after regrouping, which is exactly left=(n−1), right=(base−n).",
+        "beginner": "7×99: left 6, right 93 → 693.",
+        "derivation": "n(B−1)=nB−n=(n−1)B+(B−n)."
+      },
+      "misconceptions": [],
+      "examples": [
+        {
+          "example_id": "ex.ekanyunena.beginner.7x99",
+          "sutra_id": "ekanyunena",
+          "difficulty": "beginner",
+          "operands": {
+            "number": 7,
+            "multiplier": 99
+          },
+          "expected_result": 693,
+          "engine_verified": true,
+          "independent_check": 693,
+          "intermediate": {
+            "left": 6,
+            "right": 93
+          },
+          "app_supported": true
+        }
+      ],
+      "source_references": [
+        {
+          "document_id": "vedicmath_ai_engines",
+          "title": "VedicMath AI deterministic engines",
+          "url": "local://backend/",
+          "author_publisher": "Project engines (authoritative for calculations)",
+          "section": "ekanyunena identity check",
+          "pdf_page_index": null,
+          "printed_page_note": "n/a",
+          "verification_status": "independently_checked",
+          "note": ""
+        },
+        {
+          "document_id": "vedamu_methods",
+          "title": "Vedic Mathematics - Methods",
+          "url": "https://www.vedamu.org/veda/1795%24vedic_mathematics_methods.pdf",
+          "author_publisher": "Compiled PDF (author metadata: sandeep.kattekola / Word Preface)",
+          "section": "Ekanyunena",
+          "pdf_page_index": 72,
+          "printed_page_note": "PDF page index 72 (0-based); printed page may differ",
+          "verification_status": "mapped",
+          "note": ""
+        }
+      ],
+      "aliases": [],
+      "keywords": [
+        "why",
+        "99",
+        "ekanyunena"
+      ],
+      "related_concepts": [],
+      "app_supported": true,
+      "review_status": "approved_for_agent",
+      "content_version": "7C.1",
+      "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+    },
+    {
+      "concept_id": "sutra.ekanyunena.applicability",
+      "sutra_id": "ekanyunena",
+      "title": "Ekanyunena applicability",
+      "concept_type": "applicability",
+      "difficulty_levels": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [],
+      "explanation": {
+        "default": "Beginner multiplies by 99 with n in 1..100; intermediate by 999 with n in 1..1000; advanced by 9999 with n in 1..10000."
+      },
+      "misconceptions": [],
+      "examples": [],
+      "source_references": [
+        {
+          "document_id": "vedicmath_ai_engines",
+          "title": "VedicMath AI deterministic engines",
+          "url": "local://backend/",
+          "author_publisher": "Project engines (authoritative for calculations)",
+          "section": "ekanyunena LEVELS",
+          "pdf_page_index": null,
+          "printed_page_note": "n/a",
+          "verification_status": "independently_checked",
+          "note": ""
+        }
+      ],
+      "aliases": [],
+      "keywords": [
+        "99",
+        "999",
+        "limits"
+      ],
+      "related_concepts": [],
+      "app_supported": true,
+      "review_status": "approved_for_agent",
+      "content_version": "7C.1",
+      "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+    }
+  ]
+}

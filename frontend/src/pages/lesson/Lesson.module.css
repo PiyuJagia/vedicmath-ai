@@ -291,3 +291,9 @@
     grid-template-columns: 120px minmax(0, 1fr);
   }
 }
+
+.coachStatus {
+  margin: var(--space-2, 8px) 0 0;
+  font-size: 0.9rem;
+  color: var(--color-text-muted, inherit);
+}

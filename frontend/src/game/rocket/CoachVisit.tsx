@@ -4,9 +4,8 @@ import coachArt from '../../assets/characters/coach-boy.png'
 import styles from './Rocket.module.css'
 
 /**
- * After every second win the coach stops by with one message about the Vedic
- * maths idea behind the two launches, or about the child's journey. The words
- * are a template filled with engine facts until the coach agent is connected.
+ * After every second win the coach stops by. Message text is live Rishi when
+ * LiveCoach is enabled; otherwise an engine-fact template (never labeled Live AI).
  */
 export function CoachVisit({ message, onReplay, onClose }: { message: string; onReplay: () => void; onClose: () => void }) {
   const closeRef = useRef<HTMLButtonElement>(null)

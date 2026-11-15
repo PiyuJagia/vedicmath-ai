@@ -1,0 +1,258 @@
+{
+  "sutra_id": "ekadhikena",
+  "content_version": "7C.1",
+  "entries": [
+    {
+      "concept_id": "sutra.ekadhikena.overview",
+      "sutra_id": "ekadhikena",
+      "title": "Ekadhikena Purvena — overview",
+      "concept_type": "sutra_overview",
+      "difficulty_levels": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [],
+      "explanation": {
+        "default": "Ekadhikena Purvena (“by one more than the previous”) is used here to square a number ending in 5: multiply the preceding part by one more than itself, then append 25.",
+        "app_support": "Squares 2/3/4-digit numbers ending in 5 by difficulty."
+      },
+      "misconceptions": [],
+      "examples": [
+        {
+          "example_id": "ex.ekadhikena.beginner.35",
+          "sutra_id": "ekadhikena",
+          "difficulty": "beginner",
+          "operands": {
+            "number": 35
+          },
+          "expected_result": 1225,
+          "engine_verified": true,
+          "independent_check": 1225,
+          "intermediate": {
+            "previous": 3,
+            "next": 4,
+            "left": 12,
+            "right": 25
+          },
+          "app_supported": true
+        }
+      ],
+      "source_references": [
+        {
+          "document_id": "vedamu_methods",
+          "title": "Vedic Mathematics - Methods",
+          "url": "https://www.vedamu.org/veda/1795%24vedic_mathematics_methods.pdf",
+          "author_publisher": "Compiled PDF (author metadata: sandeep.kattekola / Word Preface)",
+          "section": "Ekadhikena sections",
+          "pdf_page_index": 8,
+          "printed_page_note": "PDF page index 8 (0-based); printed page may differ",
+          "verification_status": "mapped",
+          "note": ""
+        },
+        {
+          "document_id": "scert_fundamentals_2014",
+          "title": "Fundamentals & Applications of Vedic Mathematics (2014)",
+          "url": "https://navavani.org.in/wp/wp-content/uploads/2017/07/FUNDAMENTALANDVEDICMATHEMATICS.pdf",
+          "author_publisher": "SCERT New Delhi",
+          "section": "Squaring / by one more",
+          "pdf_page_index": 53,
+          "printed_page_note": "PDF page index 53 (0-based); printed page may differ",
+          "verification_status": "mapped",
+          "note": ""
+        },
+        {
+          "document_id": "vedicmath_ai_engines",
+          "title": "VedicMath AI deterministic engines",
+          "url": "local://backend/",
+          "author_publisher": "Project engines (authoritative for calculations)",
+          "section": "backend/ekadhikena.py",
+          "pdf_page_index": null,
+          "printed_page_note": "n/a",
+          "verification_status": "independently_checked",
+          "note": ""
+        }
+      ],
+      "aliases": [
+        "ekadhikena",
+        "square ending in 5",
+        "by one more than the previous"
+      ],
+      "keywords": [
+        "ekadhikena",
+        "ending in 5",
+        "square",
+        "25"
+      ],
+      "related_concepts": [],
+      "app_supported": true,
+      "review_status": "approved_for_agent",
+      "content_version": "7C.1",
+      "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+    },
+    {
+      "concept_id": "sutra.ekadhikena.principle",
+      "sutra_id": "ekadhikena",
+      "title": "Why squaring a number ending in 5 works",
+      "concept_type": "principle",
+      "difficulty_levels": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [],
+      "explanation": {
+        "default": "If n=10a+5, then n²=100a²+100a+25=100a(a+1)+25. So the left block is a(a+1) and the right block is always 25.",
+        "beginner": "For 35: take 3, add one to get 4, 3×4=12, append 25 → 1225.",
+        "derivation": "(10a+5)²=100a²+100a+25=100a(a+1)+25."
+      },
+      "misconceptions": [
+        {
+          "misconception_id": "mis.ekadhikena.times_same",
+          "observable_error": "Computing a×a instead of a×(a+1)",
+          "correct_concept": "Use one more than the previous part",
+          "teaching_intervention": "Say the phrase ‘one more than the previous’ while pointing at a and a+1",
+          "rabbit_hint_strategy": "Level 2: name the +1 relationship",
+          "follow_up_practice": "Ekadhikena beginner"
+        }
+      ],
+      "examples": [
+        {
+          "example_id": "ex.ekadhikena.beginner.35",
+          "sutra_id": "ekadhikena",
+          "difficulty": "beginner",
+          "operands": {
+            "number": 35
+          },
+          "expected_result": 1225,
+          "engine_verified": true,
+          "independent_check": 1225,
+          "intermediate": {
+            "previous": 3,
+            "next": 4,
+            "left": 12,
+            "right": 25
+          },
+          "app_supported": true
+        }
+      ],
+      "source_references": [
+        {
+          "document_id": "internal_sutras_math_notes",
+          "title": "Internal research notes: sutras-math.md",
+          "url": "local://research_notes/Vedic maths teaching foundations/sutras-math.md",
+          "author_publisher": "Project research notes",
+          "section": "Ekadhikena identity",
+          "pdf_page_index": null,
+          "printed_page_note": "n/a",
+          "verification_status": "independently_checked",
+          "note": ""
+        },
+        {
+          "document_id": "vedamu_methods",
+          "title": "Vedic Mathematics - Methods",
+          "url": "https://www.vedamu.org/veda/1795%24vedic_mathematics_methods.pdf",
+          "author_publisher": "Compiled PDF (author metadata: sandeep.kattekola / Word Preface)",
+          "section": "Ekadhikena",
+          "pdf_page_index": 8,
+          "printed_page_note": "PDF page index 8 (0-based); printed page may differ",
+          "verification_status": "mapped",
+          "note": ""
+        }
+      ],
+      "aliases": [],
+      "keywords": [
+        "why",
+        "ending in 5",
+        "25",
+        "ekadhikena"
+      ],
+      "related_concepts": [],
+      "app_supported": true,
+      "review_status": "approved_for_agent",
+      "content_version": "7C.1",
+      "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+    },
+    {
+      "concept_id": "sutra.ekadhikena.alt_geometry",
+      "sutra_id": "ekadhikena",
+      "title": "Ekadhikena — geometric / another way",
+      "concept_type": "alternate_explanation",
+      "difficulty_levels": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [],
+      "explanation": {
+        "default": "Picture a square of side 10a+5 as a big 10a×10a block, two 5×10a strips, and a 5×5 corner. Sliding one strip completes a 10a×10(a+1) rectangle worth 100a(a+1), leaving the 25 corner."
+      },
+      "misconceptions": [],
+      "examples": [],
+      "source_references": [
+        {
+          "document_id": "internal_sutras_math_notes",
+          "title": "Internal research notes: sutras-math.md",
+          "url": "local://research_notes/Vedic maths teaching foundations/sutras-math.md",
+          "author_publisher": "Project research notes",
+          "section": "Geometric rearrangement",
+          "pdf_page_index": null,
+          "printed_page_note": "n/a",
+          "verification_status": "independently_checked",
+          "note": ""
+        }
+      ],
+      "aliases": [],
+      "keywords": [
+        "another way",
+        "geometry",
+        "ekadhikena"
+      ],
+      "related_concepts": [],
+      "app_supported": true,
+      "review_status": "approved_for_agent",
+      "content_version": "7C.1",
+      "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+    },
+    {
+      "concept_id": "sutra.ekadhikena.applicability",
+      "sutra_id": "ekadhikena",
+      "title": "Ekadhikena applicability",
+      "concept_type": "applicability",
+      "difficulty_levels": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "prerequisites": [],
+      "explanation": {
+        "default": "This app’s interactive Ekadhikena path is for positive integers ending in 5 with the digit length required by difficulty. Broader textbook extensions (e.g. units summing to 10) are not claimed as separate implemented features here."
+      },
+      "misconceptions": [],
+      "examples": [],
+      "source_references": [
+        {
+          "document_id": "vedicmath_ai_engines",
+          "title": "VedicMath AI deterministic engines",
+          "url": "local://backend/",
+          "author_publisher": "Project engines (authoritative for calculations)",
+          "section": "ekadhikena digit constraints",
+          "pdf_page_index": null,
+          "printed_page_note": "n/a",
+          "verification_status": "independently_checked",
+          "note": ""
+        }
+      ],
+      "aliases": [],
+      "keywords": [
+        "ending in 5 only",
+        "limits"
+      ],
+      "related_concepts": [],
+      "app_supported": true,
+      "review_status": "approved_for_agent",
+      "content_version": "7C.1",
+      "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+    }
+  ]
+}

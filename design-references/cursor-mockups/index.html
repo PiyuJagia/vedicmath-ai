@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VedicMath AI: draft mockups for review</title>
+  <style>
+    :root {
+      --navy: #1f2547;
+      --muted: #5f6682;
+      --lavender: #eeeaff;
+      --purple: #5b3fa8;
+      --border: #e3e2f0;
+      --page: #f8f8fd;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--navy);
+      font-family: "Segoe UI", system-ui, sans-serif;
+      line-height: 1.5;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px 24px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 22px;
+      font-weight: 500;
+    }
+
+    .layout-buttons { display: flex; gap: 8px; margin-left: auto; }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+      padding: 6px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--navy);
+    }
+
+    button[aria-pressed="true"] {
+      background: var(--purple);
+      border-color: var(--purple);
+      color: #fff;
+    }
+
+    button:focus-visible, a:focus-visible {
+      outline: 3px solid #2a9d8f;
+      outline-offset: 2px;
+    }
+
+    main { padding: 24px; max-width: 2200px; margin: 0 auto; }
+
+    .intro {
+      background: var(--lavender);
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin: 0 0 24px;
+      max-width: 1100px;
+    }
+
+    .intro p { margin: 0 0 6px; }
+    .intro p:last-child { margin: 0; }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    .gallery.side-by-side { grid-template-columns: repeat(2, 1fr); }
+
+    @media (max-width: 1100px) {
+      .gallery.side-by-side { grid-template-columns: 1fr; }
+    }
+
+    figure {
+      margin: 0;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    figcaption { margin-bottom: 12px; }
+
+    figcaption h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    figcaption .file { color: var(--muted); font-size: 13px; }
+
+    figcaption .note { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+
+    .tag {
+      display: inline-block;
+      margin-left: 8px;
+      padding: 1px 10px;
+      border-radius: 999px;
+      font: 600 12px "Segoe UI", system-ui, sans-serif;
+      vertical-align: middle;
+    }
+
+    .tag.approved { background: #dff3ef; color: #17695f; }
+    .tag.draft { background: var(--lavender); color: var(--purple); }
+
+    figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>VedicMath AI: draft mockups for review</h1>
+    <div class="layout-buttons" role="group" aria-label="Gallery layout">
+      <button type="button" id="large" aria-pressed="true">Large (one per row)</button>
+      <button type="button" id="side" aria-pressed="false">Side by side (two per row)</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="intro">
+      <p><strong>How to use this page:</strong> scroll to review each screen. Click any image to open it full size in a new tab.</p>
+      <p>Screen 01 is your approved reference, shown for comparison. Screens 02 to 12 are drafts made by an image generator in that style. Judge layout and mood; small text and arrow glitches are listed under each screen and will not be built.</p>
+    </div>
+
+    <div class="gallery" id="gallery">
+
+      <figure>
+        <figcaption>
+          <h2>01 Landing page and Explore Sutras <span class="tag approved">Approved reference</span></h2>
+          <div class="file">../approved-vedicmath-ui.png</div>
+          <p class="note">Your original approved image, unchanged. Its Sutra order differs from the written spec.</p>
+        </figcaption>
+        <a href="../approved-vedicmath-ui.png" target="_blank"><img src="../approved-vedicmath-ui.png" alt="Approved reference showing the landing page and the Explore Sutras journey"></a>
+      </figure>
+
+      <figure>
+        <figcaption>
+          <h2>02 Explore Sutras, spec order <span class="tag draft">Draft</span></h2>
+          <div class="file">02-explore-sutras.jpg</div>
+          <p class="note">Nikhilam at the bottom, then Urdhva, then Ekadhikena. Mastery drawn as rings around each node instead of dots. Known flaws: only five of the 16 nodes are shown; the rings are faint.</p>
+        </figcaption>
+        <a href="02-explore-sutras.jpg" target="_blank"><img src="02-explore-sutras.jpg" alt="Draft of the Explore Sutras journey with Nikhilam at the bottom"></a>
+      </figure>
+
+      <figure>
+        <figcaption>
+          <h2>03 Individual Sutra page (Nikhilam) <span class="tag draft">Draft</span></h2>
+          <div class="file">03-sutra-overview.jpg</div>
+          <p class="note">Name, description, difficulty rating, level selector, progress rings, and the three sections. The "3 / 10" rating is a placeholder.</p>
+        </figcaption>
+        <a href="03-sutra-overview.jpg" target="_blank"><img src="03-sutra-overview.jpg" alt="Draft of the Nikhilam Sutra overview page"></a>
+      </figure>
+
+      <figure>
+        <figcaption>
+          <h2>04 Theory <span class="tag draft">Draft</span></h2>
+          <div class="file">04-theory.jpg</div>
+          <p class="note">Two-sentence idea plus the 98 × 97 example. The wording is a placeholder. Known flaw: the arrow points at 97 rather than at the −3 chip.</p>
+        </figcaption>
+        <a href="04-theory.jpg" target="_blank"><img src="04-theory.jpg" alt="Draft of the Theory page with the 98 times 97 example"></a>
+      </figure>
+
+      <figure>
+        <figcaption>
+          <h2>05 Let's Learn More, Nikhilam animation <span class="tag draft">Draft</span></h2>
+          <div class="file">05-lets-learn-more-nikhilam.jpg</div>
+          <p class="note">Animation stage, playback controls and step list, paused on step 3 of 5. Known flaws: two extra horizontal arrows; the fourth step dot is highlighted instead of the third.</p>
+        </figcaption>
+        <a href="05-lets-learn-more-nikhilam.jpg" target="_blank"><img src="05-lets-learn-more-nikhilam.jpg" alt="Draft of the Nikhilam animated example page"></a>
+      </figure>
+
+      <figure>
+        <figcaption>
+          <h2>06 Let's Learn More, Urdhva animation <span class="tag draft">Draft</span></h2>
+          <div class="file">06-lets-learn-more-urdhva.jpg</div>
+          <p class="note">23 × 14 with crosswise lines, subtotal, carries and written digits. Known flaws: seven step dots instead of five; the current step shows a tick.</p>
+        </figcaption>
+        <a href="06-lets-learn-more-urdhva.jpg" target="_blank"><img src="06-lets-learn-more-urdhva.jpg" alt="Draft of the Urdhva animated example page"></a>
+      </figure>
+
+      <figure>
+        <figcaption>
+          <h2>07 Practice with Coach <span class="tag draft">Draft</span></h2>
+          <div class="file">07-practice-with-coach.jpg</div>
+          <p class="note">Workspace on the left, coach in the middle, suggested calculations on the right. The hint wording is a placeholder. Known flaw: the arrow starts from empty space rather than from 98.</p>
+        </figcaption>
+        <a href="07-practice-with-coach.jpg" target="_blank"><img src="07-practice-with-coach.jpg" alt="Draft of the Practice with Coach page"></a>
+      </figure>
+
+      <figure>
+        <figcaption>
+          <h2>08 Play to Win <span class="tag draft">Draft</span></h2>
+          <div class="file">08-play-to-win.jpg</div>
+          <p class="note">Game hub with one unlocked and two locked games. Known flaw: the Math Detective magnifier shows a meaningless "6/16".</p>
+        </figcaption>
+        <a href="08-play-to-win.jpg" target="_blank"><img src="08-play-to-win.jpg" alt="Draft of the Play to Win game hub"></a>
+      </figure>
+
+      <figure>
+        <figcaption>
+          <h2>09 My Progress <span class="tag draft">Draft</span></h2>
+          <div class="file">09-my-progress.jpg</div>
+          <p class="note">Summary, stats, mastery rings, badges, recent lessons and next lesson. All numbers are fictional. Known flaw: the third badge is a second rodent instead of a cat.</p>
+        </figcaption>
+        <a href="09-my-progress.jpg" target="_blank"><img src="09-my-progress.jpg" alt="Draft of the My Progress dashboard"></a>
+      </figure>
+
+      <figure>
+        <figcaption>
+          <h2>10 Settings <span class="tag draft">Draft</span></h2>
+          <div class="file">10-settings.jpg</div>
+          <p class="note">Profile, avatar, animation, sound, accessibility, learning and account. Known flaw: some toggles are drawn on that should be off.</p>
+        </figcaption>
+        <a href="10-settings.jpg" target="_blank"><img src="10-settings.jpg" alt="Draft of the Settings page"></a>
+      </figure>
+
+      <figure>
+        <figcaption>
+          <h2>11 Onboarding <span class="tag draft">Draft</span></h2>
+          <div class="file">11-onboarding.jpg</div>
+          <p class="note">Profile setup with the coach greeting. Known flaws: five step dots beside "Step 2 of 4"; seven avatars instead of eight.</p>
+        </figcaption>
+        <a href="11-onboarding.jpg" target="_blank"><img src="11-onboarding.jpg" alt="Draft of the onboarding profile setup page"></a>
+      </figure>
+
+      <figure>
+        <figcaption>
+          <h2>12 Mobile: landing, journey, practice <span class="tag draft">Draft</span></h2>
+          <div class="file">12-mobile-screens.jpg</div>
+          <p class="note">Three phone screens with a bottom tab bar. Known flaw: the "Explore" tab is active on all three phones.</p>
+        </figcaption>
+        <a href="12-mobile-screens.jpg" target="_blank"><img src="12-mobile-screens.jpg" alt="Draft of three mobile screens: landing, journey and practice"></a>
+      </figure>
+
+    </div>
+  </main>
+
+  <script>
+    const gallery = document.getElementById('gallery');
+    const large = document.getElementById('large');
+    const side = document.getElementById('side');
+
+    function setLayout(sideBySide) {
+      gallery.classList.toggle('side-by-side', sideBySide);
+      large.setAttribute('aria-pressed', String(!sideBySide));
+      side.setAttribute('aria-pressed', String(sideBySide));
+    }
+
+    large.addEventListener('click', () => setLayout(false));
+    side.addEventListener('click', () => setLayout(true));
+  </script>
+</body>
+</html>

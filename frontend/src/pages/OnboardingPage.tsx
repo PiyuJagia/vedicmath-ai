@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ArrowRight, ChevronLeft } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import { CharacterOrchestrator } from '../characters/CharacterContext'
 import { CharacterDialogue, CoachCharacter, RabbitAssistant } from '../characters/Characters'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
-import { demoCoach } from '../services/coach'
+import { useLiveCoach } from '../services/LiveCoachContext'
 import { useSettings } from '../services/SettingsContext'
 import { AVATAR_COLOURS, type Settings } from '../services/settingsModel'
 import styles from './Onboarding.module.css'
@@ -20,16 +20,34 @@ const STEPS = 4
 
 export function OnboardingPage() {
   const { settings, update } = useSettings()
+  const { enabled, ask } = useLiveCoach()
   const navigate = useNavigate()
   const [step, setStep] = useState(1)
   const [name, setName] = useState(settings.displayName)
   const [age, setAge] = useState<number | null>(settings.age)
   const [avatar, setAvatar] = useState(settings.avatar)
   const [learningStyle, setLearningStyle] = useState(settings.learningStyle)
+  const [liveWelcome, setLiveWelcome] = useState<string | null>(null)
+  const [welcomeLive, setWelcomeLive] = useState(false)
+
+  useEffect(() => {
+    if (!enabled || step !== 1) return
+    void ask({
+      message: 'Greet a new learner starting VedicMath AI for the first time.',
+      intent: 'welcome',
+      context: { screen: 'onboarding' },
+    }).then((reply) => {
+      if (reply.isLive && reply.text) {
+        setLiveWelcome(reply.text)
+        setWelcomeLive(true)
+      }
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enabled])
 
   const coachText =
     step === 1
-      ? demoCoach.respond({ intent: 'welcome', mode: 'onboarding' }).text
+      ? liveWelcome ?? 'Namaste! I am Rishi, your coach. I will show you clever ways to work with numbers.'
       : step === 2
         ? 'What should I call you? A nickname is perfect.'
         : step === 3
@@ -45,7 +63,7 @@ export function OnboardingPage() {
     <CharacterOrchestrator screen="onboarding">
       <div className={styles.page}>
         <div className={styles.coach}>
-          <CharacterDialogue character="boy" tail="bottom" demo>
+          <CharacterDialogue character="boy" tail="bottom" demo={!(step === 1 && welcomeLive)}>
             {coachText}
           </CharacterDialogue>
           <div className={styles.characters}>

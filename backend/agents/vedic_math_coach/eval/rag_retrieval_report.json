@@ -1,0 +1,708 @@
+{
+  "meta": {
+    "version": "7C.1",
+    "mode": "offline_retrieval",
+    "acceptance": {
+      "hit_rate_min": 0.85,
+      "precision_at_1_min": 0.8,
+      "incorrect_retrieval_max": 0.15,
+      "abstention_accuracy_min": 0.9
+    },
+    "note": "Labeled retrieval cases. Not live Gemini transcripts."
+  },
+  "summary": {
+    "mode": "offline",
+    "content_version": "7C.1",
+    "total": 33,
+    "passed": 33,
+    "failed": 0,
+    "pass_rate": 1.0,
+    "by_category": {
+      "concept_retrieval": {
+        "n": 5,
+        "passed": 5,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "exact_lookup": {
+        "n": 3,
+        "passed": 3,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "alias": {
+        "n": 4,
+        "passed": 4,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "misconception": {
+        "n": 4,
+        "passed": 4,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "understanding_check": {
+        "n": 1,
+        "passed": 1,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "alternate_explanation": {
+        "n": 3,
+        "passed": 3,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "difficulty": {
+        "n": 2,
+        "passed": 2,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "foundation": {
+        "n": 3,
+        "passed": 3,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "comparison": {
+        "n": 1,
+        "passed": 1,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "worked_example": {
+        "n": 1,
+        "passed": 1,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "abstention": {
+        "n": 2,
+        "passed": 2,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "unsupported_method": {
+        "n": 2,
+        "passed": 2,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "security": {
+        "n": 1,
+        "passed": 1,
+        "pass_rate": 1.0,
+        "failures": []
+      },
+      "version": {
+        "n": 1,
+        "passed": 1,
+        "pass_rate": 1.0,
+        "failures": []
+      }
+    },
+    "metrics": {
+      "hit_rate_on_expected_ok": 1.0,
+      "precision_at_1_proxy": 1.0,
+      "incorrect_retrieval_rate": 0.0,
+      "abstention_accuracy": 1.0,
+      "latency_ms_mean": 4.868,
+      "latency_ms_max": 19.179
+    },
+    "acceptance": {
+      "hit_rate_min": 0.85,
+      "precision_at_1_min": 0.8,
+      "incorrect_retrieval_max": 0.15,
+      "abstention_accuracy_min": 0.9
+    },
+    "failures": [],
+    "live_llm_judge": "optional_not_run_offline",
+    "acceptance_passed": true
+  },
+  "results": [
+    {
+      "id": "rag_nikhilam_why",
+      "category": "concept_retrieval",
+      "sutra_id": "nikhilam",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "any_ids": true,
+        "sutra": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.nikhilam.overview",
+        "sutra.nikhilam.principle",
+        "sutra.nikhilam.alt_place_value"
+      ],
+      "latency_ms": 19.179,
+      "notes": []
+    },
+    {
+      "id": "rag_nikhilam_exact",
+      "category": "exact_lookup",
+      "sutra_id": "nikhilam",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "exact_ids": true,
+        "method": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.nikhilam.principle"
+      ],
+      "latency_ms": 0.06,
+      "notes": []
+    },
+    {
+      "id": "rag_nikhilam_alias_near_base",
+      "category": "alias",
+      "sutra_id": "nikhilam",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "sutra": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.nikhilam.overview",
+        "sutra.nikhilam.principle",
+        "sutra.nikhilam.applicability"
+      ],
+      "latency_ms": 6.885,
+      "notes": []
+    },
+    {
+      "id": "rag_nikhilam_deviation_misconception",
+      "category": "misconception",
+      "sutra_id": "nikhilam",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "any_ids": true,
+        "mentions": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.nikhilam.principle",
+        "sutra.nikhilam.overview",
+        "sutra.nikhilam.alt_place_value"
+      ],
+      "latency_ms": 6.507,
+      "notes": []
+    },
+    {
+      "id": "rag_nikhilam_base_choice_check",
+      "category": "understanding_check",
+      "sutra_id": "nikhilam",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "any_ids": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.nikhilam.principle",
+        "sutra.nikhilam.check_base_choice",
+        "sutra.nikhilam.overview"
+      ],
+      "latency_ms": 5.973,
+      "notes": []
+    },
+    {
+      "id": "rag_nikhilam_another_way",
+      "category": "alternate_explanation",
+      "sutra_id": "nikhilam",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "any_ids": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.nikhilam.alt_place_value",
+        "sutra.nikhilam.overview",
+        "sutra.nikhilam.applicability"
+      ],
+      "latency_ms": 6.864,
+      "notes": []
+    },
+    {
+      "id": "rag_nikhilam_intermediate",
+      "category": "difficulty",
+      "sutra_id": "nikhilam",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "sutra": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.nikhilam.principle",
+        "sutra.nikhilam.overview",
+        "sutra.nikhilam.applicability"
+      ],
+      "latency_ms": 6.29,
+      "notes": []
+    },
+    {
+      "id": "rag_urdhva_why",
+      "category": "concept_retrieval",
+      "sutra_id": "urdhva",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "any_ids": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.urdhva.principle",
+        "sutra.urdhva.overview",
+        "sutra.urdhva.alt_foil"
+      ],
+      "latency_ms": 6.506,
+      "notes": []
+    },
+    {
+      "id": "rag_urdhva_carry",
+      "category": "misconception",
+      "sutra_id": "urdhva",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "any_ids": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.urdhva.principle",
+        "foundation.carrying",
+        "sutra.urdhva.overview"
+      ],
+      "latency_ms": 6.591,
+      "notes": []
+    },
+    {
+      "id": "rag_urdhva_alias_crosswise",
+      "category": "alias",
+      "sutra_id": "urdhva",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "sutra": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.urdhva.overview",
+        "sutra.urdhva.principle",
+        "sutra.urdhva.alt_foil"
+      ],
+      "latency_ms": 6.333,
+      "notes": []
+    },
+    {
+      "id": "rag_urdhva_foil_alt",
+      "category": "alternate_explanation",
+      "sutra_id": "urdhva",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "any_ids": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.urdhva.alt_foil",
+        "sutra.urdhva.principle",
+        "sutra.urdhva.overview"
+      ],
+      "latency_ms": 5.242,
+      "notes": []
+    },
+    {
+      "id": "rag_urdhva_spelling_tiryag",
+      "category": "alias",
+      "sutra_id": "urdhva",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "sutra": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.urdhva.overview",
+        "sutra.urdhva.principle",
+        "sutra.urdhva.alt_foil"
+      ],
+      "latency_ms": 6.004,
+      "notes": []
+    },
+    {
+      "id": "rag_ekadhikena_why",
+      "category": "concept_retrieval",
+      "sutra_id": "ekadhikena",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "any_ids": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.ekadhikena.principle",
+        "sutra.ekadhikena.overview",
+        "sutra.ekadhikena.applicability"
+      ],
+      "latency_ms": 5.943,
+      "notes": []
+    },
+    {
+      "id": "rag_ekadhikena_exact",
+      "category": "exact_lookup",
+      "sutra_id": "ekadhikena",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "exact_ids": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.ekadhikena.principle"
+      ],
+      "latency_ms": 0.044,
+      "notes": []
+    },
+    {
+      "id": "rag_ekadhikena_mis_a_times_a",
+      "category": "misconception",
+      "sutra_id": "ekadhikena",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "any_ids": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.ekadhikena.principle",
+        "sutra.ekadhikena.overview",
+        "sutra.ekadhikena.alt_geometry"
+      ],
+      "latency_ms": 4.812,
+      "notes": []
+    },
+    {
+      "id": "rag_ekadhikena_geometry_alt",
+      "category": "alternate_explanation",
+      "sutra_id": "ekadhikena",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "any_ids": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.ekadhikena.alt_geometry",
+        "sutra.ekadhikena.overview",
+        "sutra.ekadhikena.principle"
+      ],
+      "latency_ms": 4.17,
+      "notes": []
+    },
+    {
+      "id": "rag_yavadunam_why",
+      "category": "concept_retrieval",
+      "sutra_id": "yavadunam",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "any_ids": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.yavadunam.principle",
+        "sutra.yavadunam.overview",
+        "sutra.yavadunam.applicability"
+      ],
+      "latency_ms": 3.449,
+      "notes": []
+    },
+    {
+      "id": "rag_yavadunam_sign_convention",
+      "category": "misconception",
+      "sutra_id": "yavadunam",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "any_ids": true,
+        "mentions": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.yavadunam.principle",
+        "sutra.yavadunam.overview",
+        "sutra.yavadunam.applicability"
+      ],
+      "latency_ms": 4.497,
+      "notes": []
+    },
+    {
+      "id": "rag_yavadunam_near_base",
+      "category": "alias",
+      "sutra_id": "yavadunam",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "sutra": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.yavadunam.overview",
+        "sutra.yavadunam.principle",
+        "sutra.yavadunam.applicability"
+      ],
+      "latency_ms": 6.398,
+      "notes": []
+    },
+    {
+      "id": "rag_ekanyunena_why",
+      "category": "concept_retrieval",
+      "sutra_id": "ekanyunena",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "any_ids": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.ekanyunena.principle",
+        "sutra.ekanyunena.overview",
+        "sutra.ekanyunena.applicability"
+      ],
+      "latency_ms": 6.149,
+      "notes": []
+    },
+    {
+      "id": "rag_ekanyunena_999",
+      "category": "difficulty",
+      "sutra_id": "ekanyunena",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "sutra": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.ekanyunena.overview",
+        "sutra.ekanyunena.applicability",
+        "sutra.ekanyunena.principle"
+      ],
+      "latency_ms": 6.076,
+      "notes": []
+    },
+    {
+      "id": "rag_ekanyunena_exact",
+      "category": "exact_lookup",
+      "sutra_id": "ekanyunena",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "exact_ids": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.ekanyunena.principle"
+      ],
+      "latency_ms": 0.069,
+      "notes": []
+    },
+    {
+      "id": "rag_foundation_complements",
+      "category": "foundation",
+      "sutra_id": null,
+      "passed": true,
+      "checks": {
+        "status": true,
+        "any_ids": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "foundation.complements",
+        "sutra.nikhilam.principle",
+        "foundation.place_value"
+      ],
+      "latency_ms": 6.382,
+      "notes": []
+    },
+    {
+      "id": "rag_foundation_place_value",
+      "category": "foundation",
+      "sutra_id": null,
+      "passed": true,
+      "checks": {
+        "status": true,
+        "any_ids": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "foundation.place_value",
+        "sutra.nikhilam.principle",
+        "foundation.carrying"
+      ],
+      "latency_ms": 4.698,
+      "notes": []
+    },
+    {
+      "id": "rag_foundation_algebra",
+      "category": "foundation",
+      "sutra_id": null,
+      "passed": true,
+      "checks": {
+        "status": true,
+        "any_ids": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "foundation.algebraic_expansion",
+        "sutra.nikhilam.principle",
+        "foundation.carrying"
+      ],
+      "latency_ms": 3.799,
+      "notes": []
+    },
+    {
+      "id": "rag_compare_nikhilam_urdhva",
+      "category": "comparison",
+      "sutra_id": null,
+      "passed": true,
+      "checks": {
+        "status": true,
+        "any_ids": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.nikhilam.overview",
+        "sutra.nikhilam.applicability",
+        "sutra.nikhilam.alt_place_value"
+      ],
+      "latency_ms": 2.564,
+      "notes": []
+    },
+    {
+      "id": "rag_worked_example_context",
+      "category": "worked_example",
+      "sutra_id": "nikhilam",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "sutra": true,
+        "engine_example": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.nikhilam.overview",
+        "sutra.nikhilam.alt_place_value",
+        "sutra.nikhilam.applicability"
+      ],
+      "latency_ms": 3.606,
+      "notes": []
+    },
+    {
+      "id": "rag_missing_topic_abstain",
+      "category": "abstention",
+      "sutra_id": null,
+      "passed": true,
+      "checks": {
+        "status": true
+      },
+      "status": "not_found",
+      "matched_concept_ids": [],
+      "latency_ms": 3.701,
+      "notes": []
+    },
+    {
+      "id": "rag_unsupported_anurupyena",
+      "category": "unsupported_method",
+      "sutra_id": null,
+      "passed": true,
+      "checks": {
+        "status": true,
+        "any_ids": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "foundation.unsupported_methods",
+        "foundation.algebraic_expansion",
+        "foundation.complements"
+      ],
+      "latency_ms": 2.795,
+      "notes": []
+    },
+    {
+      "id": "rag_unsupported_paravartya",
+      "category": "unsupported_method",
+      "sutra_id": null,
+      "passed": true,
+      "checks": {
+        "status": true,
+        "any_ids": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "foundation.unsupported_methods",
+        "sutra.nikhilam.overview"
+      ],
+      "latency_ms": 2.568,
+      "notes": []
+    },
+    {
+      "id": "rag_unknown_sutra_id",
+      "category": "abstention",
+      "sutra_id": null,
+      "passed": true,
+      "checks": {
+        "status": true
+      },
+      "status": "unsupported_sutra",
+      "matched_concept_ids": [],
+      "latency_ms": 0.053,
+      "notes": []
+    },
+    {
+      "id": "rag_injection_with_why",
+      "category": "security",
+      "sutra_id": null,
+      "passed": true,
+      "checks": {
+        "status": true,
+        "any_ids": true,
+        "sources_present": true,
+        "sources_structured": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.ekadhikena.principle",
+        "sutra.ekadhikena.overview",
+        "sutra.ekadhikena.alt_geometry"
+      ],
+      "latency_ms": 6.335,
+      "notes": []
+    },
+    {
+      "id": "rag_version_consistency",
+      "category": "version",
+      "sutra_id": null,
+      "passed": true,
+      "checks": {
+        "status": true,
+        "version": true
+      },
+      "status": "ok",
+      "matched_concept_ids": [
+        "sutra.urdhva.principle"
+      ],
+      "latency_ms": 0.086,
+      "notes": []
+    }
+  ]
+}

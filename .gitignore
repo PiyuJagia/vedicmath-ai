@@ -223,4 +223,11 @@ __pycache__/
 .venv/
 .env
 .env.*
+!.env.example
+**/.adk/
+backend/agents/vedic_math_coach/eval/last_report.json
+backend/agents/vedic_math_coach/eval/archive/runs/
+backend/agents/vedic_math_coach/eval/reports/*.generated.md
 external/
+research_notes/sources/*.pdf
+research_notes/sources/_extract_*.txt

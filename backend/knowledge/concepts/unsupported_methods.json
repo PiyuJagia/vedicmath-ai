@@ -1,0 +1,58 @@
+{
+  "concept_id": "foundation.unsupported_methods",
+  "sutra_id": null,
+  "title": "Methods mentioned in books but not implemented here",
+  "concept_type": "unsupported_boundary",
+  "difficulty_levels": [
+    "beginner",
+    "intermediate",
+    "advanced"
+  ],
+  "prerequisites": [],
+  "explanation": {
+    "default": "Reference books list many sutras (for example Anurupyena or Paravartya). This application currently implements only nikhilam, urdhva, ekadhikena, yavadunam, and ekanyunena. Do not invent animations or practice for other methods.",
+    "beginner": "That method may exist in books, but this app cannot open it yet. Try Urdhva or Nikhilam instead."
+  },
+  "misconceptions": [],
+  "examples": [],
+  "source_references": [
+    {
+      "document_id": "scert_fundamentals_2014",
+      "title": "Fundamentals & Applications of Vedic Mathematics (2014)",
+      "url": "https://navavani.org.in/wp/wp-content/uploads/2017/07/FUNDAMENTALANDVEDICMATHEMATICS.pdf",
+      "author_publisher": "SCERT New Delhi",
+      "section": "Sixteen sutras list",
+      "pdf_page_index": 8,
+      "printed_page_note": "PDF page index 8 (0-based); printed page may differ",
+      "verification_status": "mapped",
+      "note": ""
+    },
+    {
+      "document_id": "vedicmath_ai_engines",
+      "title": "VedicMath AI deterministic engines",
+      "url": "local://backend/",
+      "author_publisher": "Project engines (authoritative for calculations)",
+      "section": "PRACTICE_SUTRAS allow-list",
+      "pdf_page_index": null,
+      "printed_page_note": "n/a",
+      "verification_status": "independently_checked",
+      "note": ""
+    }
+  ],
+  "aliases": [
+    "anurupyena",
+    "paravartya",
+    "unsupported sutra"
+  ],
+  "keywords": [
+    "anurupyena",
+    "paravartya",
+    "not in this app",
+    "unsupported"
+  ],
+  "related_concepts": [],
+  "app_supported": false,
+  "review_status": "approved_for_agent",
+  "content_version": "7C.1",
+  "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+}

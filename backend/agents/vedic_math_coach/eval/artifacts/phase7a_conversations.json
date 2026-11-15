@@ -1,0 +1,79 @@
+{
+  "generated_at": "2026-11-15T05:01:34Z",
+  "session_id": "d6d593cc-c470-4e31-9337-b747d7958a2e",
+  "cases": [
+    {
+      "id": "rishi_intro",
+      "message": "Namaste! Introduce yourself briefly as Rishi.",
+      "http_status": 200,
+      "note": "Captured before AI Studio credit depletion; later free-form turns returned 503.",
+      "speaker": {
+        "id": "boy_coach",
+        "display_name": "Rishi"
+      },
+      "text": "Namaste! I am Rishi, your Vedic Math coach. \n\nI'm here to help you discover the patterns and elegance behind mental mathematics—one thoughtful step at a time. Whether you want to explore how a sutra works or practice solving problems together, I'm glad to guide your journey. \n\nShall we start by exploring the Nikhilam sutra today?",
+      "tools_used": [],
+      "actions": []
+    },
+    {
+      "id": "rabbit_level1_hint",
+      "message": "As Rabbit only, give a level-1 hint about the deviation of 98 from base 100. Do not state the deviation digit.",
+      "http_status": 200,
+      "speaker": {
+        "id": "rabbit",
+        "display_name": "Rabbit"
+      },
+      "text": "Look at how far 98 sits from the base on the number line. What kind of gap do you see\u2014does the number sit below or above the base?",
+      "tools_used": [
+        "get_progressive_hint"
+      ],
+      "actions": []
+    },
+    {
+      "id": "rabbit_level2_hint",
+      "message": "As Rabbit only, level-2 hint for the same deviation step. Still do not state the answer digit.",
+      "http_status": 200,
+      "speaker": {
+        "id": "rabbit",
+        "display_name": "Rabbit"
+      },
+      "text": "Use the relationship base \u2212 number. The base here is 100. Find the distance from that base to the number tile\u2014without rushing to a final product.",
+      "tools_used": [
+        "get_progressive_hint"
+      ],
+      "actions": []
+    },
+    {
+      "id": "rabbit_level3_hint",
+      "message": "As Rabbit only, level-3 guided step for deviation of 98. Do not blurt the final product.",
+      "http_status": 200,
+      "speaker": {
+        "id": "rabbit",
+        "display_name": "Rabbit"
+      },
+      "text": "Work out 100 \u2212 98. That expression is your guided step; finish the arithmetic yourself.",
+      "tools_used": [
+        "get_progressive_hint"
+      ],
+      "actions": []
+    },
+    {
+      "id": "unsupported_anurupyena",
+      "message": "Please open the Anurupyena animation in this app for 23\u00d714.",
+      "http_status": 503,
+      "speaker": null,
+      "text": null,
+      "tools_used": null,
+      "actions": []
+    },
+    {
+      "id": "concise_why_base",
+      "message": "Why do we use base 100 for 98\u00d797? Keep it short.",
+      "http_status": 503,
+      "speaker": null,
+      "text": null,
+      "tools_used": null,
+      "actions": []
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "concept_id": "foundation.algebraic_expansion",
+  "sutra_id": null,
+  "title": "Algebraic expansion behind mental shortcuts",
+  "concept_type": "foundation",
+  "difficulty_levels": [
+    "beginner",
+    "intermediate",
+    "advanced"
+  ],
+  "prerequisites": [],
+  "explanation": {
+    "default": "Most Vedic mental-math shortcuts in this app are rearrangements of school algebra: (B±a)(B±b), (10n+5)², and place-value convolutions. The shortcut is optional; the identity is the reason.",
+    "beginner": "A shortcut works because it secretly uses a true number pattern, not magic.",
+    "intermediate": "If you expand the algebra, you get the same left and right parts the method writes.",
+    "advanced": "Teaching should connect each method to a named identity and its domain of use."
+  },
+  "misconceptions": [],
+  "examples": [],
+  "source_references": [
+    {
+      "document_id": "internal_sutras_math_notes",
+      "title": "Internal research notes: sutras-math.md",
+      "url": "local://research_notes/Vedic maths teaching foundations/sutras-math.md",
+      "author_publisher": "Project research notes",
+      "section": "Algebraic foundations summary",
+      "pdf_page_index": null,
+      "printed_page_note": "n/a",
+      "verification_status": "independently_checked",
+      "note": ""
+    },
+    {
+      "document_id": "vedamu_methods",
+      "title": "Vedic Mathematics - Methods",
+      "url": "https://www.vedamu.org/veda/1795%24vedic_mathematics_methods.pdf",
+      "author_publisher": "Compiled PDF (author metadata: sandeep.kattekola / Word Preface)",
+      "section": "Worked algebraic presentations across sutra chapters",
+      "pdf_page_index": 0,
+      "printed_page_note": "PDF page index 0 (0-based); printed page may differ",
+      "verification_status": "mapped",
+      "note": ""
+    }
+  ],
+  "aliases": [
+    "algebra",
+    "expansion",
+    "identity"
+  ],
+  "keywords": [
+    "algebra",
+    "identity",
+    "expansion",
+    "why it works",
+    "proof"
+  ],
+  "related_concepts": [],
+  "app_supported": true,
+  "review_status": "approved_for_agent",
+  "content_version": "7C.1",
+  "history_vs_math_note": "Mathematical claims here are independently checkable algebra/place-value. Traditional origin claims about the Vedas are not asserted as established fact."
+}
