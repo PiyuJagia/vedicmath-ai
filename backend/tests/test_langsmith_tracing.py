@@ -54,3 +54,18 @@ def test_chat_turn_is_traceable_wrapped():
     # langsmith.traceable preserves the underlying coroutine via __wrapped__
     wrapped = getattr(session_mod.chat_turn, "__wrapped__", None)
     assert wrapped is session_mod._chat_turn_impl or wrapped is not None
+
+
+def test_production_privacy_redacts_message(monkeypatch):
+    from backend.agents.vedic_math_coach.observability import langsmith as ls
+
+    reset_langsmith_config_state_for_tests()
+    monkeypatch.setenv("LANGSMITH_AGENT_ENVIRONMENT", "production")
+    assert ls.production_io_redaction_enabled() is True
+    processed = ls.privacy_process_inputs(
+        {"session_id": "kid-session-123", "message": "help me", "runner": object()}
+    )
+    assert "runner" not in processed
+    assert processed["message"].startswith("[REDACTED_MESSAGE")
+    assert processed["session_id"] != "kid-session-123"
+    assert len(processed["session_id"]) == 16

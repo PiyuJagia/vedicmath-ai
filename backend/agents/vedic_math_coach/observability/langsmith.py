@@ -19,17 +19,24 @@ logger = logging.getLogger(__name__)
 
 _REPO_ROOT = Path(__file__).resolve().parents[4]
 _CONFIGURED = False
+_DOTENV_LOADED = False
 _LAST_STATUS: dict[str, Any] = {"enabled": False}
 
 
 def _soft_load_dotenv() -> None:
+    """Load repo `.env` once. Do not re-apply after tests clear env vars."""
+    global _DOTENV_LOADED
+    if _DOTENV_LOADED:
+        return
     try:
         from dotenv import load_dotenv
 
         env_path = _REPO_ROOT / ".env"
         if env_path.is_file():
             load_dotenv(env_path, override=False)
+        _DOTENV_LOADED = True
     except Exception:  # noqa: BLE001
+        _DOTENV_LOADED = True
         return
 
 
@@ -61,6 +68,55 @@ def _sanitize_metadata(meta: dict[str, Any] | None) -> dict[str, Any]:
     )
 
     return sanitize_trace_metadata(meta)
+
+
+def production_io_redaction_enabled() -> bool:
+    """Redact learner I/O in custom spans for production / explicit opt-in."""
+    _soft_load_dotenv()
+    if _truthy("VEDIC_LANGSMITH_REDACT_IO"):
+        return True
+    env = (os.getenv("LANGSMITH_AGENT_ENVIRONMENT") or "local").strip().lower()
+    return env in {"production", "prod"}
+
+
+def privacy_process_inputs(inputs: dict[str, Any]) -> dict[str, Any]:
+    """Strip runner objects; hash ids / redact message text when required."""
+    import hashlib
+
+    out: dict[str, Any] = {}
+    redact = production_io_redaction_enabled()
+    for key, value in (inputs or {}).items():
+        if key == "runner":
+            continue
+        if key in {"user_id", "session_id"} and value is not None:
+            digest = hashlib.sha256(str(value).encode("utf-8")).hexdigest()[:16]
+            out[key] = digest if redact else str(value)
+        elif key == "message" and redact:
+            text = str(value or "")
+            out[key] = f"[REDACTED_MESSAGE chars={len(text)}]"
+        else:
+            out[key] = value
+    return out
+
+
+def privacy_process_outputs(outputs: dict[str, Any]) -> dict[str, Any]:
+    if not production_io_redaction_enabled():
+        # Still drop bulky tool payloads from custom parent span when huge.
+        return outputs or {}
+    result = dict(outputs or {})
+    if "text" in result:
+        text = str(result.get("text") or "")
+        result["text"] = f"[REDACTED_REPLY chars={len(text)}]"
+    if "tool_calls" in result:
+        result["tool_calls"] = [
+            {"name": (c or {}).get("name")} for c in (result.get("tool_calls") or [])
+        ]
+    if "tool_responses" in result:
+        result["tool_responses"] = [
+            {"name": (r or {}).get("name"), "ok": ((r or {}).get("response") or {}).get("ok")}
+            for r in (result.get("tool_responses") or [])
+        ]
+    return result
 
 
 def ensure_langsmith_tracing(
@@ -117,12 +173,20 @@ def ensure_langsmith_tracing(
         os.environ.setdefault("LANGSMITH_AGENT_ID", agent_id)
         os.environ.setdefault("LANGSMITH_AGENT_ENVIRONMENT", agent_env)
 
+        # Prefer agent addressing. LANGSMITH_PROJECT in the environment conflicts
+        # with LANGSMITH_AGENT_ID/ENVIRONMENT and causes traces to be dropped.
+        # Keep the logical project name in metadata/tags only.
+        project_label = (os.getenv("LANGSMITH_PROJECT") or "vedicmath-ai-rishi").strip()
+        cleared_project = os.environ.pop("LANGSMITH_PROJECT", None)
+
         meta = _sanitize_metadata(
             {
                 "app": "vedicmath-ai",
                 "coach": "rishi",
                 "framework": "google-adk",
                 "model": os.getenv("VEDIC_TRACE_MODEL") or "gemini-3.8-flash",
+                "langsmith_project_label": project_label,
+                "io_redaction": production_io_redaction_enabled(),
                 **(metadata or {}),
             }
         )
@@ -134,6 +198,7 @@ def ensure_langsmith_tracing(
                     "google-adk",
                     agent_id,
                     agent_env,
+                    project_label,
                     *(tags or []),
                 ]
             )
@@ -146,6 +211,19 @@ def ensure_langsmith_tracing(
             metadata=meta,
             tags=tag_list,
         )
+        # Restore label for other tools that read LANGSMITH_PROJECT as a name only.
+        if cleared_project is not None:
+            os.environ["LANGSMITH_PROJECT"] = cleared_project
+        elif project_label:
+            os.environ["LANGSMITH_PROJECT"] = project_label
+        status["project_label"] = project_label
+        status["destination"] = "agent_address"
+        status["io_redaction"] = production_io_redaction_enabled()
+        if cleared_project:
+            status["note"] = (
+                "Cleared LANGSMITH_PROJECT during configure_google_adk to avoid "
+                "agent-address vs project conflict; restored afterward as a label."
+            )
         if not ok:
             status["error"] = "configure_google_adk returned False"
             _LAST_STATUS = status

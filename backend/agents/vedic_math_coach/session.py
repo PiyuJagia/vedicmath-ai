@@ -150,10 +150,17 @@ def _wrap_chat_turn(fn):
     try:
         from langsmith import traceable
 
+        from backend.agents.vedic_math_coach.observability.langsmith import (
+            privacy_process_inputs,
+            privacy_process_outputs,
+        )
+
         return traceable(
             name="rishi_chat_turn",
             run_type="chain",
             metadata={"coach": "rishi", "framework": "google-adk"},
+            process_inputs=privacy_process_inputs,
+            process_outputs=privacy_process_outputs,
         )(fn)
     except Exception:  # noqa: BLE001
         return fn

@@ -79,6 +79,28 @@
       "case_count": 3,
       "langsmith_dataset_id": null,
       "status": "prepared_not_baseline"
+    },
+    {
+      "dataset_id": "human_review_30",
+      "version": "1.0.0",
+      "category": "human_review",
+      "path": "human_review_30.json",
+      "description": "30 starter cases for human annotation; not auto-reviewed",
+      "grading": "human_annotation",
+      "case_count": 30,
+      "langsmith_dataset_id": null,
+      "status": "prepared_awaiting_human_review"
+    },
+    {
+      "dataset_id": "redteam_safety_50",
+      "version": "1.0.0",
+      "category": "safety",
+      "path": "redteam_safety_50.json",
+      "description": "50 adversarial prompts; outcomes only from executed runs",
+      "grading": "safety_rubric_plus_human",
+      "case_count": 50,
+      "langsmith_dataset_id": null,
+      "status": "prepared_not_executed"
     }
   ]
 }

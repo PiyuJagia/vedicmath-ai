@@ -40,6 +40,8 @@ def test_dataset_catalog_lists_core_sets():
         "teaching_v2_offline_fixtures",
         "judge_calibration",
         "rag_retrieval_cases",
+        "human_review_30",
+        "redteam_safety_50",
     ):
         assert needed in ids
     for dataset in catalog["datasets"]:

@@ -108,8 +108,8 @@
       "precision_at_1_proxy": 1.0,
       "incorrect_retrieval_rate": 0.0,
       "abstention_accuracy": 1.0,
-      "latency_ms_mean": 2.384,
-      "latency_ms_max": 6.746
+      "latency_ms_mean": 4.868,
+      "latency_ms_max": 19.179
     },
     "acceptance": {
       "hit_rate_min": 0.85,
@@ -138,7 +138,7 @@
         "sutra.nikhilam.principle",
         "sutra.nikhilam.alt_place_value"
       ],
-      "latency_ms": 6.746,
+      "latency_ms": 19.179,
       "notes": []
     },
     {
@@ -155,7 +155,7 @@
       "matched_concept_ids": [
         "sutra.nikhilam.principle"
       ],
-      "latency_ms": 0.025,
+      "latency_ms": 0.06,
       "notes": []
     },
     {
@@ -173,7 +173,7 @@
         "sutra.nikhilam.principle",
         "sutra.nikhilam.applicability"
       ],
-      "latency_ms": 2.107,
+      "latency_ms": 6.885,
       "notes": []
     },
     {
@@ -192,7 +192,7 @@
         "sutra.nikhilam.overview",
         "sutra.nikhilam.alt_place_value"
       ],
-      "latency_ms": 2.377,
+      "latency_ms": 6.507,
       "notes": []
     },
     {
@@ -210,7 +210,7 @@
         "sutra.nikhilam.check_base_choice",
         "sutra.nikhilam.overview"
       ],
-      "latency_ms": 2.331,
+      "latency_ms": 5.973,
       "notes": []
     },
     {
@@ -228,7 +228,7 @@
         "sutra.nikhilam.overview",
         "sutra.nikhilam.applicability"
       ],
-      "latency_ms": 3.227,
+      "latency_ms": 6.864,
       "notes": []
     },
     {
@@ -246,7 +246,7 @@
         "sutra.nikhilam.overview",
         "sutra.nikhilam.applicability"
       ],
-      "latency_ms": 2.358,
+      "latency_ms": 6.29,
       "notes": []
     },
     {
@@ -264,7 +264,7 @@
         "sutra.urdhva.overview",
         "sutra.urdhva.alt_foil"
       ],
-      "latency_ms": 1.698,
+      "latency_ms": 6.506,
       "notes": []
     },
     {
@@ -282,7 +282,7 @@
         "foundation.carrying",
         "sutra.urdhva.overview"
       ],
-      "latency_ms": 2.166,
+      "latency_ms": 6.591,
       "notes": []
     },
     {
@@ -300,7 +300,7 @@
         "sutra.urdhva.principle",
         "sutra.urdhva.alt_foil"
       ],
-      "latency_ms": 2.366,
+      "latency_ms": 6.333,
       "notes": []
     },
     {
@@ -318,7 +318,7 @@
         "sutra.urdhva.principle",
         "sutra.urdhva.overview"
       ],
-      "latency_ms": 2.282,
+      "latency_ms": 5.242,
       "notes": []
     },
     {
@@ -336,7 +336,7 @@
         "sutra.urdhva.principle",
         "sutra.urdhva.alt_foil"
       ],
-      "latency_ms": 5.144,
+      "latency_ms": 6.004,
       "notes": []
     },
     {
@@ -354,7 +354,7 @@
         "sutra.ekadhikena.overview",
         "sutra.ekadhikena.applicability"
       ],
-      "latency_ms": 3.216,
+      "latency_ms": 5.943,
       "notes": []
     },
     {
@@ -370,7 +370,7 @@
       "matched_concept_ids": [
         "sutra.ekadhikena.principle"
       ],
-      "latency_ms": 0.039,
+      "latency_ms": 0.044,
       "notes": []
     },
     {
@@ -388,7 +388,7 @@
         "sutra.ekadhikena.overview",
         "sutra.ekadhikena.alt_geometry"
       ],
-      "latency_ms": 2.4,
+      "latency_ms": 4.812,
       "notes": []
     },
     {
@@ -406,7 +406,7 @@
         "sutra.ekadhikena.overview",
         "sutra.ekadhikena.principle"
       ],
-      "latency_ms": 1.585,
+      "latency_ms": 4.17,
       "notes": []
     },
     {
@@ -424,7 +424,7 @@
         "sutra.yavadunam.overview",
         "sutra.yavadunam.applicability"
       ],
-      "latency_ms": 1.961,
+      "latency_ms": 3.449,
       "notes": []
     },
     {
@@ -443,7 +443,7 @@
         "sutra.yavadunam.overview",
         "sutra.yavadunam.applicability"
       ],
-      "latency_ms": 2.609,
+      "latency_ms": 4.497,
       "notes": []
     },
     {
@@ -461,7 +461,7 @@
         "sutra.yavadunam.principle",
         "sutra.yavadunam.applicability"
       ],
-      "latency_ms": 6.008,
+      "latency_ms": 6.398,
       "notes": []
     },
     {
@@ -479,7 +479,7 @@
         "sutra.ekanyunena.overview",
         "sutra.ekanyunena.applicability"
       ],
-      "latency_ms": 2.427,
+      "latency_ms": 6.149,
       "notes": []
     },
     {
@@ -497,7 +497,7 @@
         "sutra.ekanyunena.applicability",
         "sutra.ekanyunena.principle"
       ],
-      "latency_ms": 2.673,
+      "latency_ms": 6.076,
       "notes": []
     },
     {
@@ -513,7 +513,7 @@
       "matched_concept_ids": [
         "sutra.ekanyunena.principle"
       ],
-      "latency_ms": 0.036,
+      "latency_ms": 0.069,
       "notes": []
     },
     {
@@ -531,7 +531,7 @@
         "sutra.nikhilam.principle",
         "foundation.place_value"
       ],
-      "latency_ms": 2.946,
+      "latency_ms": 6.382,
       "notes": []
     },
     {
@@ -549,7 +549,7 @@
         "sutra.nikhilam.principle",
         "foundation.carrying"
       ],
-      "latency_ms": 2.775,
+      "latency_ms": 4.698,
       "notes": []
     },
     {
@@ -567,7 +567,7 @@
         "sutra.nikhilam.principle",
         "foundation.carrying"
       ],
-      "latency_ms": 2.416,
+      "latency_ms": 3.799,
       "notes": []
     },
     {
@@ -585,7 +585,7 @@
         "sutra.nikhilam.applicability",
         "sutra.nikhilam.alt_place_value"
       ],
-      "latency_ms": 2.514,
+      "latency_ms": 2.564,
       "notes": []
     },
     {
@@ -604,7 +604,7 @@
         "sutra.nikhilam.alt_place_value",
         "sutra.nikhilam.applicability"
       ],
-      "latency_ms": 2.58,
+      "latency_ms": 3.606,
       "notes": []
     },
     {
@@ -617,7 +617,7 @@
       },
       "status": "not_found",
       "matched_concept_ids": [],
-      "latency_ms": 2.342,
+      "latency_ms": 3.701,
       "notes": []
     },
     {
@@ -635,7 +635,7 @@
         "foundation.algebraic_expansion",
         "foundation.complements"
       ],
-      "latency_ms": 2.141,
+      "latency_ms": 2.795,
       "notes": []
     },
     {
@@ -652,7 +652,7 @@
         "foundation.unsupported_methods",
         "sutra.nikhilam.overview"
       ],
-      "latency_ms": 2.373,
+      "latency_ms": 2.568,
       "notes": []
     },
     {
@@ -665,7 +665,7 @@
       },
       "status": "unsupported_sutra",
       "matched_concept_ids": [],
-      "latency_ms": 0.02,
+      "latency_ms": 0.053,
       "notes": []
     },
     {
@@ -685,7 +685,7 @@
         "sutra.ekadhikena.overview",
         "sutra.ekadhikena.alt_geometry"
       ],
-      "latency_ms": 2.76,
+      "latency_ms": 6.335,
       "notes": []
     },
     {
@@ -701,7 +701,7 @@
       "matched_concept_ids": [
         "sutra.urdhva.principle"
       ],
-      "latency_ms": 0.034,
+      "latency_ms": 0.086,
       "notes": []
     }
   ]
