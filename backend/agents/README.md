@@ -108,3 +108,16 @@ adk run backend\agents\vedic_math_coach
 - Mathematical algorithms live in `backend/*.py` and must stay deterministic;
   agents should call them as tools, not reimplement them.
 - Do not put API keys in this folder. Use the repo-root `.env` (gitignored).
+
+## Runtime reply guards
+
+`vedic_math_coach/guards/` holds deterministic checks for a live reply:
+`review_reply(reply, tool_responses, learner_texts)` reports numbers that no
+tool or learner supplied, false equations, and replies where more than one
+persona speaks. It does not change the reply. It isn't wired into `/coach/chat`
+yet; that follows once the live-Rishi fixes on `handoff/chat_service.py` merge.
+
+## MCP server
+
+`backend/mcp_server/` exposes the same maths tools over MCP for other clients.
+It is optional and not deployed. See its README.
