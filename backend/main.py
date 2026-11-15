@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from backend.vendor.vedicpy.multiply import multiply_base_near_powerof10
+from backend import rocket
 from backend.nikhilam import (
     build_nikhilam_steps,
     build_nikhilam_animation_events,
@@ -599,3 +600,81 @@ def check_sutra_answers(sutra_name: str, body: AnswerSheet):
         "results": results,
     }
 
+
+
+# ---------- Number Rocket (game) ----------
+# Every number, prompt, hint and check comes from backend/rocket.py and the
+# Sutra engines. The game never fills Practice level rings.
+
+
+def _rocket_problem(sutra: str, a: Optional[int], b: Optional[int], number: Optional[int]) -> Dict:
+    sutra = sutra.lower().strip()
+    if sutra == "nikhilam":
+        if a is None or b is None:
+            raise HTTPException(status_code=400, detail="Provide both a and b for this launch.")
+        problem = {"sutra": "nikhilam", "a": a, "b": b}
+    elif sutra == "ekadhikena":
+        if number is None:
+            raise HTTPException(status_code=400, detail="Provide the number for this launch.")
+        problem = {"sutra": "ekadhikena", "number": number}
+    else:
+        raise HTTPException(status_code=404, detail="Number Rocket flies Nikhilam and Ekadhikena launches only.")
+    try:
+        problem["rung"] = rocket.rung_of(problem)
+    except rocket.RocketError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+    return problem
+
+
+@app.get("/game/rocket/rungs")
+def rocket_rungs():
+    return {"level": rocket.LEVEL, "base": rocket.BASE, "rungs": rocket.RUNGS}
+
+
+@app.get("/game/rocket/mission")
+def rocket_mission(
+    seed: int = Query(..., ge=0, le=2**31 - 1),
+    nikhilam_rung: Optional[str] = None,
+    ekadhikena_rung: Optional[str] = None,
+):
+    try:
+        launches = rocket.build_mission(seed, nikhilam_rung, ekadhikena_rung)
+    except rocket.RocketError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+    return {"seed": seed, "level": rocket.LEVEL, "launches": launches}
+
+
+@app.get("/game/rocket/launch")
+def rocket_launch(
+    sutra: str,
+    a: Optional[int] = None,
+    b: Optional[int] = None,
+    number: Optional[int] = None,
+):
+    problem = _rocket_problem(sutra, a, b, number)
+    return {
+        **problem,
+        "level": rocket.LEVEL,
+        "base": rocket.BASE if problem["sutra"] == "nikhilam" else None,
+        "engine": rocket.ENGINES[problem["sutra"]],
+        "label": rocket.problem_label(problem),
+        "stages": rocket.launch_stages(problem),
+    }
+
+
+class RocketCheck(BaseModel):
+    sutra: str
+    stage: str
+    answer: Union[str, int]
+    a: Optional[int] = None
+    b: Optional[int] = None
+    number: Optional[int] = None
+
+
+@app.post("/game/rocket/check")
+def rocket_check(body: RocketCheck):
+    problem = _rocket_problem(body.sutra, body.a, body.b, body.number)
+    try:
+        return rocket.check_stage(problem, body.stage, str(body.answer))
+    except rocket.RocketError as error:
+        raise HTTPException(status_code=400, detail=str(error))

@@ -2,10 +2,12 @@ import { useState } from 'react'
 import { Lock, Map, Rocket, Search } from 'lucide-react'
 import { CharacterOrchestrator } from '../characters/CharacterContext'
 import { CharacterDialogue, HummingbirdCompanion, RabbitAssistant } from '../characters/Characters'
+import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
 import { DifficultySelector } from '../components/ui/DifficultySelector'
 import { Pill } from '../components/ui/Pill'
 import { SUTRAS } from '../content/sutras'
+import { canFly, rocketAccess } from '../game/rocket/model'
 import { isGameUnlocked } from '../services/progressModel'
 import { useProgress } from '../services/ProgressContext'
 import { useSettings } from '../services/SettingsContext'
@@ -27,6 +29,7 @@ export function PlayPage() {
   const [difficulty, setDifficulty] = useState<Difficulty>('beginner')
   const sutra = PLAYABLE.find((item) => item.id === sutraId) ?? PLAYABLE[0]
   const unlocked = isGameUnlocked(progress, sutra.id, difficulty, settings.role === 'admin')
+  const rocketOpen = canFly(rocketAccess(progress, settings.role === 'admin'))
 
   return (
     <CharacterOrchestrator screen="play">
@@ -62,13 +65,25 @@ export function PlayPage() {
 
         <div className={styles.grid}>
           {GAMES.map(({ id, name, text, Icon }) => (
-            <Card key={id} padding="lg" className={styles.game} data-locked={!unlocked}>
+            <Card key={id} padding="lg" className={styles.game} data-locked={id === 'rocket' ? !rocketOpen : !unlocked}>
               <div className={styles.art} aria-hidden="true">
                 <Icon size={64} strokeWidth={1.25} />
               </div>
               <h2>{name}</h2>
               <p>{text}</p>
-              {unlocked ? (
+              {id === 'rocket' ? (
+                rocketOpen ? (
+                  <div className={styles.status}>
+                    <Pill tone="teal">Nikhilam and Ekadhikena · Beginner</Pill>
+                    <Button to="/play/rocket">Play Number Rocket</Button>
+                  </div>
+                ) : (
+                  <p className={styles.lock}>
+                    <Lock size={18} aria-hidden="true" />
+                    Pass Nikhilam Beginner practice, or open the Ekadhikena lessons, to fly
+                  </p>
+                )
+              ) : unlocked ? (
                 <div className={styles.status}>
                   <Pill tone="teal">Unlocked</Pill>
                   <Pill tone="neutral">Game coming soon</Pill>
@@ -86,7 +101,7 @@ export function PlayPage() {
         <div className={styles.footer}>
           <RabbitAssistant state="present" size={70} />
           <p className={styles.note}>
-            Games will use maths from the Python engine. Until those game endpoints exist, this page shows previews and unlock status.
+            Every game uses maths from the Python engine. Number Rocket is ready to fly; Treasure Trail and Math Detective are coming soon.
           </p>
         </div>
       </div>
