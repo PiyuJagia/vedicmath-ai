@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+import logging
 import uuid
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 
 from .errors import HandoffError
 from .schemas import (
@@ -22,6 +23,7 @@ from .schemas import (
 
 
 router = APIRouter(prefix="/coach", tags=["coach"])
+logger = logging.getLogger(__name__)
 
 
 def _http_error(error: HandoffError) -> HTTPException:
@@ -170,13 +172,15 @@ def compose_coach_handoff(body: HandoffComposeRequest) -> CoachHandoffResponse:
     response_model=CoachChatResponse,
     responses={
         400: {"model": HandoffErrorResponse},
+        429: {"model": HandoffErrorResponse},
         503: {"model": HandoffErrorResponse},
     },
 )
-async def coach_chat(body: CoachChatRequest) -> CoachChatResponse:
+async def coach_chat(body: CoachChatRequest, request: Request) -> CoachChatResponse:
     """Live ADK Coach turn: Gemini + deterministic tools → typed UI handoff."""
     from .chat_service import build_chat_response
-    from .context import enrich_learner_message, validate_learning_context
+    from .context import enrich_learner_message, protected_practice_values, validate_learning_context
+    from .limits import IP_LIMITER, SESSION_LIMITER
     from .runtime import run_coach_turn
 
     message = (body.message or "").strip()
@@ -189,6 +193,20 @@ async def coach_chat(body: CoachChatRequest) -> CoachChatResponse:
         raise HTTPException(
             status_code=400,
             detail={"ok": False, "code": "missing_session", "message": "A learner session id is required."},
+        )
+
+    # Cost control: bound live turns per learner session and per client IP.
+    # Render's proxy puts the client address first in X-Forwarded-For.
+    forwarded = (request.headers.get("x-forwarded-for") or "").split(",")[0].strip()
+    client_ip = forwarded or (request.client.host if request.client else "unknown")
+    if not SESSION_LIMITER.allow(body.session_id.strip()) or not IP_LIMITER.allow(client_ip):
+        raise HTTPException(
+            status_code=429,
+            detail={
+                "ok": False,
+                "code": "rate_limited",
+                "message": "Rishi needs a short breather. Please try again in a minute.",
+            },
         )
 
     # Sanitize UI context; never trust client maths as authoritative.
@@ -220,12 +238,14 @@ async def coach_chat(body: CoachChatRequest) -> CoachChatResponse:
     try:
         turn = await run_coach_turn(body.session_id.strip(), enriched)
     except RuntimeError as error:
+        # Details (already secret-redacted) go to server logs only, never to the learner.
+        logger.warning("coach_chat failed: %s", error)
         raise HTTPException(
             status_code=503,
             detail={
                 "ok": False,
                 "code": "coach_unavailable",
-                "message": str(error) or "The coach is temporarily unavailable. Please try again.",
+                "message": "The coach is temporarily unavailable. Please try again.",
             },
         ) from error
 
@@ -234,4 +254,5 @@ async def coach_chat(body: CoachChatRequest) -> CoachChatResponse:
         turn=turn,
         animation_intent=body.animation_intent,
         calculation_id=body.calculation_id,
+        protected_values=protected_practice_values(context),
     )

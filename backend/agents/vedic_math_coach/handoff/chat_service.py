@@ -44,6 +44,7 @@ def build_chat_response(
     turn: ChatTurnResult,
     animation_intent: Optional[AnimationIntent] = None,
     calculation_id: Optional[str] = None,
+    protected_values: Optional[list[str]] = None,
 ) -> CoachChatResponse:
     """Map ADK prose + tool results onto the typed handoff envelope.
 
@@ -55,21 +56,19 @@ def build_chat_response(
     character_id = persona_to_character_id(persona)
     spoken = strip_speaker_tag(turn.text) or turn.text.strip()
 
-    # Deterministic Rabbit hint safety: redact forbidden values from progressive-hint tool.
-    if character_id == CharacterId.RABBIT:
+    # Answer-disclosure safety for every persona: values protected by the
+    # learner's practice state, plus any a hint tool marked forbidden at level <= 2.
+    forbidden = list(protected_values or [])
+    for tr in turn.tool_responses or []:
+        if tr.get("name") != "get_progressive_hint":
+            continue
+        response = tr.get("response") or {}
+        if response.get("ok") and int(response.get("hint_level") or 1) <= 2:
+            forbidden.extend(str(v) for v in response.get("forbidden_values") or [])
+    if forbidden:
         from backend.agents.vedic_math_coach.tools.progressive_hints import redact_forbidden_values
 
-        for tr in turn.tool_responses or []:
-            if tr.get("name") != "get_progressive_hint":
-                continue
-            response = tr.get("response") or {}
-            if not response.get("ok"):
-                continue
-            forbidden = list(response.get("forbidden_values") or [])
-            level = int(response.get("hint_level") or 1)
-            if level <= 2 and forbidden:
-                spoken, _ = redact_forbidden_values(spoken, forbidden)
-            break
+        spoken, _ = redact_forbidden_values(spoken, forbidden)
 
     tool_calc_id = extract_verified_calculation_id(turn.tool_responses)
     # Prefer an explicit client calculation_id only after ownership validation.

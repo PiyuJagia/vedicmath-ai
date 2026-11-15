@@ -61,4 +61,8 @@ def check_practice_answer(
 
     # Drop the full question list from the model-facing payload to keep turns small.
     checked.pop("questions", None)
+    # The model only needs the verdict; giving it the answer to a wrong attempt
+    # invites it to leak that answer to the learner.
+    if checked.get("status") != "correct":
+        checked.pop("correct_answer", None)
     return tool_ok(**checked)

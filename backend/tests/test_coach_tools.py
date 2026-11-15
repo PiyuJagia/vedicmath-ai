@@ -117,7 +117,7 @@ def test_check_practice_answer_nikhilam():
     wrong = check_practice_answer("nikhilam", "result", "9505", "beginner", a=98, b=97)
     assert wrong["ok"] is True
     assert wrong["status"] == "incorrect"
-    assert wrong["correct_answer"] == "9506"
+    assert "correct_answer" not in wrong  # withheld from the model on wrong attempts
 
     bad = check_practice_answer("nikhilam", "result", "abc", "beginner", a=98, b=97)
     assert bad["ok"] is True

@@ -138,7 +138,14 @@ function TheoryBody({
         },
       },
       { debounceMs: 400 },
-    )
+    ).then((reply) => {
+      // Rishi's introduction belongs in the main bubble on the opening frame.
+      if (reply?.isLive && reply.text) {
+        setOverride({ index: 0, text: reply.text, mood: reply.mood, asks: 0, isLive: true })
+      } else if (reply?.error) {
+        setCoachError(`${reply.error} The lesson steps below still work.`)
+      }
+    })
     // Once per theory example open.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sutraId, difficulty, exampleLabel, liveCoach])
@@ -166,6 +173,11 @@ function TheoryBody({
             <CharacterDialogue character="boy" demo={!shown.isLive}>
               {shown.text}
             </CharacterDialogue>
+            {busy && (
+              <p role="status" className={styles.coachStatus}>
+                Rishi is thinking…
+              </p>
+            )}
             {coachError && (
               <p role="alert" style={{ color: 'var(--color-danger, #b00020)', fontSize: '0.9rem' }}>
                 {coachError}

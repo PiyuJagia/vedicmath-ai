@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
 from .schemas import CoachLearningContext, LearningScreen
@@ -147,6 +148,55 @@ def _attach_progressive_hint_block(context: CoachLearningContext) -> str | None:
         f"forbidden_values={forbidden}\n"
         f"guidance={packet.get('guidance')}"
     )
+
+
+def _practice_hint_packet(context: CoachLearningContext) -> dict[str, Any] | None:
+    """Build the verified hint packet for the practice problem named in context."""
+    if not context.sutra_id:
+        return None
+    nums = [int(n) for n in re.findall(r"\d+", context.problem_label or "")]
+    a = b = number = None
+    if context.sutra_id in {"nikhilam", "urdhva"} and len(nums) >= 2:
+        a, b = nums[0], nums[1]
+    elif context.sutra_id in {"ekadhikena", "yavadunam", "ekanyunena"} and nums:
+        number = nums[0]
+    else:
+        return None
+    from backend.agents.vedic_math_coach.tools.progressive_hints import build_progressive_hint
+
+    level = max(1, min(3, int(context.hint_level or 1)))
+    packet = build_progressive_hint(
+        sutra=context.sutra_id,
+        difficulty=context.difficulty or "beginner",
+        hint_level=level,
+        question_key=context.question_key,
+        a=a,
+        b=b,
+        number=number,
+    )
+    return packet if packet.get("ok") else None
+
+
+def protected_practice_values(context: CoachLearningContext | None) -> list[str]:
+    """Numbers a live reply must not reveal while a practice problem is unsolved.
+
+    Applies to every persona, because a learner can ask Rishi directly instead
+    of Rabbit. Below hint level 3 every intermediate value is protected; at
+    level 3 only the final answer is. Once the engine has marked the problem
+    correct nothing is hidden.
+    """
+    if context is None or context.screen != LearningScreen.PRACTICE:
+        return []
+    if context.check_status == "correct":
+        return []
+    packet = _practice_hint_packet(context)
+    if packet is None:
+        return []
+    forbidden = [str(v) for v in packet.get("forbidden_values") or [] if str(v)]
+    if not forbidden:
+        return []
+    level = int(packet.get("hint_level") or 1)
+    return forbidden if level <= 2 else forbidden[-1:]
 
 
 def enrich_learner_message(message: str, context: CoachLearningContext | None) -> str:

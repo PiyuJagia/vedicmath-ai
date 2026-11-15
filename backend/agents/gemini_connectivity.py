@@ -39,6 +39,19 @@ def load_llm_env(env_path: Path | None = None) -> Path:
     return path
 
 
+def load_llm_env_if_present(env_path: Path | None = None) -> Path | None:
+    """Load the repository-root `.env` when it exists; otherwise rely on the process env.
+
+    Hosted deployments (Render) inject GOOGLE_API_KEY / LANGSMITH_* as real
+    environment variables and have no `.env` file, so a missing file is normal.
+    """
+    path = env_path or (_REPO_ROOT / ".env")
+    if not path.is_file():
+        return None
+    load_dotenv(path, override=False)
+    return path
+
+
 def require_ai_studio_config() -> None:
     """Confirm we are using the Gemini Developer API, not Vertex AI."""
     flag = (os.getenv("GOOGLE_GENAI_USE_VERTEXAI") or "false").strip().lower()

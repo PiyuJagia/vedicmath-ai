@@ -34,7 +34,7 @@ describe('character orchestration', () => {
     expect(screen.queryByText('Me too.')).toBeNull()
   })
 
-  it('labels the scripted coach as a demo', () => {
+  it('labels deterministic lesson text as not live AI', () => {
     render(
       <Providers>
         <CharacterOrchestrator screen="practice">
@@ -44,7 +44,7 @@ describe('character orchestration', () => {
         </CharacterOrchestrator>
       </Providers>,
     )
-    expect(screen.getByText(/Lesson coach \(scripted\).*Ask Rishi/i)).toBeTruthy()
+    expect(screen.getByText(/Lesson text \(not live AI\)/i)).toBeTruthy()
   })
 })
 

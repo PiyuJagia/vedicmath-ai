@@ -9,7 +9,7 @@ from google.adk.errors.already_exists_error import AlreadyExistsError
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
 
-from backend.agents.gemini_connectivity import load_llm_env, require_ai_studio_config, redact_secrets
+from backend.agents.gemini_connectivity import load_llm_env_if_present, redact_secrets, require_ai_studio_config
 from backend.agents.vedic_math_coach.config import APP_NAME
 from backend.agents.vedic_math_coach.observability import ensure_langsmith_tracing
 from backend.agents.vedic_math_coach.session import ChatTurnResult, chat_turn, make_runner
@@ -24,7 +24,7 @@ def _ensure_llm() -> None:
     global _llm_ready
     if _llm_ready:
         return
-    load_llm_env()
+    load_llm_env_if_present()
     require_ai_studio_config()
     # Re-ensure after dotenv load so LANGSMITH_* from .env are applied.
     ensure_langsmith_tracing()
