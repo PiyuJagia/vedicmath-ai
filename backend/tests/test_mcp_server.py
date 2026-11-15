@@ -56,14 +56,12 @@ def test_calculation_comes_from_the_engine_and_feeds_get_lesson():
     assert lesson["ok"]
 
 
-def test_wrong_answer_hides_the_correct_value_unless_asked():
+def test_wrong_answer_never_reveals_the_correct_value():
     server = build_server("t")
     args = {"sutra": "nikhilam", "question_key": "left_part", "answer": "94", "a": 98, "b": 97}
-    hidden = _call(server, "check_practice_answer", args)
-    assert hidden["status"] == "incorrect"
-    assert "correct_answer" not in hidden
-    revealed = _call(server, "check_practice_answer", {**args, "reveal_correct_answer": True})
-    assert revealed["correct_answer"] == "95"
+    checked = _call(server, "check_practice_answer", args)
+    assert checked["status"] == "incorrect"
+    assert "correct_answer" not in checked
 
 
 def test_unsupported_sutra_is_a_clear_error():

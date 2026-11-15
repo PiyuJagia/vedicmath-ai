@@ -7,6 +7,7 @@ import pytest
 from backend.agents.vedic_math_coach.guards import (
     check_grounding,
     check_single_speaker,
+    first_speaker_only,
     review_reply,
     trusted_numbers,
 )
@@ -71,11 +72,12 @@ def test_thousands_separator_is_read_as_one_number():
     assert check_grounding("The answer is 1,235.", allowed).ungrounded_numbers == (1235,)
 
 
-def test_practice_check_results_ground_feedback():
+def test_feedback_cannot_state_an_answer_the_checker_withheld():
     response = check_practice_answer("nikhilam", "left_part", "94", a=98, b=97)
     assert response["ok"] and response["status"] == "incorrect"
     tools = [{"name": "check_practice_answer", "response": response}]
-    assert review_reply("[Rishi] Not quite. The left part is 95.", tools).ok
+    assert review_reply("[Rishi] Not quite: 94 is close. Which deviation do you take away?", tools).ok
+    assert review_reply("[Rishi] Not quite. The left part is 95.", tools).grounding.ungrounded_numbers == (95,)
 
 
 def test_no_tool_calls_means_no_large_numbers():
@@ -98,7 +100,32 @@ def test_single_speaker(reply, speaker, ok):
     assert result.ok is ok
 
 
+def test_first_speaker_only_trims_a_second_voice():
+    reply = "[Rishi] Here is the idea.\n[Rabbit] And here is a hint."
+    assert first_speaker_only(reply) == "[Rishi] Here is the idea."
+    assert first_speaker_only("[Rabbit] One voice. [Rabbit] Same voice.") == "[Rabbit] One voice. [Rabbit] Same voice."
+
+
 def test_review_lists_every_issue():
     review = review_reply("[Rishi] It is 9516.\n[Hummingbird] Great job!", [])
     assert not review.ok
     assert len(review.issues) == 2
+
+
+def test_chat_response_replaces_an_ungrounded_reply(nikhilam_98_97):
+    from backend.agents.vedic_math_coach.handoff.chat_service import UNGROUNDED_REPLY, build_chat_response
+    from backend.agents.vedic_math_coach.session import ChatTurnResult
+
+    turn = ChatTurnResult(text="[Rishi] 98 × 97 is 9516.", tool_responses=[])
+    out = build_chat_response(session_id=SESSION, turn=turn, learner_texts=["What is 98 × 97?"])
+    assert out.message.text == UNGROUNDED_REPLY
+
+
+def test_chat_response_keeps_a_grounded_reply_and_one_speaker(nikhilam_98_97):
+    from backend.agents.vedic_math_coach.handoff.chat_service import build_chat_response
+    from backend.agents.vedic_math_coach.session import ChatTurnResult
+
+    turn = ChatTurnResult(text="[Rishi] It comes to 9506.\n[Hummingbird] Well done!", tool_responses=nikhilam_98_97)
+    out = build_chat_response(session_id=SESSION, turn=turn, learner_texts=["What is 98 × 97?"])
+    assert out.message.text.startswith("It comes to 9506.")
+    assert "Well done" not in out.message.text

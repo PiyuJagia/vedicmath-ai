@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import logging
 import re
-from typing import Any, Optional
+from typing import Iterable, Optional
 
+from backend.agents.vedic_math_coach.guards import check_grounding, first_speaker_only, trusted_numbers
 from backend.agents.vedic_math_coach.personas import Persona, parse_speaker
 from backend.agents.vedic_math_coach.session import ChatTurnResult
 
@@ -17,6 +19,14 @@ from .schemas import (
     CharacterId,
     CharacterIdentity,
     CoachChatResponse,
+)
+
+logger = logging.getLogger(__name__)
+
+# Shown instead of a reply that states a number no tool or learner supplied.
+UNGROUNDED_REPLY = (
+    "I want to be sure every number I give you is right. "
+    "Let's work it out together from the steps on screen. Which part shall we look at first?"
 )
 
 _SPEAKER_LINE = re.compile(
@@ -45,16 +55,22 @@ def build_chat_response(
     animation_intent: Optional[AnimationIntent] = None,
     calculation_id: Optional[str] = None,
     protected_values: Optional[list[str]] = None,
+    learner_texts: Iterable[str | None] = (),
 ) -> CoachChatResponse:
     """Map ADK prose + tool results onto the typed handoff envelope.
 
     Animation actions are minted only from backend-validated calculation_ids
     observed in tool responses (or an explicit client-supplied id that passes
     session ownership checks). LLM prose is never parsed for executable UI.
+
+    ``learner_texts`` is what the learner supplied this turn (their message and
+    validated context); numbers in it may be quoted back without a tool result.
     """
-    persona = parse_speaker(turn.text)
+    # One character per reply: drop anything after a second persona tag.
+    reply = first_speaker_only(turn.text)
+    persona = parse_speaker(reply)
     character_id = persona_to_character_id(persona)
-    spoken = strip_speaker_tag(turn.text) or turn.text.strip()
+    spoken = strip_speaker_tag(reply) or reply.strip()
 
     # Answer-disclosure safety for every persona: values protected by the
     # learner's practice state, plus any a hint tool marked forbidden at level <= 2.
@@ -69,6 +85,12 @@ def build_chat_response(
         from backend.agents.vedic_math_coach.tools.progressive_hints import redact_forbidden_values
 
         spoken, _ = redact_forbidden_values(spoken, forbidden)
+
+    # Mathematical integrity: every number must come from a tool or the learner.
+    grounding = check_grounding(spoken, trusted_numbers(turn.tool_responses, learner_texts))
+    if not grounding.ok:
+        logger.warning("coach reply replaced by grounding guard: %s", "; ".join(grounding.notes))
+        spoken = UNGROUNDED_REPLY
 
     tool_calc_id = extract_verified_calculation_id(turn.tool_responses)
     # Prefer an explicit client calculation_id only after ownership validation.

@@ -4,12 +4,10 @@ The tools are the same functions Rishi calls through Google ADK
 (``backend.agents.vedic_math_coach.tools``), so an MCP client gets exactly the
 engine-verified results the app uses. Nothing here does arithmetic.
 
-Differences from the ADK tools, both deliberate:
-
-* Calculations are stored under one session per server process, because MCP
-  clients have no learner session.
-* ``check_practice_answer`` withholds ``correct_answer`` unless the caller asks
-  for it, so a client can coach hints without leaking the answer.
+One deliberate difference from the ADK tools: calculations are stored under
+one session per server process, because MCP clients have no learner session.
+Like the ADK tool, ``check_practice_answer`` never returns the correct value for
+a wrong answer, so a client can coach with hints without leaking it.
 """
 
 from __future__ import annotations
@@ -93,9 +91,8 @@ def build_server(session_id: str | None = None) -> MCPServer:
         a: Optional[int] = None,
         b: Optional[int] = None,
         number: Optional[int] = None,
-        reveal_correct_answer: bool = False,
     ) -> dict[str, Any]:
-        """Grade a learner's answer to one practice step: correct, incorrect or invalid.
+        """Grade a learner's answer to one practice step: correct, incorrect or invalid, with a mistake tag.
 
         Args:
             sutra: nikhilam, urdhva, ekadhikena, yavadunam or ekanyunena.
@@ -105,14 +102,8 @@ def build_server(session_id: str | None = None) -> MCPServer:
             a: First factor (nikhilam, urdhva).
             b: Second factor (nikhilam, urdhva).
             number: Single operand (ekadhikena, yavadunam, ekanyunena).
-            reveal_correct_answer: Include the correct value on a wrong answer. Leave false while hinting.
         """
-        checked = tools.check_practice_answer(
-            sutra, question_key, answer, difficulty=difficulty, a=a, b=b, number=number
-        )
-        if not reveal_correct_answer:
-            checked.pop("correct_answer", None)
-        return checked
+        return tools.check_practice_answer(sutra, question_key, answer, difficulty=difficulty, a=a, b=b, number=number)
 
     @server.tool()
     def get_progressive_hint(

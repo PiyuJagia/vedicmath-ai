@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from typing import Any, Iterable, Mapping
 
 from .grounding import GroundingResult, check_grounding, trusted_numbers
-from .persona import PersonaResult, check_single_speaker
+from .persona import PersonaResult, check_single_speaker, first_speaker_only
 
 
 @dataclass(frozen=True)
@@ -47,6 +47,7 @@ __all__ = [
     "ReplyReview",
     "check_grounding",
     "check_single_speaker",
+    "first_speaker_only",
     "review_reply",
     "trusted_numbers",
 ]

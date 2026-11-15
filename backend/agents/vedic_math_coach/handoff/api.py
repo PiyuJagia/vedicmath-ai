@@ -255,4 +255,5 @@ async def coach_chat(body: CoachChatRequest, request: Request) -> CoachChatRespo
         animation_intent=body.animation_intent,
         calculation_id=body.calculation_id,
         protected_values=protected_practice_values(context),
+        learner_texts=[enriched],
     )

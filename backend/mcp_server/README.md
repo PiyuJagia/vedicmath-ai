@@ -12,7 +12,7 @@ install it.
 |------|-----------------|
 | `calculate_sutra` | Result, teaching steps and a `calculation_id` |
 | `get_lesson` | Teaching steps and animation events |
-| `check_practice_answer` | `correct` / `incorrect` / `invalid` and a mistake tag; the correct value only with `reveal_correct_answer=true` |
+| `check_practice_answer` | `correct` / `incorrect` / `invalid` and a mistake tag, never the correct value for a wrong answer |
 | `get_progressive_hint` | Level-gated hint text and the values it must not reveal |
 | `search_vedic_math_knowledge` | Knowledge-pack excerpts (only when `VEDIC_KNOWLEDGE_RAG=1`) |
 

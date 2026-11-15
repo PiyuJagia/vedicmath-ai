@@ -114,8 +114,10 @@ adk run backend\agents\vedic_math_coach
 `vedic_math_coach/guards/` holds deterministic checks for a live reply:
 `review_reply(reply, tool_responses, learner_texts)` reports numbers that no
 tool or learner supplied, false equations, and replies where more than one
-persona speaks. It does not change the reply. It isn't wired into `/coach/chat`
-yet; that follows once the live-Rishi fixes on `handoff/chat_service.py` merge.
+persona speaks. `/coach/chat` uses it in `handoff/chat_service.py`: a reply
+keeps only its first speaker, and a reply that states a number no tool or
+learner supplied is replaced with a safe line (the reason is logged, not the
+reply).
 
 ## MCP server
 
