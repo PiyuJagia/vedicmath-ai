@@ -39,3 +39,7 @@ The revised prototype uses a full-screen, rear-facing camera and a procedural pe
 ## Rishi and separate landing choices
 
 Rishi is now drawn from behind in his cream outfit, lavender diagonal sash and waist wrap, bare feet, and swept dark hair; the backpack has been removed. Every question presents three separate floating stones with the numbers on the stone surfaces. The selected answer determines the lateral landing position. Incorrect selections animate a jump followed by a fall, ending the attempt with Game Over and a fresh-puzzle restart. The earlier rescue boat concept has been removed. The island appears small on the horizon initially and grows as the camera advances. An offset over-the-shoulder camera keeps answer labels clear of Rishi.
+
+## Larger destination and readable stepping stones
+
+Wonder Island is now larger from the outset and includes a castle with flags, a rainbow, waterfall, palms, glowing beach, treasure chest, and sparkles. Upcoming platforms are enlarged separately from Rishi's current platform, with wider spacing on desktop and responsive spacing on mobile. Answer numbers use larger bold type. After every correct landing, the next question and three new options appear with a reveal transition and explicit companion feedback. The final landing opens the celebration rather than creating another question.
