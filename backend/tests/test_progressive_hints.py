@@ -79,7 +79,7 @@ def test_chat_response_redacts_rabbit_leak_when_hint_tool_used():
                 "response": {
                     "ok": True,
                     "hint_level": 1,
-                    "allowed_text": "Look at the gap from the base.",
+                    "allowed_text": "Look at how far 98 sits from the base.",
                     "forbidden_values": ["2", "9114"],
                 },
             }
