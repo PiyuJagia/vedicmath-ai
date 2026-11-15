@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { SUTRAS } from '../content/sutras'
-import { ALL_LESSONS_OPEN, EMPTY_PROGRESS, currentSutraIndex, isGameUnlocked, isUnlocked, sutraStatus, type ProgressState } from './progressModel'
+import { ALL_LESSONS_OPEN, EMPTY_PROGRESS, PASS_RULE, currentSutraIndex, isGameUnlocked, isUnlocked, levelEvidence, practiceOf, solvedOnYourOwn, sutraStatus, withPracticeRecord, type ProgressState } from './progressModel'
 
 const withMastery = (mastery: ProgressState['mastery']): ProgressState => ({ ...EMPTY_PROGRESS, mastery })
 const index = (id: string) => SUTRAS.findIndex((sutra) => sutra.id === id)
@@ -67,5 +67,45 @@ describe('games', () => {
     expect(isGameUnlocked(state, 'nikhilam', 'intermediate', false)).toBe(false)
     expect(isGameUnlocked(state, 'urdhva', 'beginner', false)).toBe(false)
     expect(isGameUnlocked(EMPTY_PROGRESS, 'urdhva', 'advanced', true)).toBe(true)
+  })
+})
+
+describe('passing a level takes evidence', () => {
+  const rec = (problem: string, wrong: number, hints: number) => ({ problem, wrong, hints, at: '2026-11-15T00:00:00Z' })
+
+  it('one problem with three wrong answers and every hint does not pass', () => {
+    const state = withPracticeRecord(EMPTY_PROGRESS, 'nikhilam', 'beginner', rec('98x93', 3, 3))
+    expect(state.mastery.nikhilam?.beginner).toBeFalsy()
+    expect(levelEvidence(practiceOf(state, 'nikhilam', 'beginner'))).toEqual({ problems: 1, onYourOwn: 0, passed: false })
+  })
+
+  it('passes after three problems with two solved on your own', () => {
+    let state = withPracticeRecord(EMPTY_PROGRESS, 'nikhilam', 'beginner', rec('98x93', 0, 0))
+    state = withPracticeRecord(state, 'nikhilam', 'beginner', rec('97x96', 2, 1))
+    expect(state.mastery.nikhilam?.beginner).toBeFalsy()
+    state = withPracticeRecord(state, 'nikhilam', 'beginner', rec('99x94', 1, 0))
+    expect(state.mastery.nikhilam?.beginner).toBe(true)
+    expect(PASS_RULE).toEqual({ problems: 3, onYourOwn: 2, maxWrongOnYourOwn: 1 })
+  })
+
+  it('counts a problem only the first time it is solved', () => {
+    let state = EMPTY_PROGRESS
+    for (let i = 0; i < 3; i++) state = withPracticeRecord(state, 'nikhilam', 'beginner', rec('98x93', 0, 0))
+    expect(practiceOf(state, 'nikhilam', 'beginner')).toHaveLength(1)
+    expect(state.mastery.nikhilam?.beginner).toBeFalsy()
+  })
+
+  it('two wrong answers without a hint is not on your own', () => {
+    expect(solvedOnYourOwn(rec('a', 2, 0))).toBe(false)
+    expect(solvedOnYourOwn(rec('a', 1, 0))).toBe(true)
+    expect(solvedOnYourOwn(rec('a', 0, 1))).toBe(false)
+  })
+
+  it('keeps levels separate', () => {
+    let state = EMPTY_PROGRESS
+    for (const p of ['a', 'b', 'c']) state = withPracticeRecord(state, 'nikhilam', 'beginner', rec(p, 0, 0))
+    expect(state.mastery.nikhilam?.beginner).toBe(true)
+    expect(state.mastery.nikhilam?.intermediate).toBeFalsy()
+    expect(practiceOf(state, 'urdhva', 'beginner')).toEqual([])
   })
 })

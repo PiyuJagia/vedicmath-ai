@@ -18,6 +18,7 @@ import { questionText } from '../../content/practice'
 import { demoCoach } from '../../services/coach'
 import { stepWhy } from '../../content/why'
 import { useProgress } from '../../services/ProgressContext'
+import { PASS_RULE, levelEvidence, masteryOf, practiceOf } from '../../services/progressModel'
 import { useSettings } from '../../services/SettingsContext'
 import { playCue } from '../../services/sound'
 import { DIFFICULTY_LABELS, type Difficulty } from '../../types/learning'
@@ -182,7 +183,10 @@ function PracticeSession({
   timeline: Timeline
 }) {
   const { settings } = useSettings()
-  const { passLevel } = useProgress()
+  const { progress, recordPractice } = useProgress()
+  // Whether this level was already passed when the problem started, so the banner can tell a new pass apart.
+  const [passedBefore] = useState(() => masteryOf(progress, sutraId)[difficulty])
+  const [countedBefore] = useState(() => practiceOf(progress, sutraId, difficulty).some((r) => r.problem === problemKey(problem)))
   const [questions, setQuestions] = useState<PracticeQuestion[] | null>(null)
   const [loadError, setLoadError] = useState<string | null>(null)
   const [current, setCurrent] = useState(0)
@@ -196,6 +200,8 @@ function PracticeSession({
   const [feedback, setFeedback] = useState<Feedback | null>(null)
   const [checking, setChecking] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
+  const totalWrong = Object.values(wrong).reduce((sum, n) => sum + n, 0)
+  const totalHints = Object.values(hintLevel).reduce((sum, n) => sum + n, 0)
 
   useEffect(() => {
     let cancelled = false
@@ -231,7 +237,12 @@ function PracticeSession({
 
   useEffect(() => {
     if (done && questions) {
-      passLevel(sutraId, difficulty)
+      recordPractice(sutraId, difficulty, {
+        problem: problemKey(problem),
+        wrong: totalWrong,
+        hints: totalHints,
+        at: new Date().toISOString(),
+      })
       if (settings.soundEffects) playCue('celebrate')
       if (settings.petSounds) playCue('hummingbird')
     }
@@ -316,7 +327,14 @@ function PracticeSession({
   }
 
   const coachText = done
-    ? demoCoach.respond({ intent: 'complete', mode: 'practice', problemLabel: timeline.problemLabel }).text
+    ? demoCoach.respond({
+        intent: 'complete',
+        mode: 'practice',
+        problemLabel: timeline.problemLabel,
+        steps: questions?.length,
+        attempts: totalWrong,
+        hintLevel: totalHints,
+      }).text
     : feedback?.mood === 'celebrating' || !feedback
       ? `${feedback ? `${feedback.text} ` : ''}${text?.prompt ?? ''}`
       : feedback.text
@@ -380,14 +398,7 @@ function PracticeSession({
           ))}
         </ol>
 
-        {done && (
-          <div className={styles.complete}>
-            <HummingbirdCompanion size={72} celebrating />
-            <p>
-              Level passed! {DIFFICULTY_LABELS[difficulty]} practice for this Sutra is complete, and its games are unlocked.
-            </p>
-          </div>
-        )}
+        {done && <CompletionNote sutraId={sutraId} difficulty={difficulty} passedBefore={passedBefore} countedBefore={countedBefore} />}
       </Card>
 
       <Card tone="lavender" padding="lg" className={styles.coachPanel}>
@@ -403,5 +414,44 @@ function PracticeSession({
         {!done && <p className={styles.hintNote}>Stuck? Tap the rabbit or press Hint. Hints get more detailed each time.</p>}
       </Card>
     </>
+  )
+}
+
+/** What finishing this problem means for the level, from the recorded evidence. */
+function CompletionNote({
+  sutraId,
+  difficulty,
+  passedBefore,
+  countedBefore,
+}: {
+  sutraId: string
+  difficulty: Difficulty
+  passedBefore: boolean
+  countedBefore: boolean
+}) {
+  const { progress } = useProgress()
+  const evidence = levelEvidence(practiceOf(progress, sutraId, difficulty))
+  const level = DIFFICULTY_LABELS[difficulty]
+  const passed = masteryOf(progress, sutraId)[difficulty]
+  const justPassed = passed && !passedBefore
+
+  let text: string
+  if (justPassed) {
+    text = `Level passed! You solved ${evidence.problems} problems, ${evidence.onYourOwn} of them on your own. ${level} practice for this Sutra is complete, and its games are unlocked.`
+  } else if (passed) {
+    text = `${level} is already passed. Extra practice keeps it strong.`
+  } else {
+    const repeat = countedBefore ? ' This problem was already counted, so pick a new one.' : ' Pick another problem to keep going.'
+    text =
+      `Problem solved! To pass ${level}: ${Math.min(evidence.problems, PASS_RULE.problems)} of ${PASS_RULE.problems} problems, ` +
+      `${Math.min(evidence.onYourOwn, PASS_RULE.onYourOwn)} of ${PASS_RULE.onYourOwn} on your own (no hints, at most one wrong answer).` +
+      repeat
+  }
+
+  return (
+    <div className={styles.complete} role="status">
+      <HummingbirdCompanion size={72} celebrating={justPassed} />
+      <p>{text}</p>
+    </div>
   )
 }

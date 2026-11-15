@@ -1,12 +1,23 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react'
 import type { Difficulty } from '../types/learning'
-import { EMPTY_PROGRESS, NO_MASTERY, SAMPLE_PROGRESS, type LessonSection, type ProgressState } from './progressModel'
+import {
+  EMPTY_PROGRESS,
+  NO_MASTERY,
+  SAMPLE_PROGRESS,
+  withPracticeRecord,
+  type LessonSection,
+  type PracticeRecord,
+  type ProgressState,
+} from './progressModel'
 import { loadStored, saveStored } from './storage'
 
 interface ProgressContextValue {
   progress: ProgressState
   recordVisit: (sutraId: string, difficulty: Difficulty, section: LessonSection) => void
+  /** Marks a level passed directly (admin and tests). Practice uses recordPractice. */
   passLevel: (sutraId: string, difficulty: Difficulty) => void
+  /** Records a finished practice problem; the level passes only when the evidence meets PASS_RULE. */
+  recordPractice: (sutraId: string, difficulty: Difficulty, record: PracticeRecord) => void
   reset: (to: 'sample' | 'empty') => void
 }
 
@@ -47,9 +58,18 @@ export function ProgressProvider({ children, initial }: { children: ReactNode; i
     [commit],
   )
 
+  const recordPractice = useCallback(
+    (sutraId: string, difficulty: Difficulty, record: PracticeRecord) =>
+      commit((state) => withPracticeRecord(state, sutraId, difficulty, record)),
+    [commit],
+  )
+
   const reset = useCallback((to: 'sample' | 'empty') => commit(() => (to === 'sample' ? SAMPLE_PROGRESS : EMPTY_PROGRESS)), [commit])
 
-  const value = useMemo(() => ({ progress, recordVisit, passLevel, reset }), [progress, recordVisit, passLevel, reset])
+  const value = useMemo(
+    () => ({ progress, recordVisit, passLevel, recordPractice, reset }),
+    [progress, recordVisit, passLevel, recordPractice, reset],
+  )
   return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>
 }
 

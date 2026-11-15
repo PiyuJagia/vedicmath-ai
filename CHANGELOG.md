@@ -2,6 +2,15 @@
 
 Version notes for VedicMath AI. Older commits stay on `main`; each version below points at the history that introduced it.
 
+## Unreleased — Passing a level takes evidence
+
+"Level passed!" and the level ring no longer come from a single problem. Practice with Coach now records each finished problem (wrong answers and hints used) and passes the level only when the evidence is there.
+
+- Pass rule (`PASS_RULE` in `frontend/src/services/progressModel.ts`): 3 different problems at that Sutra and level, at least 2 of them solved on your own, meaning no hints and at most one wrong answer. Only the first completion of a problem counts, so redoing it after seeing the answer adds nothing.
+- Records are kept in the browser with the rest of progress (`practice` in `vedicmath-ai:progress`). Rings already earned under the old rule stay earned.
+- The finish card says where the learner stands ("1 of 3 problems, 0 of 2 on your own") and celebrates only on a new pass. The coach's closing line reflects the evidence: no hints and no wrong answers, fixed mistakes without hints, or "try one with fewer hints".
+- Games that open on a passed level (Number Rocket needs Nikhilam Beginner) now need the new rule too.
+
 ## Unreleased — Coach explains why, and names the mistake
 
 Practice with Coach now says what went wrong when the backend can tell exactly, and "Why does this work?" gives a reason instead of repeating the steps. No LLM is involved; every message comes from the engines' own values.
