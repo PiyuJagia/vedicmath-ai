@@ -34,6 +34,28 @@ describe('character orchestration', () => {
     expect(screen.queryByText('Me too.')).toBeNull()
   })
 
+  it('shows inline maths without raw dollar-sign delimiters', () => {
+    render(
+      <Providers>
+        <CharacterOrchestrator screen="practice">
+          <CharacterDialogue character="boy">{'What is one more than $4$? 98 × 97 = $9506$.'}</CharacterDialogue>
+        </CharacterOrchestrator>
+      </Providers>,
+    )
+    expect(screen.getByText('What is one more than 4? 98 × 97 = 9506.')).toBeTruthy()
+  })
+
+  it('preserves ordinary currency ranges', () => {
+    render(
+      <Providers>
+        <CharacterOrchestrator screen="practice">
+          <CharacterDialogue character="boy">{'A book costs $5 to $10.'}</CharacterDialogue>
+        </CharacterOrchestrator>
+      </Providers>,
+    )
+    expect(screen.getByText('A book costs $5 to $10.')).toBeTruthy()
+  })
+
   it('labels deterministic lesson text as not live AI', () => {
     render(
       <Providers>
