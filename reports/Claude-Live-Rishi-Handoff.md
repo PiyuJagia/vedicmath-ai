@@ -13,7 +13,8 @@
 | Remote | `https://github.com/PiyuJagia/vedicmath-ai.git` |
 | Working branch (handoff) | `feature/live-rishi-coach` |
 | Feature branch URL | https://github.com/PiyuJagia/vedicmath-ai/tree/feature/live-rishi-coach |
-| Latest local tip before push of this doc | `939ba2f` (app work + delivery report) |
+| Remote tip SHA | `cb6d1134b244e5291c969e66885a68aaf91c640a` (includes this handoff doc) |
+| Prior app tip | `ad8a4c8` live wiring · `939ba2f` delivery hash note |
 | Inventory report | `reports/Live-Rishi-Coach-Surface-Inventory.md` (post-integration) |
 | Delivery report | `reports/Live-Rishi-Coach-Delivery.md` |
 
