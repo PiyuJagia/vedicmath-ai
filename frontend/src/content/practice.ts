@@ -4,6 +4,7 @@
  */
 import type {
   CheckResponse,
+  MistakeTag,
   EkadhikenaLesson,
   Lesson,
   NikhilamAdjustStep,
@@ -22,6 +23,8 @@ export interface QuestionText {
   prompt: string
   label: string
   hints: [string, string, string]
+  /** What to say when the backend recognises the wrong procedure. Never states the answer. */
+  mistakes?: Partial<Record<MistakeTag, string>>
 }
 
 function nikhilam(lesson: NikhilamLesson, key: string): QuestionText {
@@ -56,6 +59,10 @@ function nikhilam(lesson: NikhilamLesson, key: string): QuestionText {
           `Use ${a} and the deviation of ${b}. Subtract the deviation.`,
           `Work out ${a} − ${paren(devB)}.`,
         ],
+        mistakes: {
+          cross_added: 'You added a deviation. In Nikhilam we take the other number’s deviation away. Follow the diagonal arrow.',
+          own_deviation: 'You used a number’s own deviation. The diagonal goes across: use the other number’s deviation.',
+        },
       }
     case 'right_part':
       return {
@@ -66,6 +73,9 @@ function nikhilam(lesson: NikhilamLesson, key: string): QuestionText {
           'Multiply the deviations together. Watch the signs.',
           `Work out ${paren(devA)} × ${paren(devB)}.`,
         ],
+        mistakes: {
+          deviations_added: 'You added the two deviations. The right part comes from multiplying them.',
+        },
       }
     case 'adjusted_left_part':
     case 'adjusted_right_part': {
@@ -87,6 +97,14 @@ function nikhilam(lesson: NikhilamLesson, key: string): QuestionText {
               `Carry the extra ${base.base} to the left part as ${adjust?.amount}.`,
               left ? `Work out ${adjust?.left_before} + ${adjust?.amount}.` : `Work out ${adjust?.right_before} − ${base.base}.`,
             ],
+        mistakes: {
+          adjust_wrong_direction: borrowing
+            ? 'You added to the left part. Here the right part is below zero, so we borrow: the left part gets smaller.'
+            : 'You took away from the left part. Here the right part is too big, so we carry: the left part gets bigger.',
+          skipped_adjustment: borrowing
+            ? `That is the value before the borrow. The right part is below zero, so both parts change.`
+            : `That is the value before the carry. The right part has more than ${base.right_digits} digits, so both parts change.`,
+        },
       }
     }
     case 'padded_right_part':
@@ -108,6 +126,10 @@ function nikhilam(lesson: NikhilamLesson, key: string): QuestionText {
           `The right part always has ${combine.right_digits} digits.`,
           `Write ${combine.left_part} followed by the ${combine.right_digits} right-hand digits.`,
         ],
+        mistakes: {
+          skipped_adjustment: `You joined the parts before the ${adjust?.adjustment === 'borrow' ? 'borrow' : 'carry'}. Fix the right part first, then join them.`,
+          result_missing_padding: `Almost! The right part needs exactly ${combine.right_digits} digits, so zeros go in front of it when you join the parts.`,
+        },
       }
   }
 }
@@ -147,6 +169,9 @@ function urdhva(lesson: UrdhvaLesson, key: string): QuestionText {
         `Multiply each linked pair and add the products${carryNote}.`,
         `Work out ${pairs}${column.incoming_carry > 0 ? ` + ${column.incoming_carry}` : ''}.`,
       ],
+      mistakes: {
+        forgot_carry_in: `You added the products, but the carry ${column.incoming_carry} from the column on the right is still waiting. Add it too.`,
+      },
     }
   }
   if (match[2] === 'digit') {
@@ -154,12 +179,19 @@ function urdhva(lesson: UrdhvaLesson, key: string): QuestionText {
       prompt: `Which digit do you write in answer box ${number}?`,
       label: `Column ${number} digit`,
       hints: ['Only one digit fits in each answer box.', 'Write the last digit of the total.', `The total is ${column.total}. Which digit is in its ones place?`],
+      mistakes: {
+        wrote_whole_total: 'Only one digit fits in each answer box. Write the last digit of the total; the rest is carried to the next column.',
+      },
     }
   }
   return {
     prompt: `What do you carry from column ${number}?`,
     label: `Column ${number} carry`,
     hints: ['What is left after you write the last digit?', 'The carry is the total without its last digit. It can be 0.', `The total is ${column.total}. Remove its last digit.`],
+    mistakes: {
+      carry_digit_swapped: 'That is the digit you write in the box. The carry is the rest of the total.',
+      carried_whole_total: 'Part of the total is already written in the box. Carry only what is left.',
+    },
   }
 }
 
@@ -175,12 +207,20 @@ function ekadhikena(lesson: EkadhikenaLesson, key: string): QuestionText {
         prompt: `${number} ends in 5. What is one more than ${previous}?`,
         label: 'One more',
         hints: ['Look at the part before the 5.', 'Add one to it.', `Work out ${previous} + 1.`],
+        mistakes: {
+          one_less_not_one_more: 'That is one less. Ekadhikena means one more than the previous.',
+          forgot_one_more: `That is ${previous} itself. We need one more than ${previous}.`,
+        },
       }
     case 'left_part':
       return {
         prompt: `Multiply ${previous} by ${next}. What is the left part?`,
         label: 'Left part',
         hints: ['Use the part before the 5 and the number one more than it.', 'Multiply those two numbers.', `Work out ${previous} × ${next}.`],
+        mistakes: {
+          multiplied_by_itself: `You multiplied ${previous} by itself. Multiply it by one more than itself instead.`,
+          added_not_multiplied: 'You added the two numbers. Multiply them instead.',
+        },
       }
     case 'right_part':
       return {
@@ -193,6 +233,10 @@ function ekadhikena(lesson: EkadhikenaLesson, key: string): QuestionText {
         prompt: `Put the parts together. What is ${number}²?`,
         label: `${number}²`,
         hints: ['Write the left part, then the right part.', 'The right part goes on the end.', 'Write the left part followed by the two right-hand digits.'],
+        mistakes: {
+          wrote_5_not_25: 'The answer ends in 25, not just 5, because 5 × 5 = 25.',
+          multiplied_by_itself: `The left part used ${previous} × ${previous}. Use one more than ${previous} instead.`,
+        },
       }
   }
 }
@@ -208,8 +252,20 @@ export function questionText(lesson: Lesson, question: PracticeQuestion): Questi
   }
 }
 
-/** The coach's reply to a checked answer. Correctness always comes from the backend. */
-export function feedbackText(check: CheckResponse, question: PracticeQuestion, answer: string, attempts: number): string {
+/**
+ * The coach's reply to a checked answer. Correctness and the mistake tag always
+ * come from the backend. `text` adds the wording for this question's mistakes;
+ * `why` is the reason behind the current step, offered after repeated misses
+ * that no tag explains.
+ */
+export function feedbackText(
+  check: CheckResponse,
+  question: PracticeQuestion,
+  answer: string,
+  attempts: number,
+  text?: QuestionText,
+  why?: string,
+): string {
   if (check.status === 'correct') {
     return attempts > 1 ? `Yes, ${fmt(answer.trim())} is right. You kept going, well done!` : `Yes! ${fmt(answer.trim())} is right.`
   }
@@ -218,5 +274,8 @@ export function feedbackText(check: CheckResponse, question: PracticeQuestion, a
   if (check.mistake === 'missing_padding') {
     return `That's the right value, but it needs exactly ${question.digits} digits. Add zeros in front.`
   }
+  const specific = check.mistake ? text?.mistakes?.[check.mistake] : undefined
+  if (specific) return specific
+  if (attempts >= 2 && why) return `Not quite yet. Here is the idea behind this step: ${why} Tap the rabbit if you want a hint.`
   return attempts >= 2 ? "Not quite yet. Let's use a hint together." : "Not quite. Have another look; you can do this."
 }
