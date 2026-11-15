@@ -2,6 +2,14 @@
 
 Version notes for VedicMath AI. Older commits stay on `main`; each version below points at the history that introduced it.
 
+## Unreleased — Coach explains why, and names the mistake
+
+Practice with Coach now says what went wrong when the backend can tell exactly, and "Why does this work?" gives a reason instead of repeating the steps. No LLM is involved; every message comes from the engines' own values.
+
+- `POST /sutras/{sutra}/check` fills `mistake` with more tags. A tag is set only when the wrong answer equals exactly what a known wrong procedure gives with that problem's numbers; otherwise it stays `null`. Nikhilam: `cross_added`, `own_deviation`, `deviations_added`, `adjust_wrong_direction`, `skipped_adjustment`, `result_missing_padding`. Urdhva: `forgot_carry_in`, `wrote_whole_total`, `carry_digit_swapped`, `carried_whole_total`. Ekadhikena: `one_less_not_one_more`, `forgot_one_more`, `multiplied_by_itself`, `added_not_multiplied`, `wrote_5_not_25`. `sign` and `missing_padding` are unchanged and still win. The questions endpoint never lists these values.
+- The coach answers each tag with its own message, which never states the answer. A second wrong answer that no tag explains gets the idea behind the current step.
+- New draft content `frontend/src/content/why.ts`: why each method works, per Sutra and level, and why each teaching step works. "Why does this work?" uses the first; pressing "Explain again" a second time on the same moment uses the second.
+
 ## Unreleased — Number Rocket game
 
 A new game under Play to Win, for Nikhilam and Ekadhikena at Beginner. It opens once Nikhilam Beginner is passed (Ekadhikena launches also need its Theory or lessons opened). The game never fills the Beginner, Intermediate or Advanced rings; those still come only from Practice with Coach.

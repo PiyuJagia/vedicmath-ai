@@ -17,6 +17,12 @@ export interface CoachRequest {
   frameLine?: string
   frameState?: string
   idea?: string
+  /** Why the whole method works, at this level (content/why.ts). */
+  methodWhy?: string
+  /** Why the current step works (content/why.ts). */
+  stepWhy?: string
+  /** How many times the learner has asked for another explanation of this moment, counting this one. */
+  explainCount?: number
   question?: PracticeQuestion
   questionText?: QuestionText
   check?: CheckResponse
@@ -54,14 +60,20 @@ export const demoCoach: CoachService = {
         )
       case 'explain':
         return reply(request.frameLine ?? request.idea ?? 'Let us look at this together.', 'speaking')
-      case 'explain_again':
+      case 'explain_again': {
+        // Asking again should never get the same words back: first the moment
+        // on the stage, then the reason behind this step.
+        const second = (request.explainCount ?? 1) % 2 === 0
+        if (second && request.stepWhy) return reply(`Here is why this step works. ${request.stepWhy}`, 'thinking')
         return reply(
           request.frameState
             ? `Let me say it another way. ${request.frameState} ${request.frameLine ?? ''}`.trim()
             : (request.idea ?? 'Let us go through it once more.'),
           'speaking',
         )
+      }
       case 'why':
+        if (request.methodWhy) return reply(request.methodWhy, 'thinking')
         return reply(
           `${request.idea ?? ''} Watch the example step by step and you will see the pattern.`.trim(),
           'thinking',
@@ -77,7 +89,14 @@ export const demoCoach: CoachService = {
         )
       case 'feedback': {
         if (!request.check || !request.question) return reply('Let me check that.', 'thinking')
-        const text = feedbackText(request.check, request.question, request.answer ?? '', request.attempts ?? 1)
+        const text = feedbackText(
+          request.check,
+          request.question,
+          request.answer ?? '',
+          request.attempts ?? 1,
+          request.questionText,
+          request.stepWhy,
+        )
         if (request.check.status === 'correct') return reply(text, 'celebrating')
         if (request.check.status === 'invalid') return reply(text, 'speaking')
         return reply(text, request.check.mistake ? 'correcting' : 'encouraging')

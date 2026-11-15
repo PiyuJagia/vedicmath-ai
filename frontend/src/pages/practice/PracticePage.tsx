@@ -16,6 +16,7 @@ import { Pill } from '../../components/ui/Pill'
 import { problemKey, problemLabel } from '../../content/lessons'
 import { questionText } from '../../content/practice'
 import { demoCoach } from '../../services/coach'
+import { stepWhy } from '../../content/why'
 import { useProgress } from '../../services/ProgressContext'
 import { useSettings } from '../../services/SettingsContext'
 import { playCue } from '../../services/sound'
@@ -279,7 +280,17 @@ function PracticeSession({
     setAttempts((all) => ({ ...all, [key]: attempt }))
     try {
       const check = await checkAnswer(lessonId, problem, difficulty, question.key, answer)
-      const reply = demoCoach.respond({ intent: 'feedback', mode: 'practice', check, question, answer, attempts: attempt })
+      const step = timeline.steps.find((s) => s.id === question.step_id)
+      const reply = demoCoach.respond({
+        intent: 'feedback',
+        mode: 'practice',
+        check,
+        question,
+        questionText: text ?? undefined,
+        stepWhy: step ? stepWhy(lessonId, step.title) : undefined,
+        answer,
+        attempts: attempt,
+      })
       if (check.status === 'correct') {
         if (settings.soundEffects) playCue('correct')
         setFeedback(reply)

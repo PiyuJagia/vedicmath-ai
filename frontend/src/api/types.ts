@@ -221,9 +221,32 @@ export interface CheckResponse {
   is_correct: boolean
   /** Filled in only when the answer is incorrect. */
   correct_answer: string | null
-  mistake: 'sign' | 'missing_padding' | null
+  mistake: MistakeTag | null
   message: string | null
 }
+
+/**
+ * Why an answer was wrong, when the backend can tell exactly: the wrong answer
+ * equals what a known wrong procedure gives with this problem's numbers.
+ */
+export type MistakeTag =
+  | 'sign'
+  | 'missing_padding'
+  | 'cross_added'
+  | 'own_deviation'
+  | 'deviations_added'
+  | 'adjust_wrong_direction'
+  | 'skipped_adjustment'
+  | 'result_missing_padding'
+  | 'forgot_carry_in'
+  | 'wrote_whole_total'
+  | 'carry_digit_swapped'
+  | 'carried_whole_total'
+  | 'one_less_not_one_more'
+  | 'forgot_one_more'
+  | 'multiplied_by_itself'
+  | 'added_not_multiplied'
+  | 'wrote_5_not_25'
 
 export interface CheckAllResponse {
   sutra: string
