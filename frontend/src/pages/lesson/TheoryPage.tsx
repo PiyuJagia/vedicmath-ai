@@ -14,6 +14,7 @@ import { Card } from '../../components/ui/Card'
 import { DifficultySelector } from '../../components/ui/DifficultySelector'
 import { Pill } from '../../components/ui/Pill'
 import { problemLabel } from '../../content/lessons'
+import { METHOD_WHY, stepWhy } from '../../content/why'
 import { demoCoach } from '../../services/coach'
 import { useProgress } from '../../services/ProgressContext'
 import { useSettings } from '../../services/SettingsContext'
@@ -60,6 +61,8 @@ export function TheoryPage() {
                 key={lesson.timeline.key}
                 idea={level.idea}
                 sutraId={sutra.id}
+                methodWhy={sutra.lessonId ? METHOD_WHY[sutra.lessonId][difficulty] : undefined}
+                stepWhyFor={(title) => (sutra.lessonId ? stepWhy(sutra.lessonId, title) : undefined)}
                 sutraName={sutra.name}
                 difficulty={difficulty}
                 timeline={lesson.timeline}
@@ -84,6 +87,8 @@ export function TheoryPage() {
 function TheoryBody({
   idea,
   sutraId,
+  methodWhy,
+  stepWhyFor,
   sutraName,
   difficulty,
   timeline,
@@ -93,6 +98,8 @@ function TheoryBody({
 }: {
   idea: string
   sutraId: string
+  methodWhy?: string
+  stepWhyFor: (stepTitle: string) => string | undefined
   sutraName: string
   difficulty: Difficulty
   timeline: import('../../animation/types').Timeline
@@ -105,7 +112,7 @@ function TheoryBody({
   const [speed, setSpeed] = useState(1)
   const playback = usePlayback({ frameCount: timeline.frames.length, resetKey: timeline.key, speed: speed * settings.animationSpeed })
   const frame = timeline.frames[playback.index]
-  const [override, setOverride] = useState<{ index: number; text: string; mood: CoachMood } | null>(null)
+  const [override, setOverride] = useState<{ index: number; text: string; mood: CoachMood; asks: number } | null>(null)
 
   const coachLine = useMemo(() => demoCoach.respond({ intent: 'explain', mode: 'theory', frameLine: frame.coach }), [frame.coach])
   const shown = override && override.index === playback.index ? override : { text: coachLine.text, mood: coachLine.mood }
@@ -127,8 +134,16 @@ function TheoryBody({
               <Button
                 variant="secondary"
                 onClick={() => {
-                  const reply = demoCoach.respond({ intent: 'explain_again', mode: 'theory', frameLine: frame.coach, frameState: frame.state })
-                  setOverride({ index: playback.index, text: reply.text, mood: reply.mood })
+                  const asks = override && override.index === playback.index ? override.asks + 1 : 1
+                  const reply = demoCoach.respond({
+                    intent: 'explain_again',
+                    mode: 'theory',
+                    frameLine: frame.coach,
+                    frameState: frame.state,
+                    stepWhy: stepWhyFor(frame.stepTitle),
+                    explainCount: asks,
+                  })
+                  setOverride({ index: playback.index, text: reply.text, mood: reply.mood, asks })
                 }}
               >
                 Explain again
@@ -136,8 +151,8 @@ function TheoryBody({
               <Button
                 variant="ghost"
                 onClick={() => {
-                  const reply = demoCoach.respond({ intent: 'why', mode: 'theory', idea, sutraName })
-                  setOverride({ index: playback.index, text: reply.text, mood: reply.mood })
+                  const reply = demoCoach.respond({ intent: 'why', mode: 'theory', idea, sutraName, methodWhy })
+                  setOverride({ index: playback.index, text: reply.text, mood: reply.mood, asks: 0 })
                 }}
               >
                 Why does this work?

@@ -1,0 +1,207 @@
+/* Rabbit sits in front of the page, at the bottom, clear of the mobile tab bar. */
+.rabbit {
+  --rabbit-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+
+  position: fixed;
+  bottom: var(--rabbit-bottom);
+  left: 0;
+  z-index: 30;
+  width: 106px;
+  height: 160px;
+  transition-property: transform;
+  transition-timing-function: linear;
+  will-change: transform;
+}
+
+.rabbit[hidden] {
+  display: none;
+}
+
+.rabbit::after {
+  position: absolute;
+  right: 18px;
+  bottom: -2px;
+  left: 18px;
+  z-index: -1;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(40, 35, 90, 0.14);
+  content: '';
+}
+
+.canvas {
+  display: block;
+  width: 106px;
+  height: 160px;
+}
+
+/* The flat picture, used only when a device cannot show 3D. */
+.flat {
+  position: absolute;
+  bottom: 0;
+  left: 8px;
+  width: 90px;
+  height: auto;
+  transform-origin: 50% 100%;
+  transition: transform 0.6s ease;
+}
+
+.rabbit[data-right='true'] .flat {
+  transform: scaleX(-1);
+}
+
+.rabbit[data-flat-hop='true'] .flat {
+  animation: hop 0.95s ease-in-out infinite;
+}
+
+.rabbit[data-right='true'][data-flat-hop='true'] .flat {
+  animation-name: hop-right;
+}
+
+@keyframes hop {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes hop-right {
+  0%,
+  100% {
+    transform: scaleX(-1) translateY(0);
+  }
+  50% {
+    transform: scaleX(-1) translateY(-12px);
+  }
+}
+
+.bubble {
+  position: absolute;
+  bottom: 150px;
+  left: 40px;
+  width: max-content;
+  max-width: 230px;
+  padding: var(--space-3);
+  border: 1px solid var(--color-lavender-300);
+  border-radius: 16px 16px 16px 4px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
+  color: var(--color-ink);
+}
+
+.bubble p {
+  margin: 0 0 var(--space-2);
+}
+
+.bubbleButtons {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.yes,
+.no,
+.more,
+.close {
+  min-height: 40px;
+  white-space: nowrap;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.yes {
+  border: 0;
+  background: var(--color-purple);
+  color: var(--color-on-primary);
+}
+
+.no,
+.more,
+.close {
+  border: 1px solid var(--color-lavender-300);
+  background: var(--color-surface);
+  color: var(--color-purple);
+}
+
+.stack {
+  position: fixed;
+  right: calc(16px + 106px + 8px);
+  bottom: var(--rabbit-bottom, 12px);
+  z-index: 31;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
+  width: min(300px, calc(100% - 160px));
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+.stack[data-inline='true'] {
+  position: static;
+  width: 100%;
+  max-height: none;
+  overflow: visible;
+}
+
+.card {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-lavender-300);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
+  animation: pop 0.35s ease-out;
+}
+
+.card[data-old='true'] {
+  padding-block: var(--space-2);
+  opacity: 0.8;
+  font-size: var(--text-sm);
+}
+
+.who {
+  display: block;
+  color: var(--color-purple);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@media (max-width: 900px) {
+  .rabbit {
+    --rabbit-bottom: calc(var(--tab-bar-height) + 8px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .stack {
+    --rabbit-bottom: calc(var(--tab-bar-height) + 8px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (max-width: 600px) {
+  .stack {
+    right: 16px;
+    bottom: calc(var(--rabbit-bottom) + 168px);
+    width: calc(100% - 32px);
+    max-height: 40vh;
+  }
+}
+
+:root[data-reduce-motion='true'] .rabbit,
+:root[data-reduce-motion='true'] .card,
+:root[data-reduce-motion='true'] .flat {
+  transition: none;
+  animation: none;
+}

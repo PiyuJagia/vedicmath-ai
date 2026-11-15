@@ -121,7 +121,8 @@ def test_missing_padding_is_flagged():
 
 
 def test_wrong_answer_returns_the_correct_answer():
-    body = check("nikhilam", "left_part", "96", **NIKHILAM_98_97)
+    # 90 matches no known wrong procedure, so no mistake tag is attached.
+    body = check("nikhilam", "left_part", "90", **NIKHILAM_98_97)
     assert body == {
         "sutra": "nikhilam",
         "numbers": [98, 97],
@@ -129,7 +130,7 @@ def test_wrong_answer_returns_the_correct_answer():
         "question": "left_part",
         "step_id": 3,
         "answer_type": "integer",
-        "submitted_answer": "96",
+        "submitted_answer": "90",
         "status": "incorrect",
         "is_correct": False,
         "correct_answer": "95",

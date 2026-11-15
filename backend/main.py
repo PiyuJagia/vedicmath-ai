@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from backend.vendor.vedicpy.multiply import multiply_base_near_powerof10
+from backend import rocket
 from backend.nikhilam import (
     build_nikhilam_steps,
     build_nikhilam_animation_events,
@@ -391,15 +392,23 @@ def get_sutra_lesson(
             numbers = [calculation["number1"], calculation["number2"]]
             operation = "multiply"
 
+        operands = calculation.get("operands", {
+            "number": number,
+            "operation": operation,
+        })
+        if sutra_name == "ekanyunena":
+            operands = {
+                "number1": {"value": numbers[0], "role": "multiplicand"},
+                "number2": {"value": numbers[1], "role": "multiplier"},
+                "operation": "multiply",
+            }
+
         return {
             "schema_version": calculation.get("schema_version", "1.0"),
             "sutra": calculation["method"],
             "numbers": numbers,
             "difficulty": calculation["difficulty"],
-            "operands": calculation.get("operands", {
-                "number": number,
-                "operation": operation,
-            }),
+            "operands": operands,
             "teaching_steps": calculation["teaching_steps"],
             "animation_steps": calculation["animation_steps"],
             "result": calculation["result"],
@@ -592,9 +601,86 @@ def check_sutra_answers(sutra_name: str, body: AnswerSheet):
     }
 
 
-# Coach animation handoff (Tollgate 5A) — typed actions separate from chat prose.
-# Import api.router only (not handoff package actions) after engine helpers exist.
+# ---------- Number Rocket (game) ----------
+# Every number, prompt, hint and check comes from backend/rocket.py and the
+# Sutra engines. The game never fills Practice level rings.
+
+
+def _rocket_problem(sutra: str, a: Optional[int], b: Optional[int], number: Optional[int]) -> Dict:
+    sutra = sutra.lower().strip()
+    if sutra == "nikhilam":
+        if a is None or b is None:
+            raise HTTPException(status_code=400, detail="Provide both a and b for this launch.")
+        problem = {"sutra": "nikhilam", "a": a, "b": b}
+    elif sutra == "ekadhikena":
+        if number is None:
+            raise HTTPException(status_code=400, detail="Provide the number for this launch.")
+        problem = {"sutra": "ekadhikena", "number": number}
+    else:
+        raise HTTPException(status_code=404, detail="Number Rocket flies Nikhilam and Ekadhikena launches only.")
+    try:
+        problem["rung"] = rocket.rung_of(problem)
+    except rocket.RocketError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+    return problem
+
+
+@app.get("/game/rocket/rungs")
+def rocket_rungs():
+    return {"level": rocket.LEVEL, "base": rocket.BASE, "rungs": rocket.RUNGS}
+
+
+@app.get("/game/rocket/mission")
+def rocket_mission(
+    seed: int = Query(..., ge=0, le=2**31 - 1),
+    nikhilam_rung: Optional[str] = None,
+    ekadhikena_rung: Optional[str] = None,
+):
+    try:
+        launches = rocket.build_mission(seed, nikhilam_rung, ekadhikena_rung)
+    except rocket.RocketError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+    return {"seed": seed, "level": rocket.LEVEL, "launches": launches}
+
+
+@app.get("/game/rocket/launch")
+def rocket_launch(
+    sutra: str,
+    a: Optional[int] = None,
+    b: Optional[int] = None,
+    number: Optional[int] = None,
+):
+    problem = _rocket_problem(sutra, a, b, number)
+    return {
+        **problem,
+        "level": rocket.LEVEL,
+        "base": rocket.BASE if problem["sutra"] == "nikhilam" else None,
+        "engine": rocket.ENGINES[problem["sutra"]],
+        "label": rocket.problem_label(problem),
+        "stages": rocket.launch_stages(problem),
+    }
+
+
+class RocketCheck(BaseModel):
+    sutra: str
+    stage: str
+    answer: Union[str, int]
+    a: Optional[int] = None
+    b: Optional[int] = None
+    number: Optional[int] = None
+
+
+@app.post("/game/rocket/check")
+def rocket_check(body: RocketCheck):
+    problem = _rocket_problem(body.sutra, body.a, body.b, body.number)
+    try:
+        return rocket.check_stage(problem, body.stage, str(body.answer))
+    except rocket.RocketError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+
+
+# Coach animation handoff — typed actions separate from chat prose.
+# Import after engine helpers exist. Includes /coach/chat for live Rishi.
 from backend.agents.vedic_math_coach.handoff.api import router as coach_router  # noqa: E402
 
 app.include_router(coach_router)
-
