@@ -35,3 +35,7 @@ Created in an isolated worktree from local commit `2aff266` on `feature/treasure
 ## Revised immersive direction
 
 The revised prototype uses a full-screen, rear-facing camera and a procedural perspective ocean rendered in Canvas. Rolling wave heights drive platform bobbing, platform tilt, and the child’s balancing sway. Answer buttons float above the next platform; choosing one animates a forward jump with a following camera. A darker sky, rain, foam, open-water depth, and slipping on a wrong answer add tension. The ocean remains stylized procedural artwork rather than photorealistic water or a full physics simulation. Motion can be paused, and reduced-motion preferences are respected on load.
+
+## Rishi and separate landing choices
+
+Rishi is now drawn from behind in his cream outfit, lavender diagonal sash and waist wrap, bare feet, and swept dark hair; the backpack has been removed. Every question presents three separate floating stones with the numbers on the stone surfaces. The selected answer determines the lateral landing position. Incorrect selections animate a jump followed by a fall, ending the attempt with Game Over and a fresh-puzzle restart. The earlier rescue boat concept has been removed. The island appears small on the horizon initially and grows as the camera advances. An offset over-the-shoulder camera keeps answer labels clear of Rishi.
