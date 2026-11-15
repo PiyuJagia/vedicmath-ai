@@ -14,3 +14,13 @@
   .frameContainer { width: calc(100% + 2 * var(--space-4)); margin-inline: calc(-1 * var(--space-4)); border-radius: 0; }
   .frame { height: 860px; }
 }
+.frameContainer { position: relative; }
+.coach { position: absolute; z-index: 5; right: 16px; bottom: 20px; max-width: min(360px, calc(100% - 32px)); }
+.coachToggle { float: right; background: #583a9d; color: white; border: 2px solid white; border-radius: 24px; padding: 12px 20px; font: inherit; cursor: pointer; }
+.coachPanel { clear: both; background: #fffdf8; color: #24234e; border-radius: 16px; padding: 16px; box-shadow: 0 8px 32px #0005; max-height: 430px; overflow: auto; display: grid; gap: 10px; }
+.coachPanel p { white-space: pre-wrap; font-size: 15px; line-height: 1.5; }
+.coachPanel small { display: block; }
+.coachPanel form { display: grid; gap: 8px; }
+.coachPanel input { min-width: 0; width: 100%; padding: 10px; border: 1px solid #b7a8d5; border-radius: 8px; font: inherit; }
+.coachPanel button { padding: 8px 12px; border-radius: 10px; border: 1px solid #b7a8d5; background: #eee8fa; color: #24234e; font: inherit; cursor: pointer; }
+.coachPanel button:disabled { opacity: .55; cursor: default; }

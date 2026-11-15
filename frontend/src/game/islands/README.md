@@ -10,7 +10,7 @@ Prepared on `feature/integrate-islands-of-courage` from production commit `a520f
 - The app owns level selection; the embedded game has no independent difficulty selector or review-state buttons. Opening its static HTML directly redirects through the app's guarded route.
 - Earned game badges are saved separately as `vedicmath-ai:islands-of-courage` in browser localStorage. They never grant practice mastery. Completion messages are checked for origin, iframe window, active difficulty, complete leap count, and valid multiplication.
 - All three worlds, forward jumps, post-landing camera movement, wave/rock animation, wildlife, and the local sound controls are preserved. Reduced motion follows the app setting.
-- The game's own AI integration is intentionally deferred. The existing app agent and Number Rocket remain available.
+- Ask Rishi opens a coach panel inside the game, including in full screen. It uses the app's existing agent session and chat API, with world, puzzle, base, step, and local answer feedback. Learners can request explanations or type questions. Replies never execute game actions. Late replies for previous steps are ignored. Disabled or offline coaching does not block play. AI calls are learner initiated.
 
 ## Packaging
 
@@ -25,8 +25,8 @@ The untouched production source stalls its practice screen tests: `LiveCoachAsk`
 ## Verification
 
 - TypeScript and Vite production build pass.
-- 178 frontend tests pass, including existing coach and practice tests plus new unlock/badge/context regression coverage.
-- Four Playwright integration checks pass: locked card/direct URL/standalone redirect; full Beginner victory and retry with unchanged mastery; Intermediate and Advanced victories via the existing admin bypass; all three mobile worlds without clipped options.
+- 182 frontend tests pass, including existing coach and practice tests plus new unlock/badge/context regression coverage.
+- Five Playwright integration checks pass: locked card/direct URL/standalone redirect; full Beginner victory and retry with unchanged mastery; Intermediate and Advanced victories via the existing admin bypass; all three mobile worlds without clipped options; agent context and continued play during an agent outage. A separate component regression checks foreign-message rejection and late-response suppression.
 - Browser tests mock existing coach HTTP responses to avoid provider costs and backend cold-start dependence. They do not claim to validate the live LLM service.
 - App screenshots are captured separately for review. Number Rocket remains accessible after exiting the game.
 

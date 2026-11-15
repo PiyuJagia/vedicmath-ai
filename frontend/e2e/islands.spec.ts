@@ -114,3 +114,27 @@ test('each passed world is playable on mobile without clipped answers', async ({
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
   }
 })
+
+test('game Rishi receives the current step and an outage does not stop play', async ({ page }) => {
+  await prepare(page, { nikhilam: { beginner: true } })
+  const requests: { context: { step_id: number; problem_label: string }; message: string }[] = []
+  await page.route('**/coach/chat', async route => {
+    requests.push(route.request().postDataJSON())
+    if (requests.length > 1) await route.fulfill({ status: 503, json: { detail: 'Offline' } })
+    else await route.fulfill({ json: { ok: true, session_id: 'islands-browser-check', message: { text: 'Think about how far each number is from the base.', character: { id: 'boy_coach' } }, calculation: null, actions: [], lesson: null, tools_used: [] } })
+  })
+  await page.goto('/play/islands')
+  const frame = await ready(page)
+  await page.getByRole('button', { name: 'Ask Rishi', exact: true }).click()
+  await page.getByRole('button', { name: 'Explain this step', exact: true }).click()
+  await expect(page.getByRole('status').filter({ hasText: 'Think about' })).toBeVisible()
+  expect(requests[0].context).toMatchObject({ screen: 'play', sutra_id: 'nikhilam', problem_label: '97 × 93', step_id: 1 })
+  await frame.locator('[data-answer="100"]').click()
+  await expect(frame.locator('#step')).toContainText('Leap 2 of')
+  await page.getByLabel('Ask your coach', { exact: true }).fill('What does shortfall mean?')
+  await page.getByRole('button', { name: 'Send', exact: true }).click()
+  await expect(page.getByRole('status').filter({ hasText: 'could not connect' })).toBeVisible()
+  expect(requests[1].context.step_id).toBe(2)
+  await frame.locator('[data-answer="3"]').click()
+  await expect(frame.locator('#step')).toContainText('Leap 3 of')
+})

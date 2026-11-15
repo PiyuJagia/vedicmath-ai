@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { GameCoach } from './GameCoach'
 import { Maximize } from 'lucide-react'
 import { useNavigate, useSearchParams } from 'react-router'
 import { Breadcrumbs } from '../../components/layout/Breadcrumbs'
@@ -91,6 +92,7 @@ export function IslandsPage() {
         </Card>
       ) : (
         <div ref={frameContainer} className={styles.frameContainer}>
+          <GameCoach key={`coach-${difficulty}`} frame={iframe} difficulty={difficulty} />
           <iframe
             key={difficulty}
             ref={iframe}
