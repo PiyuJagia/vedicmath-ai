@@ -125,6 +125,27 @@ export function RabbitAssistant({
   )
 }
 
+/**
+ * Live coach replies may contain inline TeX delimiters (e.g. "$4$").
+ * Character bubbles render plain text, so unwrap simple maths for readability.
+ * Do not parse as HTML or rewrite currency phrases such as "$5 to $10".
+ */
+function readableCoachMath(text: string): string {
+  const plain = text
+    .replace(/\$\$([\s\S]+?)\$\$/g, '$1')
+    .replace(/\\\[([\s\S]+?)\\\]/g, '$1')
+    .replace(/\\\(([\s\S]+?)\\\)/g, '$1')
+
+  return plain.replace(/\$([^$\n]+)\$/g, (original, raw: string) => {
+    const expression = raw.trim()
+    const withoutTexCommands = expression.replace(/\\(?:times|cdot|div|frac|sqrt|left|right|pm)\b/g, '')
+    const looksLikeMath =
+      /^[\dA-Za-z\s()[\]{}.,+*/=^_×÷−\\-]+$/.test(expression) &&
+      !/[A-Za-z]{2,}/.test(withoutTexCommands)
+    return looksLikeMath ? expression : original
+  })
+}
+
 /** A speech bubble that only renders for the screen's primary speaker. */
 export function CharacterDialogue({
   character,
@@ -145,7 +166,7 @@ export function CharacterDialogue({
   return (
     <div className={styles.bubble} data-tail={tail} data-character={character}>
       <span className="visually-hidden">{identity.name} says: </span>
-      <div aria-live={live ? 'polite' : undefined}>{children}</div>
+      <div aria-live={live ? 'polite' : undefined}>{typeof children === 'string' ? readableCoachMath(children) : children}</div>
       {demo && <span className={styles.demoTag}>Lesson text (not live AI)</span>}
     </div>
   )
