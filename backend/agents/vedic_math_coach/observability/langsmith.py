@@ -211,18 +211,16 @@ def ensure_langsmith_tracing(
             metadata=meta,
             tags=tag_list,
         )
-        # Restore label for other tools that read LANGSMITH_PROJECT as a name only.
-        if cleared_project is not None:
-            os.environ["LANGSMITH_PROJECT"] = cleared_project
-        elif project_label:
-            os.environ["LANGSMITH_PROJECT"] = project_label
+        # Do NOT restore LANGSMITH_PROJECT into os.environ — that reintroduces
+        # dual-destination drops for subsequent @traceable / ADK spans.
         status["project_label"] = project_label
         status["destination"] = "agent_address"
         status["io_redaction"] = production_io_redaction_enabled()
+        status["langsmith_project_env_cleared"] = "LANGSMITH_PROJECT" not in os.environ
         if cleared_project:
             status["note"] = (
-                "Cleared LANGSMITH_PROJECT during configure_google_adk to avoid "
-                "agent-address vs project conflict; restored afterward as a label."
+                "Removed LANGSMITH_PROJECT from process env so agent addressing "
+                "is the sole destination (dual destination drops traces)."
             )
         if not ok:
             status["error"] = "configure_google_adk returned False"

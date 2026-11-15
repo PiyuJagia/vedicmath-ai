@@ -146,7 +146,7 @@ export function CharacterDialogue({
     <div className={styles.bubble} data-tail={tail} data-character={character}>
       <span className="visually-hidden">{identity.name} says: </span>
       <div aria-live={live ? 'polite' : undefined}>{children}</div>
-      {demo && <span className={styles.demoTag}>Lesson coach (scripted) · Ask Rishi for live help</span>}
+      {demo && <span className={styles.demoTag}>Lesson text (not live AI)</span>}
     </div>
   )
 }

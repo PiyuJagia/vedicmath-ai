@@ -9,6 +9,8 @@ import type { Timeline } from '../../animation/types'
 import { useLesson } from '../../animation/useLesson'
 import { CharacterOrchestrator } from '../../characters/CharacterContext'
 import { CharacterDialogue, HummingbirdCompanion, RabbitAssistant } from '../../characters/Characters'
+import { LiveCoachAsk } from '../../components/coach/LiveCoachAsk'
+import { useLiveCoach } from '../../services/LiveCoachContext'
 import { Breadcrumbs } from '../../components/layout/Breadcrumbs'
 import { Button } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
@@ -70,7 +72,16 @@ export function LearnMorePage() {
               ))}
             </div>
 
-            {lesson.status !== 'ready' ? <LessonStatus state={lesson} /> : <LearnMoreBody key={lesson.timeline.key} timeline={lesson.timeline} />}
+            {lesson.status !== 'ready' ? (
+              <LessonStatus state={lesson} />
+            ) : (
+              <LearnMoreBody
+                key={lesson.timeline.key}
+                timeline={lesson.timeline}
+                sutraId={sutra.id}
+                difficulty={difficulty}
+              />
+            )}
 
             <div className={styles.footer}>
               <Button to={`/sutras/${sutra.id}/practice${levelQuery}`} icon={<ArrowRight size={16} aria-hidden="true" />}>
@@ -84,8 +95,17 @@ export function LearnMorePage() {
   )
 }
 
-function LearnMoreBody({ timeline }: { timeline: Timeline }) {
+function LearnMoreBody({
+  timeline,
+  sutraId,
+  difficulty,
+}: {
+  timeline: Timeline
+  sutraId: string
+  difficulty: import('../../types/learning').Difficulty
+}) {
   const { settings } = useSettings()
+  const { enabled } = useLiveCoach()
   const [search] = useSearchParams()
   const [speed, setSpeed] = useState(1)
   const moment = Number(search.get('moment'))
@@ -107,10 +127,27 @@ function LearnMoreBody({ timeline }: { timeline: Timeline }) {
         </div>
         <div className={styles.rabbitRow}>
           <RabbitAssistant state="present" size={84} hopIn={false} />
-          <CharacterDialogue character="rabbit">{frame.rabbit}</CharacterDialogue>
+          {/* frame.rabbit is deterministic lesson copy, not an LLM reply */}
+          <CharacterDialogue character="rabbit" demo>
+            {frame.rabbit}
+          </CharacterDialogue>
         </div>
         <SutraStage timeline={timeline} index={playback.index} speed={speed} />
         <AnimationControls timeline={timeline} playback={playback} speed={speed} onSpeedChange={setSpeed} />
+        {enabled && (
+          <LiveCoachAsk
+            density="compact"
+            context={{
+              screen: 'learn',
+              sutra_id: sutraId,
+              difficulty,
+              problem_label: timeline.problemLabel,
+              frame_index: playback.index,
+              frame_state: frame.state,
+              step_title: frame.stepTitle,
+            }}
+          />
+        )}
       </Card>
 
       <Card padding="lg" className={styles.explain}>

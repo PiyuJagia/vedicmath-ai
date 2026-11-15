@@ -1,10 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { AnimationControls } from '../../animation/player/AnimationControls'
 import { usePlayback } from '../../animation/playback'
 import { SutraStage } from '../../animation/stage/SutraStage'
 import { useLesson } from '../../animation/useLesson'
-import { isCoachHandoffEnabled } from '../../api/coachClient'
 import { CharacterOrchestrator } from '../../characters/CharacterContext'
 import { CharacterDialogue, CoachCharacter, type CoachMood } from '../../characters/Characters'
 import { LiveCoachAsk } from '../../components/coach/LiveCoachAsk'
@@ -15,7 +14,7 @@ import { DifficultySelector } from '../../components/ui/DifficultySelector'
 import { Pill } from '../../components/ui/Pill'
 import { problemLabel } from '../../content/lessons'
 import { METHOD_WHY, stepWhy } from '../../content/why'
-import { demoCoach } from '../../services/coach'
+import { useLiveCoach } from '../../services/LiveCoachContext'
 import { useProgress } from '../../services/ProgressContext'
 import { useSettings } from '../../services/SettingsContext'
 import { DIFFICULTY_LABELS, type Difficulty } from '../../types/learning'
@@ -108,14 +107,51 @@ function TheoryBody({
   approved: boolean
 }) {
   const { settings } = useSettings()
-  const liveCoach = isCoachHandoffEnabled(settings.role)
+  const { enabled: liveCoach, ask, busy, triggerEvent } = useLiveCoach()
   const [speed, setSpeed] = useState(1)
   const playback = usePlayback({ frameCount: timeline.frames.length, resetKey: timeline.key, speed: speed * settings.animationSpeed })
   const frame = timeline.frames[playback.index]
-  const [override, setOverride] = useState<{ index: number; text: string; mood: CoachMood; asks: number } | null>(null)
+  const [override, setOverride] = useState<
+    { index: number; text: string; mood: CoachMood; asks: number; isLive: boolean } | null
+  >(null)
+  const [coachError, setCoachError] = useState<string | null>(null)
 
-  const coachLine = useMemo(() => demoCoach.respond({ intent: 'explain', mode: 'theory', frameLine: frame.coach }), [frame.coach])
-  const shown = override && override.index === playback.index ? override : { text: coachLine.text, mood: coachLine.mood }
+  // Deterministic engine/frame caption — not an LLM reply.
+  const stageCaption = frame.coach
+  const shown =
+    override && override.index === playback.index
+      ? override
+      : { text: stageCaption, mood: 'speaking' as CoachMood, isLive: false }
+
+  useEffect(() => {
+    if (!liveCoach) return
+    void triggerEvent(
+      `lesson_start:${sutraId}:${difficulty}:${exampleLabel}`,
+      {
+        message: `The learner just opened Theory for ${sutraName} (${difficulty}). Idea: ${idea}`,
+        intent: 'lesson_start',
+        context: {
+          screen: 'theory',
+          sutra_id: sutraId,
+          difficulty,
+          problem_label: exampleLabel,
+        },
+      },
+      { debounceMs: 400 },
+    )
+    // Once per theory example open.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sutraId, difficulty, exampleLabel, liveCoach])
+
+  const theoryContext = {
+    screen: 'theory' as const,
+    sutra_id: sutraId,
+    difficulty,
+    problem_label: exampleLabel,
+    frame_index: playback.index,
+    frame_state: frame.state,
+    step_title: frame.stepTitle,
+  }
 
   return (
     <div className={styles.theory}>
@@ -127,51 +163,66 @@ function TheoryBody({
         <div className={styles.coachRow}>
           <CoachCharacter mood={playback.playing ? 'speaking' : shown.mood} size={180} />
           <div>
-            <CharacterDialogue character="boy" demo>
+            <CharacterDialogue character="boy" demo={!shown.isLive}>
               {shown.text}
             </CharacterDialogue>
+            {coachError && (
+              <p role="alert" style={{ color: 'var(--color-danger, #b00020)', fontSize: '0.9rem' }}>
+                {coachError}
+              </p>
+            )}
             <div className={styles.coachActions}>
               <Button
                 variant="secondary"
+                disabled={busy}
                 onClick={() => {
                   const asks = override && override.index === playback.index ? override.asks + 1 : 1
-                  const reply = demoCoach.respond({
+                  setCoachError(null)
+                  if (!liveCoach) {
+                    setCoachError('Live coaching is disabled.')
+                    return
+                  }
+                  void ask({
+                    message: `Explain frame again. Stage caption: ${frame.coach}. State: ${frame.state}. Step why (reference): ${stepWhyFor(frame.stepTitle) ?? 'n/a'}`,
                     intent: 'explain_again',
-                    mode: 'theory',
-                    frameLine: frame.coach,
-                    frameState: frame.state,
-                    stepWhy: stepWhyFor(frame.stepTitle),
-                    explainCount: asks,
+                    context: theoryContext,
+                  }).then((reply) => {
+                    if (reply.error || !reply.isLive) {
+                      setCoachError(reply.error ?? 'Rishi could not reply. Stage caption is still shown.')
+                      return
+                    }
+                    setOverride({ index: playback.index, text: reply.text, mood: reply.mood, asks, isLive: true })
                   })
-                  setOverride({ index: playback.index, text: reply.text, mood: reply.mood, asks })
                 }}
               >
-                Explain again
+                {busy ? 'Rishi is thinking…' : 'Explain again'}
               </Button>
               <Button
                 variant="ghost"
+                disabled={busy}
                 onClick={() => {
-                  const reply = demoCoach.respond({ intent: 'why', mode: 'theory', idea, sutraName, methodWhy })
-                  setOverride({ index: playback.index, text: reply.text, mood: reply.mood, asks: 0 })
+                  setCoachError(null)
+                  if (!liveCoach) {
+                    setCoachError('Live coaching is disabled.')
+                    return
+                  }
+                  void ask({
+                    message: `Why does ${sutraName} work? Idea: ${idea}. Method why (reference): ${methodWhy ?? 'n/a'}`,
+                    intent: 'why',
+                    context: theoryContext,
+                  }).then((reply) => {
+                    if (reply.error || !reply.isLive) {
+                      setCoachError(reply.error ?? 'Rishi could not reply.')
+                      return
+                    }
+                    setOverride({ index: playback.index, text: reply.text, mood: reply.mood, asks: 0, isLive: true })
+                  })
                 }}
               >
                 Why does this work?
               </Button>
             </div>
-            {liveCoach && (
-              <LiveCoachAsk
-                density="compact"
-                context={{
-                  screen: 'theory',
-                  sutra_id: sutraId,
-                  difficulty,
-                  problem_label: exampleLabel,
-                  frame_index: playback.index,
-                  frame_state: frame.state,
-                  step_title: frame.stepTitle,
-                }}
-              />
-            )}
+            {liveCoach && <LiveCoachAsk density="compact" context={theoryContext} />}
           </div>
         </div>
       </div>

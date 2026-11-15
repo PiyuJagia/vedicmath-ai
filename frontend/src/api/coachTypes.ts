@@ -97,7 +97,16 @@ export interface HandoffErrorBody {
   message: string
 }
 
-export type LearningScreen = 'theory' | 'practice' | 'learn' | 'handoff'
+export type LearningScreen =
+  | 'theory'
+  | 'practice'
+  | 'learn'
+  | 'handoff'
+  | 'onboarding'
+  | 'play'
+  | 'rocket'
+  | 'progress'
+  | 'explore'
 
 /** Structured learning context — never authoritative for maths answers. */
 export interface CoachLearningContext {
@@ -116,6 +125,9 @@ export interface CoachLearningContext {
   check_status?: 'correct' | 'incorrect' | 'invalid' | null
   hint_level?: number | null
   hint_count?: number | null
+  event?: string | null
+  progress_note?: string | null
+  preferred_persona?: 'rishi' | 'rabbit' | 'hummingbird' | null
 }
 
 export interface CoachChatRequest {

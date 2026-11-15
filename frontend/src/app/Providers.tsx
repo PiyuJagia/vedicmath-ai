@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { LiveCoachProvider } from '../services/LiveCoachContext'
 import { ProgressProvider } from '../services/ProgressContext'
 import { SettingsProvider } from '../services/SettingsContext'
 import type { Settings } from '../services/settingsModel'
@@ -16,7 +17,9 @@ export function Providers({
 }) {
   return (
     <SettingsProvider initial={settings}>
-      <ProgressProvider initial={progress}>{children}</ProgressProvider>
+      <ProgressProvider initial={progress}>
+        <LiveCoachProvider>{children}</LiveCoachProvider>
+      </ProgressProvider>
     </SettingsProvider>
   )
 }

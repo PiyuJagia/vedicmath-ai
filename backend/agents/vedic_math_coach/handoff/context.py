@@ -33,6 +33,10 @@ def validate_learning_context(raw: CoachLearningContext | None) -> CoachLearning
             return None
         return text[:limit]
 
+    persona = raw.preferred_persona
+    if persona not in (None, "rishi", "rabbit", "hummingbird"):
+        persona = None
+
     return CoachLearningContext(
         screen=raw.screen if isinstance(raw.screen, LearningScreen) else LearningScreen(raw.screen),
         sutra_id=sutra,
@@ -47,6 +51,9 @@ def validate_learning_context(raw: CoachLearningContext | None) -> CoachLearning
         check_status=raw.check_status,
         hint_level=raw.hint_level if isinstance(raw.hint_level, int) and raw.hint_level >= 0 else None,
         hint_count=raw.hint_count if isinstance(raw.hint_count, int) and raw.hint_count >= 0 else None,
+        event=clip(raw.event, 64),
+        progress_note=clip(raw.progress_note, 240),
+        preferred_persona=persona,
     )
 
 
@@ -84,6 +91,15 @@ def format_context_preamble(context: CoachLearningContext) -> str:
         lines.append(f"hint_level={context.hint_level}")
     if context.hint_count is not None:
         lines.append(f"hint_count={context.hint_count}")
+    if context.event:
+        lines.append(f"coaching_event={context.event}")
+    if context.progress_note:
+        lines.append(f"progress_note={context.progress_note} (client-summarized; verify before claiming mastery)")
+    if context.preferred_persona:
+        lines.append(
+            f"preferred_persona={context.preferred_persona} "
+            "(speak as this persona tag; still one coach agent)"
+        )
     lines.append(
         "Supported app sutras only: nikhilam, urdhva, ekadhikena, yavadunam, ekanyunena. "
         "Do not present Anurupyena or other unimplemented methods as app features."

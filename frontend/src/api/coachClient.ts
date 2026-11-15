@@ -17,11 +17,22 @@ import type {
 const SESSION_STORAGE_KEY = 'vedicmath_coach_session_id'
 const HISTORY_STORAGE_KEY = 'vedicmath_coach_chat_history'
 
-/** Live ADK Coach (handoff harness + Theory/Practice Ask). Off product paths unless flagged. */
+/**
+ * Live ADK Rishi coaching — on by default for learners.
+ * Emergency disable: VITE_COACH_LIVE=false (or legacy VITE_COACH_HANDOFF=false).
+ * Explicit force-on: VITE_COACH_LIVE=true / VITE_COACH_HANDOFF=true.
+ */
+export function isLiveCoachEnabled(_role?: Role): boolean {
+  const live = import.meta.env.VITE_COACH_LIVE
+  const handoff = import.meta.env.VITE_COACH_HANDOFF
+  if (live === 'false' || handoff === 'false') return false
+  if (live === 'true' || handoff === 'true') return true
+  return true
+}
+
+/** @deprecated Use isLiveCoachEnabled — kept for older call sites/tests. */
 export function isCoachHandoffEnabled(role: Role): boolean {
-  if (import.meta.env.VITE_COACH_HANDOFF === 'true') return true
-  if (import.meta.env.DEV) return true
-  return role === 'admin'
+  return isLiveCoachEnabled(role)
 }
 
 export function mapCoachCharacter(id: CoachCharacterId): CharacterId {

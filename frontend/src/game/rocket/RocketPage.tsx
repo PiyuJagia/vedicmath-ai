@@ -7,6 +7,7 @@ import { Breadcrumbs } from '../../components/layout/Breadcrumbs'
 import { Button } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
 import { Pill } from '../../components/ui/Pill'
+import { useLiveCoach } from '../../services/LiveCoachContext'
 import { useProgress } from '../../services/ProgressContext'
 import { useSettings } from '../../services/SettingsContext'
 import { loadStored, saveStored } from '../../services/storage'
@@ -106,11 +107,24 @@ export function RocketPage() {
     })
   }
 
+  const { enabled: liveCoach, ask } = useLiveCoach()
+
   const afterCelebration = () => {
     setCelebration(null)
     if (coachDue(state)) {
-      setCoach(coachMessage(state.log.slice(0, 2)))
+      const factsLine = coachMessage(state.log.slice(0, 2))
+      // Show engine-fact template immediately; upgrade to live Rishi when available.
+      setCoach(factsLine)
       commit(noteCoachVisit)
+      if (liveCoach) {
+        void ask({
+          message: `Number Rocket coaching visit. Use only these engine facts: ${factsLine}`,
+          intent: 'rocket_visit',
+          context: { screen: 'rocket', event: 'rocket_visit' },
+        }).then((reply) => {
+          if (reply.isLive && reply.text) setCoach(reply.text)
+        })
+      }
       return
     }
     go(missionDone(state.mission) ? 'report' : 'bay')

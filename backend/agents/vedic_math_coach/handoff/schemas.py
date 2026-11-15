@@ -187,6 +187,11 @@ class LearningScreen(str, Enum):
     PRACTICE = "practice"
     LEARN = "learn"
     HANDOFF = "handoff"
+    ONBOARDING = "onboarding"
+    PLAY = "play"
+    ROCKET = "rocket"
+    PROGRESS = "progress"
+    EXPLORE = "explore"
 
 
 class CoachLearningContext(BaseModel):
@@ -213,6 +218,12 @@ class CoachLearningContext(BaseModel):
     check_status: Optional[Literal["correct", "incorrect", "invalid"]] = None
     hint_level: Optional[int] = None
     hint_count: Optional[int] = None
+    # Coaching intent for the agent (conversational only).
+    event: Optional[str] = None
+    # Short, server/client-summarized progress note — never invented mastery.
+    progress_note: Optional[str] = None
+    # Preferred speaking persona for this turn (still one ADK agent).
+    preferred_persona: Optional[Literal["rishi", "rabbit", "hummingbird"]] = None
 
 
 class CoachChatRequest(BaseModel):

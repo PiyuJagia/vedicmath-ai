@@ -1,22 +1,11 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { MessageCircle, Send } from 'lucide-react'
-import { ApiError } from '../../api/client'
-import {
-  ensureCoachSession,
-  loadCoachChatHistory,
-  mapCoachCharacter,
-  saveCoachChatHistory,
-  sendCoachChat,
-} from '../../api/coachClient'
-import type { CoachChatHistoryItem, CoachLearningContext } from '../../api/coachTypes'
+import type { CoachLearningContext } from '../../api/coachTypes'
 import { CharacterDialogue, CoachCharacter, HummingbirdCompanion, RabbitAssistant } from '../../characters/Characters'
 import type { CharacterId } from '../../characters/registry'
+import { useLiveCoach } from '../../services/LiveCoachContext'
 import { Button } from '../ui/Button'
 import styles from './LiveCoachAsk.module.css'
-
-function newHistoryId(): string {
-  return `m-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
-}
 
 function speakerFigure(speaker: CharacterId, size = 72) {
   if (speaker === 'rabbit') return <RabbitAssistant state="present" size={Math.round(size * 0.7)} hopIn={false} />
@@ -32,74 +21,47 @@ type Props = {
 }
 
 /**
- * Feature-flagged live ADK ask box. Reuses CharacterDialogue + personas.
- * Does not drive animation playback — Theory/Practice stages stay lesson-owned.
+ * Persistent ask box wired through LiveCoachProvider → /coach/chat (ADK).
+ * Does not drive animation playback — lesson stages stay engine-owned.
  */
 export function LiveCoachAsk({ context, density = 'compact', className }: Props) {
+  const { enabled, busy, error, sessionReady, history, ask, setContextPatch, clearError } = useLiveCoach()
   const [open, setOpen] = useState(density === 'panel')
   const [draft, setDraft] = useState('')
-  const [busy, setBusy] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [sessionReady, setSessionReady] = useState(false)
-  const [history, setHistory] = useState<CoachChatHistoryItem[]>(() => loadCoachChatHistory())
+  const [localError, setLocalError] = useState<string | null>(null)
 
   useEffect(() => {
-    let cancelled = false
-    ensureCoachSession()
-      .then(() => {
-        if (!cancelled) setSessionReady(true)
-      })
-      .catch((err: unknown) => {
-        if (!cancelled) setError(err instanceof ApiError ? err.message : 'Coach session unavailable.')
-      })
-    return () => {
-      cancelled = true
-    }
-  }, [])
+    setContextPatch(context)
+  }, [context, setContextPatch])
+
+  if (!enabled) return null
 
   const lastCoach = [...history].reverse().find((item) => item.role === 'coach')
-  const speaker: CharacterId = lastCoach?.characterId ? mapCoachCharacter(lastCoach.characterId) : 'boy'
+  const speaker: CharacterId =
+    lastCoach?.characterId === 'rabbit'
+      ? 'rabbit'
+      : lastCoach?.characterId === 'hummingbird'
+        ? 'hummingbird'
+        : 'boy'
 
   const submit = async (event: FormEvent) => {
     event.preventDefault()
     const message = draft.trim()
     if (!message || busy) return
-    setBusy(true)
-    setError(null)
-    const learnerItem: CoachChatHistoryItem = {
-      id: newHistoryId(),
-      role: 'learner',
-      text: message,
-      at: Date.now(),
-    }
-    setHistory((prev) => {
-      const next = [...prev, learnerItem]
-      saveCoachChatHistory(next)
-      return next
-    })
+    setLocalError(null)
+    clearError()
     setDraft('')
-    try {
-      const response = await sendCoachChat({ message, context })
-      const coachItem: CoachChatHistoryItem = {
-        id: newHistoryId(),
-        role: 'coach',
-        text: response.message.text,
-        characterId: response.message.character.id,
-        calculationId: response.calculation?.calculation_id,
-        result: response.calculation?.result,
-        at: Date.now(),
-      }
-      setHistory((prev) => {
-        const next = [...prev, coachItem]
-        saveCoachChatHistory(next)
-        return next
-      })
-    } catch (err: unknown) {
-      setError(err instanceof ApiError ? err.message : 'The coach could not reply. Try again.')
-    } finally {
-      setBusy(false)
+    const reply = await ask({
+      message,
+      intent: 'freeform',
+      context,
+    })
+    if (reply.error || !reply.isLive) {
+      setLocalError(reply.error ?? 'The coach could not reply. Maths practice still works — try Ask again.')
     }
   }
+
+  const shownError = localError ?? error
 
   return (
     <div className={`${styles.root} ${styles[density]} ${className ?? ''}`} data-testid="live-coach-ask">
@@ -119,9 +81,7 @@ export function LiveCoachAsk({ context, density = 'compact', className }: Props)
       {(open || density === 'panel') && (
         <div className={styles.panel} data-testid="live-coach-panel">
           {density === 'panel' && <h3 className={styles.heading}>Ask Rishi</h3>}
-          <p className={styles.note}>
-            Live tutor · same session across Theory &amp; Practice · maths verified by Python tools
-          </p>
+          <p className={styles.note}>Rishi · live AI coach · maths verified by Python tools</p>
 
           {lastCoach && (
             <div
@@ -135,9 +95,9 @@ export function LiveCoachAsk({ context, density = 'compact', className }: Props)
             </div>
           )}
 
-          {error && (
+          {shownError && (
             <p className={styles.error} role="alert">
-              {error}
+              {shownError}
             </p>
           )}
 
@@ -155,7 +115,12 @@ export function LiveCoachAsk({ context, density = 'compact', className }: Props)
               disabled={busy || !sessionReady}
               autoComplete="off"
             />
-            <Button type="submit" disabled={busy || !sessionReady || !draft.trim()} data-testid="live-coach-send" icon={<Send size={16} aria-hidden="true" />}>
+            <Button
+              type="submit"
+              disabled={busy || !sessionReady || !draft.trim()}
+              data-testid="live-coach-send"
+              icon={<Send size={16} aria-hidden="true" />}
+            >
               {busy ? '…' : 'Ask'}
             </Button>
           </form>

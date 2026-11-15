@@ -247,9 +247,8 @@ export function CoachHandoffPage() {
           <Pill tone="gold">Tollgate 6A</Pill>
           <h1>Live coach chat</h1>
           <p>
-            This development surface is available in local development, when{' '}
-            <code>VITE_COACH_HANDOFF=true</code>, or for the admin role. It does not replace the scripted
-            Coach on Theory or Practice.
+            Live coaching is off (<code>VITE_COACH_LIVE=false</code>). Re-enable to use Rishi across Theory,
+            Practice, Learn More, and games.
           </p>
         </div>
       </div>
@@ -267,8 +266,8 @@ export function CoachHandoffPage() {
           <Pill tone="purple">Tollgate 6A · live ADK chat</Pill>
           <h1>Coach conversation</h1>
           <p className={styles.lede}>
-            Talk with the Google ADK Coach. Maths come from deterministic tools; Watch / Open actions are
-            backend-authorized. Theory and Practice still use the scripted <code>demoCoach</code>.
+            Dev harness for Google ADK Rishi. Maths come from deterministic tools; Watch / Open actions are
+            backend-authorized. Learner journeys use the same <code>/coach/chat</code> path via LiveCoach.
           </p>
         </div>
 
