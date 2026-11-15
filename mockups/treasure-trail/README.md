@@ -47,3 +47,9 @@ Wonder Island is now larger from the outset and includes a castle with flags, a 
 ## Wider island and longer ocean gaps
 
 The island is approximately twice as wide in the opening composition, with its vertical proportions adjusted to keep the question and distant beach separate from the landing choices. Rows of stepping stones are now 14 world units apart instead of 7. Upcoming platforms are enlarged again to compensate for the additional distance, with larger answer type and wider desktop lane spacing. Jump paths, camera tracking, answer hit areas, and review states use the same new spacing.
+
+## Natural island and readable questions
+
+Replaced the illustrated island, castle, and rainbow with an AI-generated photorealistic tropical island cutout: low green hills, palms, sand, and rocky shoreline. The original asset is `island-realistic-v1.png`; it is embedded in the HTML so the existing single-file staging build includes it. Generated with the built-in imagegen tool. Prompt: photorealistic broad low tropical island, sea-level view, long horizontal sandy shoreline, lush palms and jungle, weathered rocks, natural daylight, transparent background, no rainbow, castle, text, people, or plane.
+
+The question now has an opaque dark panel with larger high-contrast lettering. Platform rows are 18 world units apart; lateral choices are spaced farther apart. A silver plane travels from right to left and pauses with ocean motion. The island is static photographic-style scenery; the character, platforms, water, and plane retain their animated game rendering.
