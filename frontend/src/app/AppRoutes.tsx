@@ -11,6 +11,7 @@ import { OnboardingPage } from '../pages/OnboardingPage'
 import { NotFoundPage } from '../pages/placeholders'
 import { PlayPage } from '../pages/PlayPage'
 import { RocketPage } from '../game/rocket/RocketPage'
+import { IslandsPage } from '../game/islands/IslandsPage'
 import { PracticePage } from '../pages/practice/PracticePage'
 import { ProgressPage } from '../pages/ProgressPage'
 import { SettingsPage } from '../pages/SettingsPage'
@@ -30,6 +31,7 @@ export function AppRoutes() {
         <Route path="sutras/:sutraId/practice" element={<PracticePage />} />
         <Route path="play" element={<PlayPage />} />
         <Route path="play/rocket" element={<RocketPage />} />
+        <Route path="play/islands" element={<IslandsPage />} />
         <Route path="progress" element={<ProgressPage />} />
         <Route path="settings" element={<SettingsPage />} />
         <Route path="design-system" element={<DesignSystemPage />} />

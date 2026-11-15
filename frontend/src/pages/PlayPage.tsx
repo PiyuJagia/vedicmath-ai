@@ -17,7 +17,7 @@ import styles from './Play.module.css'
 
 const GAMES = [
   { id: 'rocket', name: 'Number Rocket', text: 'Solve problems to lift your rocket higher.', Icon: Rocket },
-  { id: 'treasure', name: 'Treasure Trail', text: 'Solve puzzles to reveal the map.', Icon: Map },
+  { id: 'treasure', name: 'Islands of Courage', text: 'Cross the sea, brave the lava, and reach the sky with Nikhilam.', Icon: Map },
   { id: 'detective', name: 'Math Detective', text: 'Spot the mistake and fix it.', Icon: Search },
 ] as const
 
@@ -32,6 +32,7 @@ export function PlayPage() {
   const sutra = PLAYABLE.find((item) => item.id === sutraId) ?? PLAYABLE[0]
   const unlocked = isGameUnlocked(progress, sutra.id, difficulty, settings.role === 'admin')
   const rocketOpen = canFly(rocketAccess(progress, settings.role === 'admin'))
+  const islandsOpen = sutra.id === 'nikhilam' && unlocked
   const fallback = unlocked
     ? `${sutra.name} ${DIFFICULTY_LABELS[difficulty]} games are unlocked. Great practising!`
     : `Pass ${sutra.name} ${DIFFICULTY_LABELS[difficulty]} practice to unlock these games.`
@@ -97,7 +98,7 @@ export function PlayPage() {
 
         <div className={styles.grid}>
           {GAMES.map(({ id, name, text, Icon }) => (
-            <Card key={id} padding="lg" className={styles.game} data-locked={id === 'rocket' ? !rocketOpen : !unlocked}>
+            <Card key={id} padding="lg" className={styles.game} data-locked={id === 'rocket' ? !rocketOpen : id === 'treasure' ? !islandsOpen : !unlocked}>
               <div className={styles.art} aria-hidden="true">
                 <Icon size={64} strokeWidth={1.25} />
               </div>
@@ -114,6 +115,20 @@ export function PlayPage() {
                     <Lock size={18} aria-hidden="true" />
                     Pass Nikhilam Beginner practice, or open the Ekadhikena lessons, to fly
                   </p>
+                )
+              ) : id === 'treasure' ? (
+                islandsOpen ? (
+                  <div className={styles.status}>
+                    <Pill tone="teal">Nikhilam · {DIFFICULTY_LABELS[difficulty]}</Pill>
+                    <Button to={`/play/islands?level=${difficulty}`}>Play Islands of Courage</Button>
+                  </div>
+                ) : sutra.id !== 'nikhilam' ? (
+                  <p className={styles.lock}>Choose Nikhilam above to explore Islands of Courage.</p>
+                ) : (
+                  <div className={styles.status}>
+                    <p className={styles.lock}><Lock size={18} aria-hidden="true" />Pass Nikhilam {DIFFICULTY_LABELS[difficulty]} practice to unlock</p>
+                    <Button variant="secondary" to={`/sutras/nikhilam/practice?level=${difficulty}`}>Practise Nikhilam</Button>
+                  </div>
                 )
               ) : unlocked ? (
                 <div className={styles.status}>
@@ -133,7 +148,7 @@ export function PlayPage() {
         <div className={styles.footer}>
           <RabbitAssistant state="present" size={70} />
           <p className={styles.note}>
-            Every game uses maths from the Python engine. Number Rocket is ready to fly; Treasure Trail and Math Detective are coming soon.
+            Number Rocket is ready to fly. Islands of Courage turns Nikhilam steps into three adventures. Math Detective is coming soon.
           </p>
         </div>
       </div>

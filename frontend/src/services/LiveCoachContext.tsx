@@ -57,6 +57,12 @@ export function LiveCoachProvider({ children }: { children: ReactNode }) {
   const [history, setHistory] = useState<CoachChatHistoryItem[]>(() => loadCoachChatHistory())
   const [lastReply, setLastReply] = useState<LiveCoachReply | null>(null)
   const [context, setContext] = useState<CoachLearningContext>(DEFAULT_CONTEXT)
+  const setContextPatch = useCallback((patch: Partial<CoachLearningContext>) => {
+    setContext((current) => {
+      const keys = Object.keys(patch) as Array<keyof CoachLearningContext>
+      return keys.every((key) => Object.is(current[key], patch[key])) ? current : { ...current, ...patch }
+    })
+  }, [])
   const recentEvents = useRef<Map<string, number>>(new Map())
   const timers = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map())
 
@@ -177,11 +183,11 @@ export function LiveCoachProvider({ children }: { children: ReactNode }) {
       lastReply,
       ask,
       triggerEvent,
-      setContextPatch: (patch) => setContext((prev) => ({ ...prev, ...patch })),
+      setContextPatch,
       context,
       clearError: () => setError(null),
     }),
-    [ask, busy, context, enabled, error, history, lastReply, sessionReady, triggerEvent],
+    [ask, busy, context, enabled, error, history, lastReply, sessionReady, setContextPatch, triggerEvent],
   )
 
   return <LiveCoachContext.Provider value={value}>{children}</LiveCoachContext.Provider>
